@@ -1,0 +1,252 @@
+# Complete Sunsynk Solar Dashboard Configuration
+# Replace 2305178402 with your inverter serial number
+
+title: Solar System
+views:
+  - title: Overview
+    path: solar-overview
+    cards:
+      # Status Banner
+      - type: horizontal-stack
+        cards:
+          - type: entity
+            entity: sensor.solarsynkv3_2305178402_runstatus
+            name: Status
+          - type: entity
+            entity: sensor.solarsynkv3_2305178402_battery_soc
+            name: Battery
+          - type: entity
+            entity: sensor.solarsynkv3_2305178402_pv_pac
+            name: Solar Power
+
+      # Section Separator
+      - type: custom:bubble-card
+        card_type: separator
+        name: Real-Time Power
+        icon: mdi:flash
+
+      # Power Flow Gauges
+      - type: grid
+        columns: 4
+        square: false
+        cards:
+          - type: custom:modern-circular-gauge
+            entity: sensor.solarsynkv3_2305178402_pv_pac
+            name: Solar
+            min: 0
+            max: 8000
+            needle: true
+            segments:
+              - from: 0
+                color: "#95a5a6"  # No sun
+              - from: 100
+                color: "#f1c40f"  # Some sun
+              - from: 2000
+                color: "#e67e22"  # Good
+              - from: 5000
+                color: "#27ae60"  # Excellent
+          
+          - type: custom:modern-circular-gauge
+            entity: sensor.solarsynkv3_2305178402_battery_soc
+            name: Battery
+            min: 0
+            max: 100
+            needle: true
+            segments:
+              - from: 0
+                color: "#e74c3c"  # Critical
+              - from: 20
+                color: "#f39c12"  # Low
+              - from: 50
+                color: "#2ecc71"  # Good
+              - from: 80
+                color: "#27ae60"  # Full
+          
+          - type: custom:modern-circular-gauge
+            entity: sensor.solarsynkv3_2305178402_load_total_power
+            name: Load
+            min: 0
+            max: 8000
+            needle: true
+            segments:
+              - from: 0
+                color: "#27ae60"  # Low usage
+              - from: 2000
+                color: "#f39c12"  # Medium
+              - from: 5000
+                color: "#e67e22"  # High
+              - from: 7000
+                color: "#e74c3c"  # Very high
+          
+          - type: custom:modern-circular-gauge
+            entity: sensor.solarsynkv3_2305178402_grid_pac
+            name: Grid
+            min: -5000
+            max: 5000
+            needle: true
+            segments:
+              - from: -5000
+                color: "#27ae60"  # Exporting
+              - from: -100
+                color: "#95a5a6"  # Neutral
+              - from: 100
+                color: "#f39c12"  # Importing
+              - from: 2000
+                color: "#e74c3c"  # Heavy import
+
+      # Section Separator
+      - type: custom:bubble-card
+        card_type: separator
+        name: 24 Hour History
+        icon: mdi:chart-line
+
+      # Power Flow Graph
+      - type: custom:apexcharts-card
+        header:
+          show: true
+          title: Power Flow
+          show_states: true
+        graph_span: 24h
+        span:
+          end: now
+        yaxis:
+          - id: power
+            min: -8000
+            max: 8000
+            decimals: 0
+        apex_config:
+          chart:
+            height: 300
+          xaxis:
+            type: datetime
+            labels:
+              datetimeFormatter:
+                hour: "HH:mm"
+          annotations:
+            yaxis:
+              - y: 0
+                borderColor: "#999"
+                strokeDashArray: 5
+        series:
+          - entity: sensor.solarsynkv3_2305178402_pv_pac
+            name: Solar
+            yaxis_id: power
+            color: "#f1c40f"
+            stroke_width: 2
+          - entity: sensor.solarsynkv3_2305178402_battery_power
+            name: Battery
+            yaxis_id: power
+            color: "#3498db"
+            stroke_width: 2
+          - entity: sensor.solarsynkv3_2305178402_grid_pac
+            name: Grid
+            yaxis_id: power
+            color: "#e74c3c"
+            stroke_width: 2
+          - entity: sensor.solarsynkv3_2305178402_load_total_power
+            name: Load
+            yaxis_id: power
+            color: "#95a5a6"
+            stroke_width: 2
+
+      # Section Separator
+      - type: custom:bubble-card
+        card_type: separator
+        name: Energy Today
+        icon: mdi:lightning-bolt
+
+      # Daily Energy Summary
+      - type: grid
+        columns: 2
+        cards:
+          - type: entities
+            title: Production
+            entities:
+              - entity: sensor.solarsynkv3_2305178402_pv_etoday
+                name: Solar Yield
+                icon: mdi:solar-power
+              - entity: sensor.solarsynkv3_2305178402_battery_etoday_charge
+                name: Battery Charged
+                icon: mdi:battery-charging
+              - entity: sensor.solarsynkv3_2305178402_battery_etoday_discharge
+                name: Battery Discharged
+                icon: mdi:battery-minus
+          
+          - type: entities
+            title: Consumption
+            entities:
+              - entity: sensor.solarsynkv3_2305178402_load_daily_used
+                name: Total Usage
+                icon: mdi:home-lightning-bolt
+              - entity: sensor.solarsynkv3_2305178402_grid_etoday_from
+                name: Grid Import
+                icon: mdi:transmission-tower-import
+              - entity: sensor.solarsynkv3_2305178402_grid_etoday_to
+                name: Grid Export
+                icon: mdi:transmission-tower-export
+
+      # Section Separator
+      - type: custom:bubble-card
+        card_type: separator
+        name: Battery Details
+        icon: mdi:battery-high
+
+      # Battery Stats
+      - type: entities
+        entities:
+          - entity: sensor.solarsynkv3_2305178402_battery_soc
+            name: State of Charge
+          - entity: sensor.solarsynkv3_2305178402_battery_power
+            name: Power
+          - entity: sensor.solarsynkv3_2305178402_battery_voltage
+            name: Voltage
+          - entity: sensor.solarsynkv3_2305178402_battery_current
+            name: Current
+          - entity: sensor.solarsynkv3_2305178402_battery_temperature
+            name: Temperature
+
+      # Section Separator
+      - type: custom:bubble-card
+        card_type: separator
+        name: Inverter Status
+        icon: mdi:solar-power-variant
+
+      # Inverter Stats
+      - type: entities
+        entities:
+          - entity: sensor.solarsynkv3_2305178402_runstatus
+            name: Status
+          - entity: sensor.solarsynkv3_2305178402_inverter_power
+            name: Output Power
+          - entity: sensor.solarsynkv3_2305178402_inverter_frequency
+            name: Frequency
+          - entity: sensor.solarsynkv3_2305178402_inverter_ac_temperature
+            name: AC Temperature
+          - entity: sensor.solarsynkv3_2305178402_inverter_dc_temperature
+            name: DC Temperature
+
+  - title: Lifetime Stats
+    path: solar-lifetime
+    cards:
+      - type: custom:bubble-card
+        card_type: separator
+        name: Cumulative Energy
+        icon: mdi:chart-box
+
+      - type: entities
+        entities:
+          - entity: sensor.solarsynkv3_2305178402_etotal
+            name: Total Generation
+          - entity: sensor.solarsynkv3_2305178402_eyear
+            name: This Year
+          - entity: sensor.solarsynkv3_2305178402_emonth
+            name: This Month
+          - entity: sensor.solarsynkv3_2305178402_etoday
+            name: Today
+          - type: divider
+          - entity: sensor.solarsynkv3_2305178402_grid_etotal_from
+            name: Total Grid Import
+          - entity: sensor.solarsynkv3_2305178402_grid_etotal_to
+            name: Total Grid Export
+          - entity: sensor.solarsynkv3_2305178402_load_total_used
+            name: Total Consumption
