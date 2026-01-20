@@ -47,6 +47,12 @@ Enforce Definition of Done by detecting and running all quality gates (type chec
 - "run checks"
 - "check before commit"
 
+**Additional detection patterns:**
+- After manually running individual tools (e.g., "I ran ruff check")
+- When user says "I fixed linting" but hasn't run other gates
+- After code changes but before marking task complete
+- When only partial quality checks were performed
+
 ## What This Skill Does
 
 Enforces the **Definition of Done** by:
@@ -321,6 +327,53 @@ Feature implemented but missing:
 
 Project policy: Tests required before declaring done.
 Let me add tests now...
+```
+
+### ❌ Anti-Pattern 5: Partial Quality Check (NEW)
+
+**User:** "I ran ruff check and fixed all linting errors"
+
+**Wrong Response:**
+```
+✅ Code quality verified - all linting issues resolved.
+```
+
+**Correct Response:**
+```
+⚠️ PARTIAL QUALITY CHECK DETECTED
+
+You ran: ruff check ✅ (linting passed)
+Missing: type checking, tests, dead code detection
+
+Running complete quality gate suite...
+→ pyright (type checking)
+→ pytest (tests)
+→ vulture (dead code)
+→ ruff format (formatting)
+
+[Runs all gates and reports results]
+```
+
+**Detection signals:**
+- User mentions running only ONE tool (ruff, eslint, tsc, etc.)
+- User says "fixed linting" but no mention of tests/types
+- Only one command executed (e.g., `ruff check --fix`)
+- No mention of running `check_all.sh` or equivalent
+
+**Why this matters:**
+Linting alone doesn't verify:
+- ❌ Type safety (pyright/mypy catch type errors)
+- ❌ Correctness (pytest catches logic errors)
+- ❌ Unused code (vulture detects dead code)
+- ❌ Formatting consistency (ruff format)
+
+**Real-world example:**
+```
+User ran: ruff check --fix
+Missed issues:
+- 3 type errors in src/layout_io.py (pyright would catch)
+- 1 failing test in tests/test_save.py (pytest would catch)
+- 2 unused imports (ruff found but user only ran check, not full suite)
 ```
 
 ## Output Format

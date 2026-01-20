@@ -1,10 +1,11 @@
 ---
 name: quality-detect-refactor-markers
-description: Finds all REFACTOR markers in codebase, validates associated ADRs exist, identifies stale markers (>30 days), and detects orphaned markers (no ADR). Use during status checks, before feature completion, or for refactor health audits. Works with Python, TypeScript, and JavaScript files.
+description: Finds all REFACTOR markers in codebase, validates associated ADRs exist, identifies stale markers (30+ days old), and detects orphaned markers (no ADR). Use during status checks, before feature completion, or for refactor health audits. Works with Python, TypeScript, and JavaScript files.
 allowed-tools:
   - Bash
   - Grep
   - Read
+  - Glob
   - mcp__memory__search_memories
 ---
 

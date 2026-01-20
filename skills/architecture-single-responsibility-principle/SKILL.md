@@ -10,11 +10,6 @@ allowed-tools:
 - mcp__ast-grep__find_code
 - mcp__ast-grep__find_code_by_rule
 - mcp__project-watch-mcp__search_code
-tags:
-- quality
-- srp
-- solid
-- architecture
 ---
 
 # Single Responsibility Principle Validation

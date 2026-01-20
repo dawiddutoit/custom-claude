@@ -2,13 +2,20 @@
 name: editing-claude
 description: |
   Validate and optimize CLAUDE.md files using Anthropic's best practices for focused sessions.
-  Detects contradictions, redundancy, excessive length (>200 lines), emphasis overuse (>2% density),
+  Detects contradictions, redundancy, excessive length (200+ lines), emphasis overuse (2%+ density),
   broken links, and orphaned sections. Scores health 0-50 points. Suggests safe automated fixes
   and extraction opportunities. Use when editing CLAUDE.md, before commits, when document grows
-  >200 lines, user says "optimize CLAUDE.md", "check contradictions", "validate documentation",
+  past 200 lines, user says "optimize CLAUDE.md", "check contradictions", "validate documentation",
   or during quarterly reviews. Works with project and global CLAUDE.md files (.md extension).
   Based on Anthropic 2025 context engineering best practices.
-allowed-tools: Read, Write, Grep, Glob, Bash, Edit, MultiEdit
+allowed-tools:
+  - Read
+  - Write
+  - Grep
+  - Glob
+  - Bash
+  - Edit
+  - MultiEdit
 ---
 
 # editing-claude

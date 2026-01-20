@@ -6,13 +6,6 @@ allowed-tools:
   - Grep
   - Bash
   - Glob
-tags:
-  - architecture
-  - validation
-  - clean-architecture
-  - hexagonal-architecture
-  - quality-gate
-  - refactoring
 ---
 
 # Validate Architecture
