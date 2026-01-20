@@ -1,10 +1,10 @@
 # Claude Code Skills Collection
 
-A comprehensive collection of 105+ production-ready skills for Claude Code, organized by domain and use case.
+A comprehensive collection of 190+ production-ready skills for Claude Code, organized by domain and use case.
 
 ## 📦 What's Inside
 
-- **105+ Skills** - Reusable workflows for architecture, testing, quality gates, Home Assistant, web development, and more
+- **190+ Skills** - Reusable workflows for architecture, testing, quality gates, Home Assistant, web development, cloud infrastructure, data engineering, and more
 - **Agents** - Specialized autonomous agents for complex tasks
 - **Plugins** - Extended functionality via Claude Code plugins
 - **Commands** - Custom command-line tools
@@ -172,17 +172,134 @@ Skills are invoked automatically by Claude Code when relevant, or you can explic
 - `minimal-abstractions` - Minimal abstraction patterns
 - `infra-manage-ssh-services` - SSH service management
 
+### JIRA & Atlassian (5 skills)
+- `build-jira-document-format` - Advanced ADF (Atlassian Document Format) document building
+- `design-jira-state-analyzer` - Analyze and optimize JIRA workflow states
+- `export-and-analyze-jira-data` - Export JIRA data for analysis and reporting
+- `jira-api` - JIRA REST API integration patterns
+- `work-with-adf` - Work with Atlassian Document Format
+
+### Data Engineering (17 skills)
+- `clickhouse-kafka-validation` - ClickHouse + Kafka validation patterns
+- `clickhouse-materialized-views` - Real-time aggregation with materialized views
+- `clickhouse-operations` - ClickHouse production operations and monitoring
+- `clickhouse-query-optimization` - Query optimization for ClickHouse
+- `kafka-consumer-implementation` - Kafka consumer patterns
+- `kafka-integration-testing` - Integration testing for Kafka
+- `kafka-producer-implementation` - Kafka producer patterns
+- `kafka-schema-management` - Schema management for Kafka
+- `otel-logging-patterns` - OpenTelemetry logging patterns
+
+### Python Testing & Tools (16 skills)
+- `pytest-adapter-integration-testing` - Integration testing for adapters
+- `pytest-application-layer-testing` - Application layer testing
+- `pytest-async-testing` - Async testing patterns
+- `pytest-configuration` - pytest configuration patterns
+- `pytest-coverage-measurement` - Code coverage measurement
+- `pytest-domain-model-testing` - Domain model testing
+- `pytest-mocking-strategy` - Mocking strategies for pytest
+- `pytest-test-data-factories` - Test data factory patterns
+- `pytest-type-safety` - Type safety in tests
+- `uv-ci-cd-integration` - UV package manager CI/CD integration
+- `uv-dependency-management` - UV dependency management
+- `uv-project-migration` - Migrate to UV package manager
+- `uv-project-setup` - Set up new project with UV
+- `uv-python-version-management` - Python version management with UV
+- `uv-tool-management` - Tool management with UV
+- `uv-troubleshooting` - UV troubleshooting guide
+
+### Infrastructure & Cloud (38 skills)
+- `caddy-certificate-maintenance` - SSL certificate operations with Caddy
+- `caddy-https-troubleshoot` - Troubleshoot HTTPS/SSL issues with Caddy
+- `caddy-subdomain-add` - Add subdomains to Caddy configuration
+- `cloudflare-access-add-user` - Add users to Cloudflare Access
+- `cloudflare-access-setup` - Configure Cloudflare Access with OAuth
+- `cloudflare-access-troubleshoot` - Troubleshoot Cloudflare Access issues
+- `cloudflare-dns-operations` - Cloudflare DNS management
+- `cloudflare-service-token-setup` - Cloudflare Access service tokens
+- `cloudflare-tunnel-setup` - Set up Cloudflare Tunnel
+- `cloudflare-tunnel-troubleshoot` - Troubleshoot Cloudflare Tunnel
+- `github-webhook-setup` - GitHub webhook configuration
+- `ha-operations` - Home Assistant operations and maintenance
+- `infrastructure-backup-restore` - Infrastructure backup and restore
+- `infrastructure-health-check` - Infrastructure health monitoring
+- `infrastructure-monitoring-setup` - Set up infrastructure monitoring
+- `pihole-dns-setup` - Pi-hole DNS setup
+- `pihole-dns-troubleshoot` - Troubleshoot Pi-hole DNS issues
+- `pihole-dns-troubleshoot-ipv6` - IPv6 troubleshooting for Pi-hole
+
+### GCP & Cloud Platform (7 skills)
+- `gcp-gke-cluster-setup` - GKE cluster setup and configuration
+- `gcp-gke-cost-optimization` - GKE cost optimization strategies
+- `gcp-gke-deployment-strategies` - GKE deployment patterns
+- `gcp-gke-monitoring-observability` - GKE monitoring and observability
+- `gcp-gke-troubleshooting` - GKE troubleshooting guide
+- `gcp-gke-workload-identity` - GKE Workload Identity setup
+- `gcp-pubsub` - Google Cloud Pub/Sub patterns
+
+### Gradle & Java Build Tools (7 skills)
+- `gradle-ci-cd-integration` - Gradle CI/CD integration
+- `gradle-dependency-management` - Gradle dependency management
+- `gradle-docker-jib` - Docker image building with Jib
+- `gradle-performance-optimization` - Gradle build optimization
+- `gradle-spring-boot-integration` - Spring Boot with Gradle
+- `gradle-testing-setup` - Gradle test configuration
+- `gradle-troubleshooting` - Gradle troubleshooting
+
+### Terraform & IaC (6 skills)
+- `terraform-basics` - Terraform fundamentals
+- `terraform-gcp-integration` - Terraform with GCP
+- `terraform-module-design` - Terraform module patterns
+- `terraform-secrets-management` - Secrets management in Terraform
+- `terraform-state-management` - Terraform state management
+- `terraform-troubleshooting` - Terraform troubleshooting
+
+### Java Development (6 skills)
+- `java-best-practices-code-review` - Java code review best practices
+- `java-best-practices-debug-analyzer` - Java debugging and analysis
+- `java-best-practices-refactor-legacy` - Legacy Java code refactoring
+- `java-best-practices-security-audit` - Java security auditing
+- `java-spring-service` - Spring service development
+- `java-test-generator` - Java test generation
+
+### Lotus Notes Migration (5 skills)
+- `lotus-analyze-nsf-structure` - Analyze Lotus Notes NSF structure
+- `lotus-analyze-reference-dependencies` - Analyze Notes database dependencies
+- `lotus-convert-rich-text-fields` - Convert rich text fields from Notes
+- `lotus-migration` - Lotus Notes to modern platform migration
+- `lotus-replace-odbc-direct-writes` - Replace ODBC direct writes
+
+### Python Metrics & Observability (7 skills)
+- `python-micrometer-business-metrics` - Business metrics with Micrometer
+- `python-micrometer-cardinality-control` - Metrics cardinality management
+- `python-micrometer-core` - Micrometer core patterns for Python
+- `python-micrometer-gcp-cloud-monitoring` - GCP Cloud Monitoring integration
+- `python-micrometer-metrics-setup` - Set up Micrometer metrics
+- `python-micrometer-sli-slo-monitoring` - SLI/SLO monitoring
+- `python-test-micrometer-testing-metrics` - Test metrics instrumentation
+
+### CAD & OpenSCAD (1 additional skill)
+- `openscad-collision-detection` - Collision detection for OpenSCAD models
+
 ## 🗂️ Repository Structure
 
 ```
 .
-├── skills/              # 105+ skill definitions
+├── skills/              # 190+ skill definitions
 │   ├── architecture-*/  # Architecture & design skills
 │   ├── quality-*/       # Quality gates & code review
 │   ├── test-*/          # Testing skills
 │   ├── implement-*/     # Implementation patterns
 │   ├── ha-*/            # Home Assistant skills
 │   ├── svelte-*/        # Svelte/SvelteKit skills
+│   ├── clickhouse-*/    # ClickHouse data engineering
+│   ├── kafka-*/         # Kafka streaming
+│   ├── gcp-*/           # Google Cloud Platform
+│   ├── cloudflare-*/    # Cloudflare infrastructure
+│   ├── gradle-*/        # Gradle build tools
+│   ├── terraform-*/     # Infrastructure as Code
+│   ├── java-*/          # Java development
+│   ├── lotus-*/         # Lotus Notes migration
 │   └── ...
 ├── agents/              # Custom agent definitions
 ├── plugins/             # Claude Code plugins
@@ -234,15 +351,22 @@ Comprehensive quality gate skills ensure code meets standards before merging:
 
 ### Multi-Domain Support
 Skills span multiple domains:
-- Backend (Python, CQRS, repositories)
-- Frontend (Svelte, SvelteKit)
-- Home automation (Home Assistant)
-- CAD/3D (OpenSCAD)
-- TUI (Textual framework)
-- Browser automation (Chrome, Playwright)
+- **Backend:** Python, Java, CQRS, repositories, microservices
+- **Frontend:** Svelte, SvelteKit, web components
+- **Data Engineering:** ClickHouse, Kafka, streaming, analytics
+- **Cloud & Infrastructure:** GCP, Cloudflare, Caddy, Pi-hole, Terraform
+- **Testing:** pytest, Playwright, integration testing, test factories
+- **Build Tools:** Gradle, UV package manager
+- **Home Automation:** Home Assistant dashboards and integrations
+- **CAD/3D:** OpenSCAD modeling and design
+- **TUI:** Textual framework applications
+- **Browser Automation:** Chrome, Playwright workflows
+- **Observability:** OpenTelemetry, Micrometer metrics, logging
+- **Migration:** Lotus Notes to modern platforms
+- **JIRA & Atlassian:** Advanced ADF, workflows, automation
 
 ---
 
 **Last Updated:** 2026-01-20
-**Total Skills:** 105+
+**Total Skills:** 190+
 **Maintained by:** [@dawiddutoit](https://github.com/dawiddutoit)
