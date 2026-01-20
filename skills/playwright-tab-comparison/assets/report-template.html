@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Tab Comparison Report</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .meta {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .tabs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .tab-card {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            overflow: hidden;
+            background: #fafafa;
+        }
+
+        .tab-header {
+            background: #4a90e2;
+            color: white;
+            padding: 15px;
+        }
+
+        .tab-header h3 {
+            margin-bottom: 5px;
+        }
+
+        .tab-header a {
+            color: #e8f4fd;
+            font-size: 13px;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .tab-header a:hover {
+            text-decoration: underline;
+        }
+
+        .tab-screenshot {
+            background: white;
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab-screenshot img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .tab-screenshot p {
+            color: #999;
+            padding: 40px;
+        }
+
+        .tab-data {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab-data h4 {
+            color: #555;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .tab-data pre {
+            background: white;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+            font-size: 12px;
+            overflow-x: auto;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .tab-stats {
+            padding: 15px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .tab-stats p {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .tab-stats strong {
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .tabs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Multi-Tab Comparison Report</h1>
+        <div class="meta">
+            <p>Comparing {{TOTAL_TABS}} tabs side by side</p>
+        </div>
+
+        <div class="tabs-grid">
+            {{TAB_CARDS}}
+        </div>
+    </div>
+</body>
+</html>

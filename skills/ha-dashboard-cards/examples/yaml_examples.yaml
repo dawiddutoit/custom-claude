@@ -1,0 +1,346 @@
+# YAML Examples for Home Assistant Dashboard Cards
+#
+# These examples show how to implement static titles and color gradients
+# when manually editing dashboards in the Home Assistant UI.
+
+# Example 1: Basic mini-graph-card with static title
+# Use when: Creating time-range graphs with multiple entities
+
+- type: custom:mini-graph-card
+  name: Last 24 Hours
+  card_mod:
+    style: |
+      .header .name {
+        visibility: visible !important;
+      }
+      .header .name::after {
+        content: "Last 24 Hours" !important;
+        visibility: visible !important;
+      }
+      .header .name > * {
+        display: none !important;
+      }
+  hours_to_show: 24
+  points_per_hour: 4
+  line_width: 2
+  entities:
+    - entity: sensor.office_temperature
+      name: Office
+      color: '#2ecc71'
+    - entity: sensor.bedroom_temperature
+      name: Bedroom
+      color: '#3498db'
+
+# Example 2: mini-graph-card with color gradient thresholds
+# Use when: Need visual feedback based on sensor values
+
+- type: custom:mini-graph-card
+  name: Temperature Trend
+  card_mod:
+    style: |
+      .header .name {
+        visibility: visible !important;
+      }
+      .header .name::after {
+        content: "Temperature Trend" !important;
+        visibility: visible !important;
+      }
+      .header .name > * {
+        display: none !important;
+      }
+  hours_to_show: 24
+  points_per_hour: 4
+  line_width: 2
+  color_thresholds:
+    - value: 10
+      color: '#3498db'  # Blue: Cold
+    - value: 18
+      color: '#2ecc71'  # Green: Comfortable
+    - value: 26
+      color: '#f1c40f'  # Yellow: Warm
+    - value: 32
+      color: '#e74c3c'  # Red: Hot
+  entities:
+    - entity: sensor.office_temperature
+      name: Office
+      # Note: Remove entity color when using color_thresholds
+
+# Example 3: Enhanced bubble-card separator
+# Use when: Creating major section headers
+
+- type: custom:bubble-card
+  card_type: separator
+  name: Temperature
+  icon: mdi:thermometer
+  card_mod:
+    style: |
+      ha-card {
+        margin-top: 24px !important;
+        margin-bottom: 16px !important;
+        background: linear-gradient(90deg,
+          transparent 0%,
+          rgba(var(--rgb-primary-text-color), 0.12) 20%,
+          rgba(var(--rgb-primary-text-color), 0.12) 80%,
+          transparent 100%) !important;
+        border-radius: 8px !important;
+        padding: 8px 0 !important;
+      }
+      .bubble-line {
+        opacity: 1 !important;
+        height: 2px !important;
+      }
+      .bubble-name {
+        font-size: 18px !important;
+        font-weight: 600 !important;
+      }
+
+# Example 4: Standard bubble-card separator (sub-section)
+# Use when: Creating sub-section labels
+
+- type: custom:bubble-card
+  card_type: separator
+  name: Current Readings
+  icon: mdi:home-thermometer
+
+# Example 5: Info card with colored border
+# Use when: Adding context or explanations
+
+- type: markdown
+  content: '**Lower resistance = more pollution.** Good air quality: >100 kΩ'
+  card_mod:
+    style: |
+      ha-card {
+        background: rgba(231, 76, 60, 0.08) !important;
+        border-left: 3px solid #e74c3c !important;
+        font-size: 13px !important;
+        padding: 10px 14px !important;
+        margin: 6px 0 12px 0 !important;
+        box-shadow: none !important;
+      }
+      ha-markdown {
+        padding: 0 !important;
+      }
+
+# Example 6: Three-graph horizontal layout
+# Use when: Comparing short-term vs long-term trends
+
+- type: horizontal-stack
+  cards:
+    # Last Hour
+    - type: custom:mini-graph-card
+      name: Last Hour
+      card_mod:
+        style: |
+          .header .name {
+            visibility: visible !important;
+          }
+          .header .name::after {
+            content: "Last Hour" !important;
+            visibility: visible !important;
+          }
+          .header .name > * {
+            display: none !important;
+          }
+      hours_to_show: 1
+      points_per_hour: 60
+      line_width: 2
+      show:
+        extrema: true
+      entities:
+        - entity: sensor.enviro_temperature
+          name: Enviro
+
+    # Last 24 Hours
+    - type: custom:mini-graph-card
+      name: Last 24 Hours
+      card_mod:
+        style: |
+          .header .name {
+            visibility: visible !important;
+          }
+          .header .name::after {
+            content: "Last 24 Hours" !important;
+            visibility: visible !important;
+          }
+          .header .name > * {
+            display: none !important;
+          }
+      hours_to_show: 24
+      points_per_hour: 4
+      line_width: 2
+      entities:
+        - entity: sensor.enviro_temperature
+          name: Enviro
+
+    # Last Week
+    - type: custom:mini-graph-card
+      name: Last Week
+      card_mod:
+        style: |
+          .header .name {
+            visibility: visible !important;
+          }
+          .header .name::after {
+            content: "Last Week" !important;
+            visibility: visible !important;
+          }
+          .header .name > * {
+            display: none !important;
+          }
+      hours_to_show: 168  # 7 days × 24 hours
+      points_per_hour: 1
+      line_width: 2
+      entities:
+        - entity: sensor.enviro_temperature
+          name: Enviro
+
+# Example 7: Complete section with all components
+# Use when: Building a full sensor section
+
+- type: vertical-stack
+  cards:
+    # Major section header
+    - type: custom:bubble-card
+      card_type: separator
+      name: Temperature
+      icon: mdi:thermometer
+      card_mod:
+        style: |
+          ha-card {
+            margin-top: 24px !important;
+            margin-bottom: 16px !important;
+            background: linear-gradient(90deg,
+              transparent 0%,
+              rgba(var(--rgb-primary-text-color), 0.12) 20%,
+              rgba(var(--rgb-primary-text-color), 0.12) 80%,
+              transparent 100%) !important;
+            border-radius: 8px !important;
+            padding: 8px 0 !important;
+          }
+
+    # Sub-section: Current readings
+    - type: custom:bubble-card
+      card_type: separator
+      name: Current Temperatures
+      icon: mdi:home-thermometer
+
+    # Current value cards
+    - type: horizontal-stack
+      cards:
+        - type: custom:mushroom-template-card
+          primary: Enviro
+          secondary: '{{ states(''sensor.enviro_temperature'') }}°C'
+          icon: mdi:thermometer
+          icon_color: green
+        - type: custom:mushroom-template-card
+          primary: Office
+          secondary: '{{ states(''sensor.officeht_temperature'') }}°C'
+          icon: mdi:thermometer
+          icon_color: blue
+
+    # Sub-section: History
+    - type: custom:bubble-card
+      card_type: separator
+      name: Temperature History
+      icon: mdi:chart-line
+
+    # Three-graph row with static titles and color gradients
+    - type: horizontal-stack
+      cards:
+        - type: custom:mini-graph-card
+          name: Last Hour
+          card_mod:
+            style: |
+              .header .name {
+                visibility: visible !important;
+              }
+              .header .name::after {
+                content: "Last Hour" !important;
+                visibility: visible !important;
+              }
+              .header .name > * {
+                display: none !important;
+              }
+          hours_to_show: 1
+          points_per_hour: 60
+          line_width: 2
+          show:
+            extrema: true
+          color_thresholds:
+            - value: 10
+              color: '#3498db'
+            - value: 18
+              color: '#2ecc71'
+            - value: 26
+              color: '#f1c40f'
+            - value: 32
+              color: '#e74c3c'
+          entities:
+            - entity: sensor.enviro_temperature
+              name: Enviro
+            - entity: sensor.officeht_temperature
+              name: Office
+
+        - type: custom:mini-graph-card
+          name: Last 24 Hours
+          card_mod:
+            style: |
+              .header .name {
+                visibility: visible !important;
+              }
+              .header .name::after {
+                content: "Last 24 Hours" !important;
+                visibility: visible !important;
+              }
+              .header .name > * {
+                display: none !important;
+              }
+          hours_to_show: 24
+          points_per_hour: 4
+          line_width: 2
+          color_thresholds:
+            - value: 10
+              color: '#3498db'
+            - value: 18
+              color: '#2ecc71'
+            - value: 26
+              color: '#f1c40f'
+            - value: 32
+              color: '#e74c3c'
+          entities:
+            - entity: sensor.enviro_temperature
+              name: Enviro
+            - entity: sensor.officeht_temperature
+              name: Office
+
+        - type: custom:mini-graph-card
+          name: Last Week
+          card_mod:
+            style: |
+              .header .name {
+                visibility: visible !important;
+              }
+              .header .name::after {
+                content: "Last Week" !important;
+                visibility: visible !important;
+              }
+              .header .name > * {
+                display: none !important;
+              }
+          hours_to_show: 168
+          points_per_hour: 1
+          line_width: 2
+          color_thresholds:
+            - value: 10
+              color: '#3498db'
+            - value: 18
+              color: '#2ecc71'
+            - value: 26
+              color: '#f1c40f'
+            - value: 32
+              color: '#e74c3c'
+          entities:
+            - entity: sensor.enviro_temperature
+              name: Enviro
+            - entity: sensor.officeht_temperature
+              name: Office

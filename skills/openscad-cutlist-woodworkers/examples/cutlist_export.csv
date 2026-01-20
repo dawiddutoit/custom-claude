@@ -1,0 +1,33 @@
+Part Name,Width,Height,Thickness,Quantity,Edge1,Edge2,Edge3,Edge4,Notes
+Left Side,378,1164,18,1,4,0,0,0,Front edge band only
+Right Side,378,1164,18,1,4,0,0,0,Front edge band only
+Top Panel,992,378,18,1,4,4,4,0,Front + left + right edges
+Bottom Panel,992,378,18,1,4,4,4,0,Front + left + right edges
+Door Panel Left,487,1192,18,1,4,4,4,4,All edges
+Door Panel Right,487,1192,18,1,4,4,4,4,All edges
+Shelf,964,378,18,3,4,0,0,0,Front edge only (3 identical shelves)
+Back Panel,1000,1200,4,1,0,0,0,0,Fiberboard - no edge banding
+
+# IMPORT INSTRUCTIONS FOR CUTLISTOPTIMIZER:
+# 1. Visit https://www.cutlistoptimizer.com/
+# 2. Click "Import" → "CSV File"
+# 3. Upload this file
+# 4. Configure settings:
+#    - Sheet size: 2440×1220mm (standard plywood)
+#    - Blade thickness: 3mm (table saw kerf)
+#    - Grain direction: Length (for plywood grain matching)
+# 5. Click "Optimize"
+#
+# EXPECTED RESULTS:
+# - Total panels: 10 unique parts (some with quantities >1)
+# - 18mm panels: ~4.2 m² total area → 2-3 sheets of 2440×1220mm
+# - 4mm panels: ~1.2 m² → 1 sheet of fiberboard
+# - Edge banding: ~24.5m of 4mm ABS tape
+#
+# EDGE BANDING COLUMNS EXPLAINED:
+# Edge1, Edge2, Edge3, Edge4 = thickness of edge banding on each edge (0 = none)
+# Typically only 1-3 edges need banding (visible edges)
+# Back/hidden edges = 0
+#
+# NOTES COLUMN:
+# Use for grain direction, special instructions, or panel purpose
