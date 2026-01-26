@@ -7,6 +7,7 @@ description: |
   "find dead code", "check for unused modules", "verify integration", or proactively before completion.
   Works with Python modules, functions, classes, and LangGraph nodes. Catches the ADR-013 failure pattern
   where code exists and tests pass but is never integrated.
+version: 1.0.0
 allowed-tools:
   - Read
   - Grep
@@ -49,7 +50,7 @@ grep -r "your_function_name" src/ --include="*.py" | grep -v test | grep -v "^[^
 10. Requirements
 11. Red Flags to Avoid
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 ### Explicit Triggers
 - "Detect orphaned code"
@@ -73,7 +74,7 @@ grep -r "your_function_name" src/ --include="*.py" | grep -v test | grep -v "^[^
 - "Why isn't my new module being used?"
 - "Code review found unused imports"
 
-## 2. What This Skill Does
+## What This Skill Does
 
 This skill **detects code that exists but is never used**, preventing the ADR-013 failure mode:
 
@@ -98,7 +99,7 @@ This skill **detects code that exists but is never used**, preventing the ADR-01
 
 **This skill complements those tools** by checking integration explicitly.
 
-## 3. Types of Orphaned Code
+## Types of Orphaned Code
 
 ### Type 1: Orphaned Module (File Never Imported)
 
@@ -222,7 +223,7 @@ $ grep "experimental" logs/*.log
 
 **Fix:** Enable the condition or remove the dead path
 
-## 4. Detection Methods
+## Detection Methods
 
 ### Method 1: Manual Grep (Quick Check)
 
@@ -364,7 +365,7 @@ async def test_all_expected_nodes_in_graph() -> None:
     )
 ```
 
-## 5. Step-by-Step Detection Process
+## Step-by-Step Detection Process
 
 ### Step 1: Identify Candidates
 
@@ -448,7 +449,7 @@ echo "  - src/services/coordinator.py"
 1. No action needed
 2. Consider adding to integration test
 
-## 6. Automated Detection Scripts
+## Automated Detection Scripts
 
 ### Script 1: verify_integration.sh (Complete)
 
@@ -580,7 +581,7 @@ else
 fi
 ```
 
-## 7. Integration with Quality Gates
+## Integration with Quality Gates
 
 ### Add to Pre-Commit Quality Gates
 
@@ -634,7 +635,7 @@ Before moving ADR to completed:
 
 **Effect:** Prevents merging PRs with orphaned code
 
-## 8. Supporting Files
+## Supporting Files
 
 ### References
 - `references/orphan-detection-theory.md` - Why orphaned code occurs
@@ -654,7 +655,7 @@ Before moving ADR to completed:
 ### Templates
 - `templates/orphan-detection-report.md` - Report format for findings
 
-## 9. Expected Outcomes
+## Expected Outcomes
 
 ### Successful Detection (No Orphans)
 
@@ -708,7 +709,7 @@ AssertionError: Nodes in EXPECTED_NODES but not in graph: ['architecture_review'
 Either wire these nodes into builder.py or remove from EXPECTED_NODES.
 ```
 
-## 10. Requirements
+## Requirements
 
 ### Tools Required
 - Read (to examine source files)
@@ -726,7 +727,7 @@ Either wire these nodes into builder.py or remove from EXPECTED_NODES.
 - Familiarity with project structure
 - Knowledge of integration points (main.py, builder.py, etc.)
 
-## 11. Red Flags to Avoid
+## Red Flags to Avoid
 
 ### Do Not
 - ❌ Trust unit tests alone (they can import orphaned code)

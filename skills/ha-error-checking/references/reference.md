@@ -2,6 +2,18 @@
 
 Technical depth for Home Assistant error checking patterns and troubleshooting.
 
+## Table of Contents
+
+1. [Common Error Log Patterns](#common-error-log-patterns)
+2. [Known Entity ID Patterns](#known-entity-id-patterns-from-ha-instance)
+3. [HACS Repository IDs](#hacs-repository-ids)
+4. [Common Error Solutions](#common-error-solutions)
+5. [WebSocket API Error Handling](#websocket-api-error-handling)
+6. [Browser Console Debugging](#browser-console-debugging)
+7. [Best Practices](#best-practices)
+8. [Troubleshooting Checklist](#troubleshooting-checklist)
+9. [Resources](#resources)
+
 ## Common Error Log Patterns
 
 | Error Pattern | Meaning | Solution |

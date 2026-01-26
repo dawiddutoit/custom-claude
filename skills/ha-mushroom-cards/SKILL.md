@@ -1,15 +1,46 @@
 ---
 name: ha-mushroom-cards
-description: "Create minimalist, mobile-first Home Assistant dashboards using the Mushroom cards ecosystem (13+ card types) with card-mod styling. Use when building modern HA dashboards, creating compact mobile interfaces, styling entity cards, using chips for status indicators, or combining Mushroom with card-mod for custom CSS styling."
+description: |
+  Creates minimalist, mobile-first Home Assistant dashboards using Mushroom cards (13+ types)
+  including entity, light, climate, chips, and template cards with card-mod styling support.
+  Use when building modern HA dashboards, creating compact mobile interfaces, styling entity
+  cards, using chips for status indicators, or combining Mushroom with card-mod for custom CSS.
+version: 1.0.0
 ---
 
+Works with HACS Mushroom cards, card-mod, and Home Assistant YAML configurations.
 # Home Assistant Mushroom Cards
 
 Build minimalist, mobile-first Home Assistant dashboards using the Mushroom cards design system.
 
-##Overview
+## Overview
 
 **Installation:** HACS → Frontend → Search "Mushroom"
+
+## When to Use This Skill
+
+Use this skill when you need to:
+- Build minimalist, mobile-first Home Assistant dashboards with modern design
+- Create compact status indicators with chips cards for quick information
+- Use template cards with Jinja2 for dynamic content and conditional styling
+- Style entity controls with card-mod for custom CSS and animations
+- Implement full UI editor support without writing YAML
+- Display specialized entity types (light, climate, media player, person) with optimized controls
+
+Do NOT use when:
+- You need complex multi-entity cards (use entities card instead)
+- Building data-heavy dashboards with graphs and charts (use visualization cards)
+- You prefer traditional Home Assistant card styling (use native cards)
+
+## Usage
+
+Follow these steps to create Mushroom card dashboards:
+
+1. **Install Mushroom** via HACS (Frontend category)
+2. **Select card type** based on entity (entity, light, climate, chips)
+3. **Configure card** using UI editor or YAML
+4. **Add styling** with card-mod for custom CSS (optional)
+5. **Test on mobile** for responsive design verification
 
 Mushroom is a complete design system for Home Assistant featuring:
 - 13+ specialized card types for entities, controls, and status display
@@ -449,167 +480,7 @@ card_mod:
     }
 ```
 
-## Real-World Examples
-
-### Climate Control Panel
-
-```yaml
-type: vertical-stack
-cards:
-  - type: custom:mushroom-title-card
-    title: Climate
-    subtitle: All AC units
-
-  - type: grid
-    columns: 2
-    cards:
-      - type: custom:mushroom-climate-card
-        entity: climate.snorlug
-        show_temperature_control: true
-        collapsible_controls: true
-
-      - type: custom:mushroom-climate-card
-        entity: climate.mines_of_moria
-        show_temperature_control: true
-        collapsible_controls: true
-```
-
-### Status Chips Bar
-
-```yaml
-type: custom:mushroom-chips-card
-chips:
-  - type: weather
-    entity: weather.home
-    show_conditions: true
-
-  - type: template
-    icon: mdi:lightbulb
-    content: "{{ states('sensor.lights_on') }}"
-    icon_color: >-
-      {% if states('sensor.lights_on') | int > 0 %}
-        amber
-      {% else %}
-        grey
-      {% endif %}
-    tap_action:
-      action: navigate
-      navigation_path: /lovelace/lights
-
-  - type: template
-    icon: mdi:window-open
-    content: "{{ states('sensor.windows_open') }}"
-    icon_color: >-
-      {% if states('sensor.windows_open') | int > 0 %}
-        orange
-      {% else %}
-        grey
-      {% endif %}
-
-  - type: entity
-    entity: sensor.temperature
-    icon_color: red
-```
-
-### Irrigation Control
-
-```yaml
-type: vertical-stack
-cards:
-  - type: custom:mushroom-title-card
-    title: Irrigation
-    subtitle: Manual zone control
-
-  - type: grid
-    columns: 2
-    cards:
-      - type: custom:mushroom-entity-card
-        entity: switch.s01_left_top_patio_lawn_station_enabled
-        name: Zone 1
-        icon: mdi:sprinkler
-        tap_action:
-          action: toggle
-
-      - type: custom:mushroom-entity-card
-        entity: switch.s02_right_top_patio_lawn_station_enabled
-        name: Zone 2
-        icon: mdi:sprinkler
-        tap_action:
-          action: toggle
-```
-
-## Best Practices
-
-### 1. Use Collapsible Controls
-
-```yaml
-type: custom:mushroom-climate-card
-entity: climate.living_room
-collapsible_controls: true  # Hides controls until tapped (mobile-friendly)
-```
-
-### 2. Combine with Chips for Status
-
-```yaml
-# Put chips at top of view for quick status
-- type: custom:mushroom-chips-card
-  chips:
-    - type: weather
-    - type: template (lights count)
-    - type: template (windows open)
-```
-
-### 3. Use Title Cards for Sections
-
-```yaml
-- type: custom:mushroom-title-card
-  title: Section Name
-
-- type: grid
-  columns: 2
-  cards: [...]
-```
-
-### 4. Enable use_light_color
-
-```yaml
-type: custom:mushroom-light-card
-entity: light.bedroom
-use_light_color: true  # Shows actual light color
-```
-
-### 5. Template for Dynamic Content
-
-```yaml
-# Use template cards for counts, calculations, conditional text
-type: custom:mushroom-template-card
-primary: "{{ states('sensor.lights_on') }} Lights"
-```
-
-## Troubleshooting
-
-### Card Not Loading
-
-- Verify HACS installation (Frontend category)
-- Clear browser cache (Ctrl+Shift+R)
-- Check Lovelace resources (Settings → Dashboards → Resources)
-
-### Icons Not Showing
-
-- Use valid MDI icon names (`mdi:icon-name`)
-- Check icon name at [https://pictogrammers.com/library/mdi/](https://pictogrammers.com/library/mdi/)
-
-### Card-Mod Not Working
-
-- Ensure card-mod is installed as a Frontend module
-- Verify CSS syntax using browser DevTools (F12)
-- Check for conflicting card-mod styles
-
-### Templates Not Updating
-
-- Verify Jinja2 syntax
-- Test templates in Developer Tools → Template
-- Check entity_id exists in HA
+See `examples/examples.md` for real-world dashboard examples (climate control, status chips, irrigation) and `references/reference.md` for best practices and troubleshooting.
 
 ## Official Documentation
 

@@ -8,6 +8,7 @@ description: |
   oauth", "protect services", "fix access denied", "add users to access", or "why can't I
   login remotely". Works with cf-access-setup.sh, .env OAuth credentials, and Cloudflare
   Zero Trust dashboard.
+version: 1.0.0
 allowed-tools:
   - Read
   - Bash
@@ -52,7 +53,7 @@ After setup, test by visiting https://pihole.temet.ai - you should see Google lo
 7. [Requirements](#7-requirements)
 8. [Red Flags to Avoid](#8-red-flags-to-avoid)
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 **Explicit Triggers:**
 - "Set up Cloudflare Access"
@@ -73,7 +74,7 @@ After setup, test by visiting https://pihole.temet.ai - you should see Google lo
 - "OAuth redirect error"
 - "Session expired errors"
 
-## 2. What This Skill Does
+## What This Skill Does
 
 1. **Verifies Prerequisites** - Checks OAuth credentials exist in .env
 2. **Guides OAuth Setup** - Provides Google Console instructions if credentials missing
@@ -83,7 +84,7 @@ After setup, test by visiting https://pihole.temet.ai - you should see Google lo
 6. **Tests Authentication** - Verifies Google login flow works
 7. **Provides Monitoring** - Shows access logs URL for audit trail
 
-## 3. Instructions
+## Instructions
 
 ### 3.1 Verify Prerequisites
 
@@ -200,14 +201,14 @@ echo "Access Logs: https://one.dash.cloudflare.com"
 echo "Navigate to: Logs -> Access"
 ```
 
-## 4. Supporting Files
+## Supporting Files
 
 | File | Purpose |
 |------|---------|
 | `references/reference.md` | Complete API reference, troubleshooting guide, advanced configuration |
 | `examples/examples.md` | Common scenarios and configuration examples |
 
-## 5. Expected Outcomes
+## Expected Outcomes
 
 **Success:**
 - Google OAuth identity provider configured
@@ -227,7 +228,7 @@ echo "Navigate to: Logs -> Access"
 - API errors -> Check token permissions
 - Redirect loop -> Clear cookies and retry
 
-## 6. Integration Points
+## Integration Points
 
 **Cloudflare Tunnel:**
 - Access works with existing tunnel configuration
@@ -241,7 +242,7 @@ echo "Navigate to: Logs -> Access"
 - Automatically syncs Access applications via sync-cloudflare-access.py
 - Use `./scripts/manage-domains.sh apply` for full sync
 
-## 7. Requirements
+## Requirements
 
 **Environment Variables (in .env):**
 - GOOGLE_OAUTH_CLIENT_ID - From Google Console
@@ -260,7 +261,7 @@ echo "Navigate to: Logs -> Access"
 - Bash (for running setup script)
 - Read (for checking .env and script output)
 
-## 8. Red Flags to Avoid
+## Red Flags to Avoid
 
 - [ ] Do not run setup without verifying OAuth credentials exist
 - [ ] Do not use wrong redirect URI (must match exactly)

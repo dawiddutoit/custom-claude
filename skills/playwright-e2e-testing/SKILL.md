@@ -6,7 +6,8 @@ description: |
   behavior, or collect evidence for bug reports. Triggers on "test the user flow", "run E2E test",
   "validate the workflow", "automated testing", "test this feature", or "check if this works".
   Works with web applications, forms, SPAs, and any browser-based interfaces.
----
+
+version: 1.0.0---
 
 # Playwright E2E Testing
 

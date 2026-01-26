@@ -9,7 +9,8 @@ description: |
   "make task precise", "task is vague", or when task descriptions are missing file paths,
   verification steps, or clear success criteria. Works with todo.md, task lists, project
   planning documents, and agent instructions.
----
+
+version: 1.0.0---
 
 # Write Atomic Tasks
 
@@ -45,7 +46,7 @@ Transform vague task descriptions into precise, autonomous-execution-ready speci
 12. Requirements
 13. Red Flags to Avoid
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 **Explicit Triggers:**
 - "Write a task for..."
@@ -67,7 +68,7 @@ Transform vague task descriptions into precise, autonomous-execution-ready speci
 - Tasks take longer than expected due to ambiguity
 - Post-mortem reveals task interpretation issues
 
-## 2. What This Skill Does
+## What This Skill Does
 
 This skill transforms vague task descriptions into precise, autonomous-execution-ready specifications by:
 
@@ -77,7 +78,7 @@ This skill transforms vague task descriptions into precise, autonomous-execution
 4. **Eliminating Vague Patterns** - Replacing forbidden phrases with precise alternatives
 5. **Validating Precision** - Checking that tasks answer all 6 precision questions
 
-## 3. The SMART+ Framework
+## The SMART+ Framework
 
 Every task MUST include these components:
 
@@ -90,7 +91,7 @@ Every task MUST include these components:
 | **T**estable | Success criteria | "3 retries with exponential backoff, circuit breaker after 5 failures" |
 | **+Context** | Why this matters (optional) | "Needed for ADR-016 conversation persistence" |
 
-## 4. Task Template
+## Task Template
 
 ```markdown
 - [ ] Task N: [ACTION VERB] [SPECIFIC TARGET] [SUCCESS CRITERIA]
@@ -106,7 +107,7 @@ Every task MUST include these components:
       - Verify: mypy passes, errors importable from temet_run.agent
 ```
 
-## 5. Precision Checklist
+## Precision Checklist
 
 Before writing a task, verify it answers ALL these questions:
 
@@ -117,7 +118,7 @@ Before writing a task, verify it answers ALL these questions:
 5. ✅ **HOW to verify?** → Command to run: `pytest path`, `mypy src/`, `uv run temet-run ...`
 6. ✅ **WHY doing this?** → Link to ADR, issue, or parent task (optional but helpful)
 
-## 6. Forbidden Vague Patterns
+## Forbidden Vague Patterns
 
 **NEVER write tasks containing these vague phrases:**
 
@@ -133,7 +134,7 @@ Before writing a task, verify it answers ALL these questions:
 | "Add logging" | "Add structlog info-level logging to X function for events A, B, C" |
 | "Document the code" | "Add Google-style docstring to X function with Args, Returns, Raises" |
 
-## 7. Task Decomposition Rules
+## Task Decomposition Rules
 
 **Large tasks MUST be broken down:**
 
@@ -163,7 +164,7 @@ Before writing a task, verify it answers ALL these questions:
       Verify: pytest tests/integration/test_cli_history.py passes
 ```
 
-## 8. Examples: Vague → Precise Transformation
+## Examples: Vague → Precise Transformation
 
 See `examples/transformation-examples.md` for comprehensive examples covering:
 - Error handling tasks
@@ -187,7 +188,7 @@ See `examples/transformation-examples.md` for comprehensive examples covering:
       - Verify: pytest tests/unit/agent/test_client.py passes
 ```
 
-## 9. Validation Process
+## Validation Process
 
 **To validate a task for precision:**
 
@@ -218,14 +219,14 @@ Suggested rewrite:
       Verify: pytest tests/unit/agent/test_client.py passes
 ```
 
-## 10. Supporting Files
+## Supporting Files
 
 - **examples/transformation-examples.md** - 10+ examples of vague → precise transformations
 - **references/smart-framework-deep-dive.md** - Detailed explanation of SMART+ components
 - **scripts/validate_task.py** - Automated task precision validator
 - **templates/task-template.md** - Copy-paste task template with placeholders
 
-## 11. Expected Outcomes
+## Expected Outcomes
 
 ### Successful Task Writing
 
@@ -247,7 +248,7 @@ When tasks are written with this skill:
 | Autonomous execution success | 40% | 95% |
 | Time spent planning vs doing | 20/80 | 40/60 |
 
-## 12. Requirements
+## Requirements
 
 **Knowledge:**
 - Understanding of SMART goal framework
@@ -261,7 +262,7 @@ When tasks are written with this skill:
 - Works with any task management system
 - Compatible with todo.md, Jira, GitHub Issues, etc.
 
-## 13. Red Flags to Avoid
+## Red Flags to Avoid
 
 **Red Flags Checklist:**
 

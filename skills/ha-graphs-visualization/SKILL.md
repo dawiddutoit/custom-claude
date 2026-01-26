@@ -1,11 +1,32 @@
 ---
 name: ha-graphs-visualization
-description: "Create and configure Home Assistant graphs and visualizations including history-graph, statistics-graph, mini-graph-card (HACS), and apexcharts-card (HACS) with time ranges, multiple sensors, aggregations, and annotations. Use when displaying sensor data over time, creating trend charts, comparing historical data, or building energy/climate/air quality dashboards."
+description: |
+  Creates and configures Home Assistant graph visualizations using history-graph, statistics-graph,
+  mini-graph-card, and apexcharts-card with time ranges, aggregations, and multi-sensor support.
+  Use when displaying sensor data over time, creating trend charts, comparing historical data, or
+  building energy/climate/air quality dashboards.
+version: 1.0.0
 ---
 
+Works with Home Assistant native cards, HACS custom cards, and YAML configurations.
 # Home Assistant Graphs and Visualization
 
 Create informative graphs and charts for sensor data visualization in Home Assistant dashboards.
+
+## When to Use This Skill
+
+Use this skill when you need to:
+- Display sensor data over time with history-graph for recent data (hours/days)
+- Create long-term trend analysis with statistics-graph for weeks/months
+- Build compact sparkline graphs with mini-graph-card for dashboard space efficiency
+- Generate publication-quality charts with ApexCharts for multi-sensor comparisons
+- Add dual Y-axis graphs for temperature + humidity or similar combinations
+- Troubleshoot ApexCharts span.end errors with validated configurations
+
+Do NOT use when:
+- You only need current sensor values without history (use gauge or entity cards)
+- Building real-time monitoring without historical context (use current state displays)
+- You haven't installed required HACS cards (mini-graph-card or apexcharts-card)
 
 ## Quick Start
 
@@ -64,6 +85,16 @@ series:
 **Common ApexCharts Errors:**
 - ❌ WRONG: `"span": {"end": "now"}` → Causes parsing error
 - ✅ CORRECT: `"span": {"end": "hour"}` → Valid value
+
+## Usage
+
+Follow these steps to create Home Assistant graphs:
+
+1. **Select graph type** based on data (native vs HACS)
+2. **Configure time ranges** appropriate for data frequency
+3. **Add multiple entities** for comparisons
+4. **Set y-axis bounds** for proper scaling
+5. **Apply styling** for readability
 
 ## Graph Selection Decision Tree
 
@@ -291,58 +322,7 @@ series:
 - **examples/examples.md** - Comprehensive real-world examples (climate dashboards, air quality, energy usage, multi-room comparisons, annotations, area charts)
 - **references/reference.md** - Technical depth (performance optimization, advanced ApexCharts configuration, troubleshooting, best practices, official documentation)
 
-## Best Practices
-
-1. **Choose the Right Graph Type**
-   - Line: Continuous data (temperature, humidity)
-   - Bar/Column: Discrete data (daily energy, events)
-   - Area: Cumulative data (solar production, rainfall)
-
-2. **Use Meaningful Colors**
-   - Red: High temperatures, alerts, energy consumption
-   - Blue: Low temperatures, water, humidity
-   - Green: Normal values, success, efficiency
-   - Orange: Warnings, moderate values
-
-3. **Show Current State**
-   ```yaml
-   header:
-     show_states: true  # Shows current value in header
-   ```
-
-4. **Use Appropriate Time Ranges**
-   - Real-time monitoring: 1-6 hours
-   - Daily patterns: 24 hours
-   - Weekly trends: 7 days
-   - Monthly analysis: 30 days
-   - Long-term: statistics-graph
-
-## Common Issues
-
-### ApexCharts Span Error
-
-**Error:** `"Invalid value for span.end"`
-
-**Solution:** Change `span.end` to one of: minute, hour, day, week, month, year, isoWeek
-
-```yaml
-# WRONG
-span:
-  end: now  # ❌ Causes error
-
-# CORRECT
-span:
-  end: hour  # ✅ Valid value
-```
-
-### No Data Showing
-
-- Verify entity exists (Developer Tools → States)
-- Check recorder retention period
-- Ensure sensor has `state_class: measurement`
-- Check long-term statistics (Developer Tools → Statistics)
-
-See `references/reference.md` for complete troubleshooting guide.
+See `references/reference.md` for best practices, color schemes, troubleshooting, and performance optimization.
 
 ## Notes
 

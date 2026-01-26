@@ -1,0 +1,423 @@
+Validating 206 skills...
+  10/206...  20/206...  30/206...  40/206...  50/206...  60/206...  70/206...  80/206...  90/206...  100/206...  110/206...  120/206...  130/206...  140/206...  150/206...  160/206...  170/206...  180/206...  190/206...  200/206...
+
+======================================================================
+VALIDATION SUMMARY
+======================================================================
+Total Skills:        206
+Perfect (10/10):     59 (28.6%)
+Average Score:       8.5/10
+======================================================================
+
+
+Skills needing attention (147):
+
+  [ 4/10] quality-reflective-questions
+          - [YAML] No YAML frontmatter found
+          - [Prog] SKILL.md has 671 lines (max 500). Move content to references/
+          ... and 2 more issues
+  [ 4/10] scripts
+          - [YAML] SKILL.md not found
+  [ 5/10] chrome-browser-automation
+          - [YAML] No YAML frontmatter found
+          - [Prog] SKILL.md has 585 lines (max 500). Move content to references/
+          ... and 1 more issues
+  [ 5/10] openscad-collision-detection
+          - [YAML] No YAML frontmatter found
+          - [Prog] SKILL.md has 516 lines (max 500). Move content to references/
+          ... and 1 more issues
+  [ 5/10] openscad-cutlist-woodworkers
+          - [YAML] No YAML frontmatter found
+          - [Usage] No Usage/Instructions/How to Use section found
+          ... and 1 more issues
+  [ 5/10] quality-verify-implementation-complete
+          - [YAML] No YAML frontmatter found
+          - [Prog] SKILL.md has 613 lines (max 500). Move content to references/
+          ... and 1 more issues
+  [ 5/10] svelte5-showcase-components
+          - [YAML] YAML parse error: while scanning a simple key
+  in "<unicode string>", line 17, column 1:
+    The Svelte 5 Showcase is a produ ... 
+    ^
+could not find expected ':'
+  in "<unicode string>", line 19, column 1:
+    **Showcase Location:** `/Users/d ... 
+    ^
+          - [Prog] SKILL.md has 814 lines (max 500). Move content to references/
+          ... and 1 more issues
+  [ 6/10] design-jira-state-analyzer
+          - [YAML] No YAML frontmatter found
+          - [Prog] SKILL.md has 576 lines (max 500). Move content to references/
+  [ 6/10] ha-operations
+          - [YAML] YAML parse error: while scanning a simple key
+  in "<unicode string>", line 8, column 1:
+    Works with Home Assistant REST A ... 
+    ^
+could not find expected ':'
+  in "<unicode string>", line 9, column 11:
+      Critical: HA only supports GET requests  ... 
+              ^
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 6/10] jira-builders
+          - [YAML] No YAML frontmatter found
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 6/10] openscad-labeling
+          - [YAML] No YAML frontmatter found
+          - [Examples] examples/ exists but contains no .md files
+  [ 6/10] openscad-workshop-tools
+          - [YAML] No YAML frontmatter found
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 6/10] playwright-console-monitor
+          - [YAML] No YAML frontmatter found
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 6/10] playwright-e2e-testing
+          - [YAML] No YAML frontmatter found
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 6/10] playwright-network-analyzer
+          - [YAML] No YAML frontmatter found
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 6/10] playwright-web-scraper
+          - [YAML] No YAML frontmatter found
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 6/10] terraform-gcp-integration
+          - [YAML] No YAML frontmatter found
+          - [Prog] SKILL.md has 571 lines (max 500). Move content to references/
+  [ 6/10] terraform-module-design
+          - [YAML] No YAML frontmatter found
+          - [Prog] SKILL.md has 627 lines (max 500). Move content to references/
+  [ 6/10] terraform-secrets-management
+          - [YAML] No YAML frontmatter found
+          - [Prog] SKILL.md has 615 lines (max 500). Move content to references/
+  [ 6/10] terraform-troubleshooting
+          - [YAML] No YAML frontmatter found
+          - [Refs] references/ exists but contains no .md files
+  [ 6/10] test-first-thinking
+          - [YAML] No YAML frontmatter found
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 6/10] textual-snapshot-testing
+          - [YAML] No YAML frontmatter found
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 6/10] textual-test-fixtures
+          - [YAML] No YAML frontmatter found
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 6/10] textual-test-patterns
+          - [YAML] No YAML frontmatter found
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 6/10] textual-testing
+          - [YAML] No YAML frontmatter found
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 6/10] write-atomic-tasks
+          - [YAML] No YAML frontmatter found
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 7/10] chrome-auth-recorder
+          - [YAML] No YAML frontmatter found
+  [ 7/10] gcp-pubsub
+          - [YAML] No YAML frontmatter found
+  [ 7/10] gradle-ci-cd-integration
+          - [YAML] No YAML frontmatter found
+  [ 7/10] gradle-dependency-management
+          - [YAML] No YAML frontmatter found
+  [ 7/10] gradle-docker-jib
+          - [YAML] No YAML frontmatter found
+  [ 7/10] java-best-practices-security-audit
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Prog] SKILL.md has 1010 lines (max 500). Move content to references/
+          ... and 1 more issues
+  [ 7/10] playwright-responsive-screenshots
+          - [YAML] No YAML frontmatter found
+  [ 7/10] pytest-adapter-integration-testing
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Prog] SKILL.md has 555 lines (max 500). Move content to references/
+          ... and 1 more issues
+  [ 7/10] pytest-domain-model-testing
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Prog] SKILL.md has 591 lines (max 500). Move content to references/
+          ... and 1 more issues
+  [ 7/10] pytest-test-data-factories
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Prog] SKILL.md has 563 lines (max 500). Move content to references/
+          ... and 1 more issues
+  [ 7/10] python-micrometer-core
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Usage] No Usage/Instructions/How to Use section found
+          ... and 1 more issues
+  [ 7/10] quality-detect-orphaned-code
+          - [Prog] SKILL.md has 761 lines (max 500). Move content to references/
+          - [Usage] No Usage/Instructions/How to Use section found
+          ... and 1 more issues
+  [ 7/10] scad-load
+          - [YAML] YAML parse error: while scanning for the next token
+found character '`' that cannot start any token
+  in "<unicode string>", line 18, column 1:
+    ```bash
+    ^
+  [ 7/10] skill-creator
+          - [Desc] Missing WHAT (capability statement with action verbs) | Missing WHEN (trigger phrases with 'use when' or 'trigger')
+          - [Usage] No Usage/Instructions/How to Use section found
+          ... and 1 more issues
+  [ 7/10] terraform-state-management
+          - [YAML] No YAML frontmatter found
+  [ 7/10] test-property-based
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Prog] SKILL.md has 834 lines (max 500). Move content to references/
+          ... and 1 more issues
+  [ 7/10] webapp-testing
+          - [Desc] Missing WHEN (trigger phrases with 'use when' or 'trigger')
+          - [Usage] No Usage/Instructions/How to Use section found
+          ... and 1 more issues
+  [ 8/10] browser-layout-editor
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 8/10] chrome-form-filler
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 8/10] chrome-gif-recorder
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 8/10] clickhouse-operations
+          - [Prog] SKILL.md has 1067 lines (max 500). Move content to references/
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 8/10] clickhouse-query-optimization
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 8/10] cloudflare-dns-operations
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Prog] SKILL.md has 530 lines (max 500). Move content to references/
+  [ 8/10] create-adr-spike
+          - [Prog] SKILL.md has 561 lines (max 500). Move content to references/
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 8/10] editing-claude
+          - [YAML] Name contains reserved word: ['anthropic', 'claude']
+          - [Links] Broken links: ~/.claude/CLAUDE.md -> ~/.claude/CLAUDE.md, ../manage-session-workspace/references/session-workspace-guidelines.md -> ../../docs/session-workspace-guidelines.md, research artifacts -> ../../artifacts/2025-10-19/sessions/07-37-claude-md-skill-research/
+  [ 8/10] java-best-practices-refactor-legacy
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Links] Broken links: references/design-patterns.md -> ./references/design-patterns.md, references/design-patterns.md -> ./references/design-patterns.md, references/modernization-guide.md -> ./references/modernization-guide.md
+  [ 8/10] java-spring-service
+          - [Prog] SKILL.md has 911 lines (max 500). Move content to references/
+          - [Refs] references/ exists but contains no .md files
+  [ 8/10] java-test-generator
+          - [Prog] SKILL.md has 776 lines (max 500). Move content to references/
+          - [Refs] references/ exists but contains no .md files
+  [ 8/10] lotus-convert-rich-text-fields
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Prog] SKILL.md has 602 lines (max 500). Move content to references/
+  [ 8/10] playwright-tab-comparison
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 8/10] pytest-application-layer-testing
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Links] Broken links: PROJECT_UNIT_TESTING_STRATEGY.md -> ../../artifacts/2025-11-09/testing-research/PROJECT_UNIT_TESTING_STRATEGY.md
+  [ 8/10] pytest-coverage-measurement
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Links] Broken links: PYTHON_UNIT_TESTING_BEST_PRACTICES.md -> ../../artifacts/2025-11-09/testing-research/PYTHON_UNIT_TESTING_BEST_PRACTICES.md, PROJECT_UNIT_TESTING_STRATEGY.md -> ../../artifacts/2025-11-09/testing-research/PROJECT_UNIT_TESTING_STRATEGY.md
+  [ 8/10] pytest-mocking-strategy
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Links] Broken links: PYTHON_UNIT_TESTING_BEST_PRACTICES.md -> ../../artifacts/2025-11-09/testing-research/PYTHON_UNIT_TESTING_BEST_PRACTICES.md, PROJECT_UNIT_TESTING_STRATEGY.md -> ../../artifacts/2025-11-09/testing-research/PROJECT_UNIT_TESTING_STRATEGY.md
+  [ 8/10] pytest-type-safety
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 8/10] python-best-practices-fail-fast-imports
+          - [Desc] Missing WHEN (trigger phrases with 'use when' or 'trigger')
+          - [Links] Broken links: reference.md -> ./reference.md
+  [ 8/10] python-micrometer-cardinality-control
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 8/10] python-micrometer-gcp-cloud-monitoring
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 8/10] python-micrometer-metrics-setup
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Prog] SKILL.md has 712 lines (max 500). Move content to references/
+  [ 8/10] python-micrometer-sli-slo-monitoring
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Prog] SKILL.md has 647 lines (max 500). Move content to references/
+  [ 8/10] python-test-micrometer-testing-metrics
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Prog] SKILL.md has 671 lines (max 500). Move content to references/
+  [ 8/10] quality-code-review
+          - [Desc] Missing WHAT (capability statement with action verbs) | Missing WHEN (trigger phrases with 'use when' or 'trigger')
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 8/10] quality-run-linting-formatting
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Prog] SKILL.md has 604 lines (max 500). Move content to references/
+  [ 8/10] quality-run-quality-gates
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Prog] SKILL.md has 749 lines (max 500). Move content to references/
+  [ 8/10] quality-run-type-checking
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Prog] SKILL.md has 617 lines (max 500). Move content to references/
+  [ 8/10] quality-verify-integration
+          - [Desc] Missing WHEN (trigger phrases with 'use when' or 'trigger')
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 8/10] svelte-components
+          - [Desc] Missing WHAT (capability statement with action verbs) | Missing WHEN (trigger phrases with 'use when' or 'trigger')
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 8/10] svelte-deployment
+          - [Desc] Missing WHAT (capability statement with action verbs) | Missing WHEN (trigger phrases with 'use when' or 'trigger')
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 8/10] svelte-runes
+          - [Usage] No Usage/Instructions/How to Use section found
+          - [Examples] examples/ exists but contains no .md files
+  [ 8/10] sveltekit-data-flow
+          - [Desc] Missing WHAT (capability statement with action verbs) | Missing WHEN (trigger phrases with 'use when' or 'trigger')
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 8/10] sveltekit-remote-functions
+          - [Desc] Missing WHAT (capability statement with action verbs) | Missing WHEN (trigger phrases with 'use when' or 'trigger')
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 8/10] sveltekit-structure
+          - [Desc] Missing WHAT (capability statement with action verbs) | Missing WHEN (trigger phrases with 'use when' or 'trigger')
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 8/10] temet-run-tui-patterns
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Prog] SKILL.md has 624 lines (max 500). Move content to references/
+  [ 8/10] terraform-basics
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 8/10] test-debug-failures
+          - [Prog] SKILL.md has 732 lines (max 500). Move content to references/
+          - [Links] Broken links: examples.md -> ./references/examples.md
+  [ 8/10] test-setup-async
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Prog] SKILL.md has 691 lines (max 500). Move content to references/
+  [ 8/10] textual-app-lifecycle
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Prog] SKILL.md has 509 lines (max 500). Move content to references/
+  [ 8/10] textual-data-display
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Prog] SKILL.md has 613 lines (max 500). Move content to references/
+  [ 8/10] textual-layout-styling
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Prog] SKILL.md has 727 lines (max 500). Move content to references/
+  [ 8/10] textual-reactive-programming
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Prog] SKILL.md has 606 lines (max 500). Move content to references/
+  [ 8/10] util-multi-file-refactor
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 8/10] uv-ci-cd-integration
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Examples] examples/ exists but contains no .md files
+  [ 8/10] uv-troubleshooting
+          - [Desc] Missing WHAT (capability statement with action verbs)
+          - [Prog] SKILL.md has 529 lines (max 500). Move content to references/
+  [ 8/10] validating-clickhouse-kafka-pipelines
+          - [Prog] SKILL.md has 511 lines (max 500). Move content to references/
+          - [Refs] references/ exists but contains no .md files
+  [ 8/10] xlsx
+          - [Desc] Missing WHEN (trigger phrases with 'use when' or 'trigger')
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 9/10] algorithmic-art
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 9/10] architecture-validate-layer-boundaries
+          - [Links] Broken links: examples/examples.md -> ./examples/examples.md#example-6-validating-single-file, examples/examples.md -> ./examples/examples.md#example-4-multiple-violations, examples/examples.md -> ./examples/examples.md#example-7-integration-with-pre-commit-hook, examples/examples.md -> ./examples/examples.md#example-2-domain-layer-violation
+  [ 9/10] architecture-validate-srp
+          - [Prog] SKILL.md has 677 lines (max 500). Move content to references/
+  [ 9/10] brand-guidelines
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 9/10] build-jira-document-format
+          - [Desc] Missing WHAT (capability statement with action verbs)
+  [ 9/10] caddy-https-troubleshoot
+          - [Desc] Missing WHAT (capability statement with action verbs)
+  [ 9/10] canvas-design
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 9/10] clickhouse-materialized-views
+          - [Desc] Missing WHAT (capability statement with action verbs)
+  [ 9/10] cloudflare-access-troubleshoot
+          - [Desc] Missing WHAT (capability statement with action verbs)
+  [ 9/10] cloudflare-tunnel-setup
+          - [Desc] Missing WHAT (capability statement with action verbs)
+  [ 9/10] cloudflare-tunnel-troubleshoot
+          - [Desc] Missing WHAT (capability statement with action verbs)
+  [ 9/10] data-migration-versioning
+          - [Links] Broken links: references/detailed-patterns.md -> ./references/detailed-patterns.md#version-numbering-strategies-detailed, references/detailed-patterns.md -> ./references/detailed-patterns.md#backward-compatibility-patterns-detailed, references/detailed-patterns.md -> ./references/detailed-patterns.md#auto-upgrade-timing-detailed, references/detailed-patterns.md -> ./references/detailed-patterns.md#testing-strategies-detailed, yaml-migration.md -> ./examples/yaml-migration.md
+  [ 9/10] doc-coauthoring
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 9/10] docx
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 9/10] frontend-design
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 9/10] gcp-gke-troubleshooting
+          - [Refs] references/ exists but contains no .md files
+  [ 9/10] gradle-performance-optimization
+          - [YAML] Description should not contain XML tags
+          - [Desc] Missing WHAT (capability statement with action verbs)
+  [ 9/10] jira-api
+          - [Prog] SKILL.md has 629 lines (max 500). Move content to references/
+  [ 9/10] kafka-consumer-implementation
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 9/10] kafka-integration-testing
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 9/10] kafka-producer-implementation
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 9/10] kafka-schema-management
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 9/10] lotus-analyze-reference-dependencies
+          - [Prog] SKILL.md has 624 lines (max 500). Move content to references/
+  [ 9/10] lotus-replace-odbc-direct-writes
+          - [Desc] Missing WHAT (capability statement with action verbs)
+  [ 9/10] mcp-builder
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 9/10] observability-analyze-logs
+          - [Prog] SKILL.md has 831 lines (max 500). Move content to references/
+  [ 9/10] otel-logging-patterns
+          - [Links] Broken links: references/advanced-patterns.md -> references/advanced-patterns.md#otelconfig-class, references/advanced-patterns.md -> references/advanced-patterns.md#structlog-configuration, references/advanced-patterns.md -> references/advanced-patterns.md#observability-context, references/advanced-patterns.md -> references/advanced-patterns.md#exporter-configuration, examples/examples.md -> examples/examples.md#fastapi-instrumentation, examples/examples.md -> examples/examples.md#error-handling, examples/examples.md -> examples/examples.md#testing-patterns, references/advanced-patterns.md -> references/advanced-patterns.md#troubleshooting-guide
+  [ 9/10] pdf
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 9/10] pihole-dns-troubleshoot
+          - [Desc] Missing WHAT (capability statement with action verbs)
+  [ 9/10] pihole-dns-troubleshoot-ipv6
+          - [Desc] Missing WHAT (capability statement with action verbs)
+  [ 9/10] playwright-form-validation
+          - [Desc] Missing WHAT (capability statement with action verbs)
+  [ 9/10] pptx
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 9/10] pytest-async-testing
+          - [Links] Broken links: PYTHON_UNIT_TESTING_BEST_PRACTICES.md -> ../../artifacts/2025-11-09/testing-research/PYTHON_UNIT_TESTING_BEST_PRACTICES.md, PROJECT_UNIT_TESTING_STRATEGY.md -> ../../artifacts/2025-11-09/testing-research/PROJECT_UNIT_TESTING_STRATEGY.md
+  [ 9/10] pytest-configuration
+          - [Links] Broken links: PYTHON_UNIT_TESTING_BEST_PRACTICES.md -> ../../artifacts/2025-11-09/testing-research/PYTHON_UNIT_TESTING_BEST_PRACTICES.md, PROJECT_UNIT_TESTING_STRATEGY.md -> ../../artifacts/2025-11-09/testing-research/PROJECT_UNIT_TESTING_STRATEGY.md
+  [ 9/10] python-best-practices-async-context-manager
+          - [Links] Broken links: Production Example -> ../../src/project_watch_mcp/infrastructure/neo4j/database.py, Production Example -> ../../src/project_watch_mcp/infrastructure/neo4j/database.py
+  [ 9/10] python-best-practices-type-safety
+          - [Links] Broken links: scripts/README.md -> ./scripts/README.md, CLAUDE.md -> ../../../CLAUDE.md, ../apply-code-template/references/code-templates.md -> ../../docs/code-templates.md, scripts/README.md -> ./scripts/README.md, scripts/README.md -> ./scripts/README.md, scripts/README.md -> ./scripts/README.md, CLAUDE.md -> ../../../CLAUDE.md, ../apply-code-template/references/code-templates.md -> ../../docs/code-templates.md
+  [ 9/10] python-micrometer-business-metrics
+          - [Prog] SKILL.md has 601 lines (max 500). Move content to references/
+  [ 9/10] quality-capture-baseline
+          - [Desc] Missing WHAT (capability statement with action verbs)
+  [ 9/10] quality-detect-refactor-markers
+          - [Prog] SKILL.md has 645 lines (max 500). Move content to references/
+  [ 9/10] slack-gif-creator
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 9/10] svelte-add-accessibility
+          - [Desc] Missing WHAT (capability statement with action verbs) | Missing WHEN (trigger phrases with 'use when' or 'trigger')
+  [ 9/10] svelte-add-component
+          - [Desc] Missing WHAT (capability statement with action verbs) | Missing WHEN (trigger phrases with 'use when' or 'trigger')
+  [ 9/10] svelte-create-spa
+          - [Desc] Missing WHAT (capability statement with action verbs) | Missing WHEN (trigger phrases with 'use when' or 'trigger')
+  [ 9/10] svelte-extract-component
+          - [Desc] Missing WHAT (capability statement with action verbs)
+  [ 9/10] svelte-migrate-html-to-spa
+          - [Desc] Missing WHAT (capability statement with action verbs) | Missing WHEN (trigger phrases with 'use when' or 'trigger')
+  [ 9/10] svelte-setup-state-store
+          - [Desc] Missing WHAT (capability statement with action verbs) | Missing WHEN (trigger phrases with 'use when' or 'trigger')
+  [ 9/10] test-implement-constructor-validation
+          - [Links] Broken links: CLAUDE.md -> ../../../../CLAUDE.md
+  [ 9/10] test-implement-factory-fixtures
+          - [Prog] SKILL.md has 704 lines (max 500). Move content to references/
+  [ 9/10] test-organize-layers
+          - [Links] Broken links: tests/unit/conftest.py -> ../../../tests/unit/conftest.py, tests/integration/conftest.py -> ../../../tests/integration/conftest.py, tests/e2e/conftest.py -> ../../../tests/e2e/conftest.py
+  [ 9/10] textual-event-messages
+          - [Prog] SKILL.md has 560 lines (max 500). Move content to references/
+  [ 9/10] util-manage-todo
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 9/10] util-research-library
+          - [Prog] SKILL.md has 811 lines (max 500). Move content to references/
+  [ 9/10] uv-project-migration
+          - [Desc] Missing WHAT (capability statement with action verbs)
+  [ 9/10] uv-project-setup
+          - [Desc] Missing WHAT (capability statement with action verbs)
+  [ 9/10] uv-tool-management
+          - [Desc] Missing WHEN (trigger phrases with 'use when' or 'trigger')
+  [ 9/10] web-artifacts-builder
+          - [Usage] No Usage/Instructions/How to Use section found
+  [ 9/10] work-with-adf
+          - [Desc] Missing WHAT (capability statement with action verbs)

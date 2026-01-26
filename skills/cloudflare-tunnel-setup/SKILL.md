@@ -6,6 +6,7 @@ description: |
   up remote access for a fresh installation. Triggers on "setup cloudflare tunnel", "create
   tunnel", "new tunnel token", "configure remote access", "cloudflare tunnel from scratch",
   or "tunnel not configured". Works with .env, docker-compose.yml, and Cloudflare Zero Trust.
+version: 1.0.0
 allowed-tools:
   - Read
   - Write
@@ -44,7 +45,7 @@ Run this skill when you need to:
 6. [Requirements](#6-requirements)
 7. [Red Flags to Avoid](#7-red-flags-to-avoid)
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 **Explicit Triggers:**
 - "Setup cloudflare tunnel"
@@ -64,7 +65,7 @@ Run this skill when you need to:
 - "cloudflared container won't start"
 - "No CLOUDFLARE_TUNNEL_TOKEN in .env"
 
-## 2. What This Skill Does
+## What This Skill Does
 
 1. **Checks Prerequisites** - Verifies .env exists and cloudflared is in docker-compose
 2. **Guides Tunnel Creation** - Step-by-step instructions for Cloudflare dashboard
@@ -73,7 +74,7 @@ Run this skill when you need to:
 5. **Guides Hostname Setup** - Instructions for configuring public hostnames
 6. **Verifies Connectivity** - Confirms tunnel is connected and working
 
-## 3. Instructions
+## Instructions
 
 ### 3.1 Check Prerequisites
 
@@ -253,14 +254,14 @@ curl -I https://pihole.temet.ai
 ./scripts/cf-tunnel-config.sh show
 ```
 
-## 4. Supporting Files
+## Supporting Files
 
 | File | Purpose |
 |------|---------|
 | `references/reference.md` | Docker-compose service definition, token format details |
 | `examples/examples.md` | Example configurations for common setups |
 
-## 5. Expected Outcomes
+## Expected Outcomes
 
 **Success:**
 - CLOUDFLARE_TUNNEL_TOKEN in .env
@@ -278,7 +279,7 @@ curl -I https://pihole.temet.ai
 - Container restart loop -> Check token format
 - 0 registered connections -> Network/firewall issue
 
-## 6. Requirements
+## Requirements
 
 **Environment:**
 - Cloudflare account with domain
@@ -295,7 +296,7 @@ curl -I https://pihole.temet.ai
 - Bash (for docker commands and verification)
 - Grep (for checking existing configuration)
 
-## 7. Red Flags to Avoid
+## Red Flags to Avoid
 
 - [ ] Do not commit tunnel token to git (keep in .env only)
 - [ ] Do not use `host.docker.internal` on Linux hosts

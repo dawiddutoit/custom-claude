@@ -6,7 +6,8 @@ description: |
   "add [tool] to workshop", or when planning workshop layouts that need tool representations.
   Supports brand-accurate colors (Bosch, Festool, Makita, DeWalt, Milwaukee) and standardized
   code structure with customizer parameters.
----
+
+version: 1.0.0---
 
 # OpenSCAD Workshop Tool Modeling
 

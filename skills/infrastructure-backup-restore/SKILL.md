@@ -1,19 +1,21 @@
 ---
 name: infrastructure-backup-restore
 description: |
-  Performs backup and restoration operations for network infrastructure including Docker
-  volumes (Pi-hole, Caddy certificates), configuration files, and .env secrets. Use when
-  backing up infrastructure before changes, preparing for disaster recovery, migrating
-  to new server, or restoring after failure. Triggers on "backup infrastructure", "restore
-  from backup", "disaster recovery", "backup before upgrade", or "migrate infrastructure".
-  Works with Docker volumes (caddy_data, pihole_data), configuration files, and .env
-  secrets management.
+  Creates automated backup procedures, executes restoration operations, and implements disaster
+  recovery workflows for network infrastructure. Use when backing up infrastructure before
+  changes, preparing for disaster recovery, migrating to new server, or restoring after failure.
+  Triggers on "backup infrastructure", "restore from backup", "disaster recovery", "backup before
+  upgrade", or "migrate infrastructure". Works with Docker volumes (caddy_data, pihole_data),
+  configuration files (docker-compose.yml, domains.toml), and .env secrets using tar archives
+  and docker compose commands.
+version: 1.0.0
 allowed-tools:
   - Read
   - Bash
   - Grep
 ---
 
+Works with Docker volumes (caddy_data, pihole_data), configuration files, and .env secrets.
 # Infrastructure Backup and Restore Skill
 
 Complete backup and disaster recovery procedures for network infrastructure including Docker volumes, configuration files, and secrets.
@@ -44,22 +46,18 @@ echo "Backup completed: $backup_dir"
 
 ## Table of Contents
 
-1. [When to Use This Skill](#1-when-to-use-this-skill)
-2. [What This Skill Does](#2-what-this-skill-does)
-3. [Instructions](#3-instructions)
-   - 3.1 Full Infrastructure Backup
-   - 3.2 Backup Docker Volumes
-   - 3.3 Backup Configuration Files
-   - 3.4 Restore Full Infrastructure
-   - 3.5 Restore Specific Components
-   - 3.6 Disaster Recovery Procedure
-   - 3.7 Backup Management and Retention
-4. [Supporting Files](#4-supporting-files)
-5. [Expected Outcomes](#5-expected-outcomes)
-6. [Requirements](#6-requirements)
-7. [Red Flags to Avoid](#7-red-flags-to-avoid)
+1. [When to Use This Skill](#when-to-use-this-skill)
+2. [What This Skill Does](#what-this-skill-does)
+3. [Instructions](#instructions)
+   - Full Infrastructure Backup
+   - Restore Full Infrastructure
+   - Disaster Recovery
+4. [Supporting Files](#supporting-files)
+5. [Expected Outcomes](#expected-outcomes)
+6. [Requirements](#requirements)
+7. [Red Flags to Avoid](#red-flags-to-avoid)
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 **Explicit Triggers:**
 - "Backup infrastructure"
@@ -79,7 +77,7 @@ echo "Backup completed: $backup_dir"
 - "How to restore from backup?"
 - "Disaster recovery plan?"
 
-## 2. What This Skill Does
+## What This Skill Does
 
 1. **Full Backup** - Creates complete infrastructure backup (volumes + config)
 2. **Volume Backup** - Backs up Docker volumes (Pi-hole data, Caddy certificates)
@@ -89,428 +87,92 @@ echo "Backup completed: $backup_dir"
 6. **Disaster Recovery** - Complete rebuild procedure from backups
 7. **Backup Management** - Retention policies and cleanup procedures
 
-## 3. Instructions
+## Instructions
 
-### 3.1 Full Infrastructure Backup
+Use this skill to create and restore infrastructure backups. The skill provides workflows for:
+- Full infrastructure backups (volumes + configuration + secrets)
+- Partial backups (volumes only or configuration only)
+- Full restoration from backups
+- Disaster recovery from scratch on new hardware
+- Automated backup scheduling and retention
 
-**Complete backup including all components:**
+See detailed procedures in sections below and `references/backup-procedures.md` for comprehensive guides.
+
+### Full Infrastructure Backup
+
+Create complete backup with all components:
 
 ```bash
-# Set backup directory
-backup_dir="/home/dawiddutoit/projects/network/backups/full-backup-$(date +%Y%m%d-%H%M%S)"
+backup_dir="/home/dawiddutoit/projects/network/backups/full-$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$backup_dir"
 
-echo "Creating full infrastructure backup..."
-echo "Backup location: $backup_dir"
-
-# Backup Pi-hole data
-echo "Backing up Pi-hole data..."
+# Backup Docker volumes
 tar -czf "$backup_dir/pihole_data.tar.gz" \
   -C /var/lib/docker/volumes/network_pihole_data/_data .
-
-# Backup Caddy data (certificates)
-echo "Backing up Caddy certificates..."
 tar -czf "$backup_dir/caddy_data.tar.gz" \
   -C /var/lib/docker/volumes/network_caddy_data/_data .
 
-# Backup configuration files
-echo "Backing up configuration files..."
+# Backup configuration
 cp /home/dawiddutoit/projects/network/docker-compose.yml "$backup_dir/"
-cp /home/dawiddutoit/projects/network/domains.toml "$backup_dir/"
+cp /home/dawiddutoit/projects/network/.env "$backup_dir/.env"
 cp -r /home/dawiddutoit/projects/network/caddy "$backup_dir/"
 cp -r /home/dawiddutoit/projects/network/config "$backup_dir/"
-cp -r /home/dawiddutoit/projects/network/scripts "$backup_dir/"
-
-# Backup .env (SENSITIVE - secure this!)
-echo "Backing up .env secrets..."
-cp /home/dawiddutoit/projects/network/.env "$backup_dir/.env"
-
-# Backup systemd services
-echo "Backing up systemd services..."
-mkdir -p "$backup_dir/systemd"
-cp /etc/systemd/system/infrastructure-monitor.* "$backup_dir/systemd/" 2>/dev/null || true
-
-# Create backup manifest
-cat > "$backup_dir/MANIFEST.txt" << EOF
-Infrastructure Backup Manifest
-Created: $(date)
-Hostname: $(hostname)
-User: $(whoami)
-
-Contents:
-- pihole_data.tar.gz (Pi-hole configuration and data)
-- caddy_data.tar.gz (Caddy certificates and data)
-- docker-compose.yml (Service definitions)
-- domains.toml (Domain configuration)
-- caddy/ (Caddyfile and Dockerfile)
-- config/ (Webhook and Caddy configs)
-- scripts/ (Management scripts)
-- .env (SENSITIVE - all secrets and tokens)
-- systemd/ (Monitoring service files)
-
-⚠️  SECURITY WARNING:
-This backup contains sensitive data:
-- API tokens (Cloudflare, Google OAuth)
-- Passwords (Pi-hole)
-- Webhook secrets
-- Access tokens
-
-Store securely and encrypt for off-site storage.
-EOF
-
-# Show backup summary
-echo ""
-echo "✅ Backup completed successfully!"
-echo "Location: $backup_dir"
-echo ""
-echo "Backup contents:"
-ls -lh "$backup_dir"
-echo ""
-echo "Total size: $(du -sh "$backup_dir" | cut -f1)"
-```
-
-**What's included:**
-- Pi-hole configuration and blocklists
-- Caddy SSL certificates
-- All configuration files
-- All secrets (.env)
-- Management scripts
-- Systemd service definitions
-
-### 3.2 Backup Docker Volumes
-
-**Backup individual volumes:**
-
-```bash
-backup_dir="/home/dawiddutoit/projects/network/backups"
-mkdir -p "$backup_dir"
-
-# Backup Pi-hole data
-echo "Backing up Pi-hole data..."
-tar -czf "$backup_dir/pihole-backup-$(date +%Y%m%d).tar.gz" \
-  -C /var/lib/docker/volumes/network_pihole_data/_data .
-
-# Backup Caddy certificates
-echo "Backing up Caddy certificates..."
-tar -czf "$backup_dir/caddy-backup-$(date +%Y%m%d).tar.gz" \
-  -C /var/lib/docker/volumes/network_caddy_data/_data .
-
-echo "Volume backups completed"
-ls -lh "$backup_dir"/*-backup-$(date +%Y%m%d).tar.gz
-```
-
-**Note on Caddy certificates:**
-- Certificates can be re-obtained automatically via DNS-01 challenge
-- Backup not strictly necessary if Cloudflare API token is valid
-- Useful for immediate restoration without waiting for ACME
-
-### 3.3 Backup Configuration Files
-
-**Backup configuration without Docker volumes:**
-
-```bash
-backup_dir="/home/dawiddutoit/projects/network/backups/config-$(date +%Y%m%d)"
-mkdir -p "$backup_dir"
-
-# Backup configuration
-tar -czf "$backup_dir/network-config.tar.gz" \
-  -C /home/dawiddutoit/projects/network \
-  docker-compose.yml domains.toml caddy/ config/ scripts/ .env
-
-echo "Configuration backup completed: $backup_dir/network-config.tar.gz"
-```
-
-### 3.4 Restore Full Infrastructure
-
-**Complete restoration procedure:**
-
-```bash
-# Set backup location
-backup_dir="/home/dawiddutoit/projects/network/backups/full-backup-20260120-143000"
-
-echo "Starting full infrastructure restore..."
-echo "Backup source: $backup_dir"
-
-# Stop all services
-echo "Stopping services..."
-cd /home/dawiddutoit/projects/network
-docker compose down
-
-# Restore Pi-hole data
-echo "Restoring Pi-hole data..."
-docker volume rm network_pihole_data
-docker volume create network_pihole_data
-tar -xzf "$backup_dir/pihole_data.tar.gz" \
-  -C /var/lib/docker/volumes/network_pihole_data/_data
-
-# Restore Caddy certificates
-echo "Restoring Caddy certificates..."
-docker volume rm network_caddy_data
-docker volume create network_caddy_data
-tar -xzf "$backup_dir/caddy_data.tar.gz" \
-  -C /var/lib/docker/volumes/network_caddy_data/_data
-
-# Restore configuration files
-echo "Restoring configuration files..."
-cp "$backup_dir/docker-compose.yml" /home/dawiddutoit/projects/network/
-cp "$backup_dir/domains.toml" /home/dawiddutoit/projects/network/
-cp -r "$backup_dir/caddy" /home/dawiddutoit/projects/network/
-cp -r "$backup_dir/config" /home/dawiddutoit/projects/network/
-cp -r "$backup_dir/scripts" /home/dawiddutoit/projects/network/
-
-# Restore .env
-echo "Restoring .env secrets..."
-cp "$backup_dir/.env" /home/dawiddutoit/projects/network/.env
-
-# Restore systemd services
-echo "Restoring systemd services..."
-if [ -d "$backup_dir/systemd" ]; then
-  sudo cp "$backup_dir/systemd/infrastructure-monitor."* /etc/systemd/system/
-  sudo systemctl daemon-reload
-  sudo systemctl enable infrastructure-monitor.timer
-fi
-
-# Start services
-echo "Starting services..."
-docker compose up -d
-
-# Wait for services to start
-echo "Waiting for services to initialize..."
-sleep 10
-
-# Verify services running
-echo ""
-echo "Verifying services..."
-docker compose ps
-
-echo ""
-echo "✅ Restoration completed!"
-echo ""
-echo "Next steps:"
-echo "1. Verify services are running: docker compose ps"
-echo "2. Test DNS resolution: dig @192.168.68.136 pihole.temet.ai"
-echo "3. Test HTTPS certificates: curl -I https://pihole.temet.ai"
-echo "4. Test tunnel connectivity: docker logs cloudflared | grep 'Registered tunnel'"
-```
-
-### 3.5 Restore Specific Components
-
-**Restore only Pi-hole data:**
-
-```bash
-backup_file="/home/dawiddutoit/projects/network/backups/pihole-backup-20260120.tar.gz"
-
-# Stop Pi-hole
-docker compose -f /home/dawiddutoit/projects/network/docker-compose.yml down pihole
-
-# Restore volume
-docker volume rm network_pihole_data
-docker volume create network_pihole_data
-tar -xzf "$backup_file" \
-  -C /var/lib/docker/volumes/network_pihole_data/_data
-
-# Start Pi-hole
-docker compose -f /home/dawiddutoit/projects/network/docker-compose.yml up -d pihole
-
-echo "Pi-hole data restored"
-```
-
-**Restore only Caddy certificates:**
-
-```bash
-backup_file="/home/dawiddutoit/projects/network/backups/caddy-backup-20260120.tar.gz"
-
-# Stop Caddy
-docker compose -f /home/dawiddutoit/projects/network/docker-compose.yml down caddy
-
-# Restore volume
-docker volume rm network_caddy_data
-docker volume create network_caddy_data
-tar -xzf "$backup_file" \
-  -C /var/lib/docker/volumes/network_caddy_data/_data
-
-# Start Caddy
-docker compose -f /home/dawiddutoit/projects/network/docker-compose.yml up -d caddy
-
-echo "Caddy certificates restored"
-```
-
-**Restore only configuration:**
-
-```bash
-backup_file="/home/dawiddutoit/projects/network/backups/config-20260120/network-config.tar.gz"
-
-# Extract to project directory
-tar -xzf "$backup_file" \
-  -C /home/dawiddutoit/projects/network
-
-# Restart services to pick up changes
-docker compose -f /home/dawiddutoit/projects/network/docker-compose.yml restart
-
-echo "Configuration restored"
-```
-
-### 3.6 Disaster Recovery Procedure
-
-**Complete rebuild from scratch:**
-
-**Scenario:** New server, fresh OS, need to restore infrastructure
-
-**Step 1: Install Docker**
-
-```bash
-# Install Docker (Ubuntu/Debian)
-curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh get-docker.sh
-sudo usermod -aG docker $USER
-
-# Install Docker Compose
-sudo apt install docker-compose-plugin -y
-```
-
-**Step 2: Restore Project Directory**
-
-```bash
-# Create project directory
-mkdir -p /home/dawiddutoit/projects/network
-cd /home/dawiddutoit/projects/network
-
-# Extract backup
-backup_dir="/path/to/backup/full-backup-20260120-143000"
-cp -r "$backup_dir"/* .
-```
-
-**Step 3: Restore Docker Volumes**
-
-```bash
-# Create volumes
-docker volume create network_pihole_data
-docker volume create network_caddy_data
-
-# Restore Pi-hole data
-tar -xzf pihole_data.tar.gz \
-  -C /var/lib/docker/volumes/network_pihole_data/_data
-
-# Restore Caddy certificates
-tar -xzf caddy_data.tar.gz \
-  -C /var/lib/docker/volumes/network_caddy_data/_data
-```
-
-**Step 4: Restore Systemd Services**
-
-```bash
-# Copy systemd service files
-sudo cp systemd/infrastructure-monitor.* /etc/systemd/system/
-sudo systemctl daemon-reload
-sudo systemctl enable --now infrastructure-monitor.timer
-```
-
-**Step 5: Start Services**
-
-```bash
-# Start all services
-docker compose up -d
-
-# Monitor startup
-docker compose logs -f
-```
-
-**Step 6: Verify Recovery**
-
-```bash
-# Check all services running
-docker compose ps
-
-# Test DNS
-dig @192.168.68.136 pihole.temet.ai
-
-# Test HTTPS
-curl -I https://pihole.temet.ai
-
-# Test tunnel
-docker logs cloudflared | grep "Registered tunnel"
-
-# Run health check
-./scripts/health-check.sh
-```
-
-**Recovery time:** 15-30 minutes depending on internet speed
-
-### 3.7 Backup Management and Retention
-
-**Backup retention policy:**
-
-```bash
-backup_base="/home/dawiddutoit/projects/network/backups"
-
-# Keep last 7 daily backups
-find "$backup_base" -name "full-backup-*" -mtime +7 -delete
-
-# Keep last 3 monthly backups (first of month)
-# Manual: Review and delete old monthly backups
-
-# Always keep latest full backup
-```
-
-**Automated backup script:**
-
-```bash
-#!/bin/bash
-# /home/dawiddutoit/projects/network/scripts/backup-infrastructure.sh
-
-backup_dir="/home/dawiddutoit/projects/network/backups/auto-$(date +%Y%m%d-%H%M%S)"
-mkdir -p "$backup_dir"
-
-# Backup volumes
-tar -czf "$backup_dir/pihole_data.tar.gz" \
-  -C /var/lib/docker/volumes/network_pihole_data/_data .
-tar -czf "$backup_dir/caddy_data.tar.gz" \
-  -C /var/lib/docker/volumes/network_caddy_data/_data .
-
-# Backup configuration
-cp /home/dawiddutoit/projects/network/.env "$backup_dir/.env"
-cp /home/dawiddutoit/projects/network/docker-compose.yml "$backup_dir/"
-cp /home/dawiddutoit/projects/network/domains.toml "$backup_dir/"
-
-# Delete backups older than 7 days
-find /home/dawiddutoit/projects/network/backups -name "auto-*" -mtime +7 -delete
 
 echo "Backup completed: $backup_dir"
 ```
 
-**Schedule with cron:**
+**What's backed up:** Pi-hole data, Caddy certificates, configuration files, secrets (.env)
+
+### Restore Full Infrastructure
+
+Restore from complete backup:
 
 ```bash
-# Add to crontab
-crontab -e
+backup_dir="/home/dawiddutoit/projects/network/backups/full-backup-20260120"
 
-# Daily backup at 2 AM
-0 2 * * * /home/dawiddutoit/projects/network/scripts/backup-infrastructure.sh >> /var/log/infrastructure-backup.log 2>&1
+# Stop services
+cd /home/dawiddutoit/projects/network
+docker compose down
+
+# Restore volumes
+docker volume rm network_pihole_data network_caddy_data
+docker volume create network_pihole_data
+docker volume create network_caddy_data
+tar -xzf "$backup_dir/pihole_data.tar.gz" \
+  -C /var/lib/docker/volumes/network_pihole_data/_data
+tar -xzf "$backup_dir/caddy_data.tar.gz" \
+  -C /var/lib/docker/volumes/network_caddy_data/_data
+
+# Restore configuration
+cp "$backup_dir/docker-compose.yml" .
+cp "$backup_dir/.env" .
+cp -r "$backup_dir/caddy" .
+cp -r "$backup_dir/config" .
+
+# Start services
+docker compose up -d
 ```
 
-**Off-site backup:**
+### Disaster Recovery
 
-```bash
-# Encrypt backup for off-site storage
-backup_file="/home/dawiddutoit/projects/network/backups/full-backup-20260120.tar.gz"
+For complete rebuild on new hardware, see `references/backup-procedures.md` section "Disaster Recovery".
 
-tar -czf - /path/to/backup | \
-  gpg --symmetric --cipher-algo AES256 > backup-encrypted.tar.gz.gpg
+**Quick overview:**
+1. Install Docker on new server
+2. Restore configuration files
+3. Restore Docker volumes
+4. Start services
+5. Verify connectivity and certificates
 
-# Upload to cloud storage (example)
-# rclone copy backup-encrypted.tar.gz.gpg remote:backups/
-```
+**Recovery time:** 15-30 minutes
 
-## 4. Supporting Files
+## Supporting Files
 
 | File | Purpose |
 |------|---------|
-| `references/reference.md` | Backup strategies, retention policies, encryption |
-| `scripts/backup-infrastructure.sh` | Automated backup script |
-| `scripts/restore-infrastructure.sh` | Automated restore script |
-| `examples/examples.md` | Example backup/restore scenarios |
+| `references/backup-procedures.md` | Detailed backup/restore procedures, disaster recovery, retention policies |
 
-## 5. Expected Outcomes
+## Expected Outcomes
 
 **Success:**
 - Full backup created with all components
@@ -528,14 +190,14 @@ tar -czf - /path/to/backup | \
 - Restoration fails (volume path incorrect)
 - Services don't start after restore (check docker compose logs)
 
-## 6. Requirements
+## Requirements
 
 - Sufficient disk space for backups (recommend 2GB free)
 - Root/sudo access for Docker volume access
 - Backup storage location with appropriate permissions
 - For disaster recovery: Same Docker version or compatible
 
-## 7. Red Flags to Avoid
+## Red Flags to Avoid
 
 - [ ] Do not store .env backups unencrypted (contains secrets)
 - [ ] Do not commit backups to git (contains sensitive data)

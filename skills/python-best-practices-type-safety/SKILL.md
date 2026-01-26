@@ -6,6 +6,7 @@ description: |
   type safety. Analyzes Python type errors, categorizes them (missing annotations, incorrect
   types, generic issues, Optional/None handling), and applies fix patterns. Works with .py
   files and pyright output.
+version: 1.0.0
 allowed-tools:
   - Read
   - Grep
@@ -18,6 +19,12 @@ allowed-tools:
 ## Purpose
 Systematically diagnose and resolve Python type checking errors from pyright/mypy by categorizing error types and applying proven fix patterns.
 
+
+## When to Use This Skill
+
+Use when fixing type errors with "fix pyright errors", "resolve type mismatch", "add type annotations", or "handle Optional types".
+
+Do NOT use for pytest configuration (use `pytest-configuration`), import validation (use `python-best-practices-fail-fast-imports`), or runtime errors (type checking is static).
 ## When to Use
 
 Use this skill when:

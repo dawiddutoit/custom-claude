@@ -1,12 +1,9 @@
 ---
 name: textual-testing
 description: |
-  Test Textual TUI applications using the built-in testing framework. Covers headless mode
-  testing with App.run_test(), complete Pilot API (mouse, keyboard, timing, animations),
-  widget querying, and worker management. Use when: writing tests for TUI widgets, testing
-  user interactions (clicks, keypresses, hover), verifying widget state, testing event
-  handling, or running integration tests. Primary skill for functional Textual testing.
----
+  Tests Textual TUI applications using the built-in testing framework. Covers headless mode testing with App.run_test(), complete Pilot API (mouse, keyboard, timing, animations), widget querying, and worker management. Use when: writing tests for TUI widgets, testing user interactions (clicks, keypresses, hover), verifying widget state, testing event handling, or running integration tests. Primary skill for functional Textual testing.
+
+version: 1.0.0---
 
 # Textual Testing
 

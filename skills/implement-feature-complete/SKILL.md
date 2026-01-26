@@ -1,11 +1,13 @@
 ---
 name: implement-feature-complete
 description: |
-  Complete feature implementation lifecycle with 10 stages: planning, TDD, naming,
+  Manages complete feature implementation lifecycle through 10 stages: planning, TDD, naming,
   DRY, implementation, refactor, integration testing, E2E testing, real usage validation,
   and production monitoring. Use when implementing new features, significant changes,
   or onboarding to project workflow. Ensures Clean Architecture, fail-fast principles,
-  ServiceResult pattern, and quality gates.
+  ServiceResult pattern, and quality gates. Triggers on "implement feature X", "add functionality Y",
+  "complete workflow for Z", "end-to-end implementation", or "production-ready feature".
+version: 1.0.0
 allowed-tools:
   - Read
   - Grep
@@ -16,6 +18,7 @@ allowed-tools:
   - Write
 ---
 
+Works with Clean Architecture projects, Python codebases, TDD workflows, and quality gates.
 # Complete Feature Implementation
 
 ## Quick Start

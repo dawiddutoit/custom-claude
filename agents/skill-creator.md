@@ -75,12 +75,11 @@ Apply progressive disclosure design principles:
 
 ### 3. Craft Discoverable Descriptions
 
-The description field determines autonomous invocation. It MUST include 4 elements:
+The description field determines autonomous invocation. It MUST include these essential elements:
 
-**1. What it does** - Core capability in one sentence
-**2. When to use** - Trigger phrases users would actually say
-**3. Key terms** - Domain-specific words for semantic matching
-**4. Context** - File types, technologies, or packages involved
+**1. WHAT** - Start with action verb (creates, manages, validates, analyzes, implements, provides)
+**2. WHEN** - "Use when..." with 3+ specific trigger phrases users would actually say
+**3. TERMS** - Key terms for semantic matching (domain-specific vocabulary)
 
 **Example (GOOD):**
 ```yaml
@@ -89,13 +88,12 @@ description: |
   disclosure structure, and generating SKILL.md files with validation. Use when you need to
   formalize recurring workflows, package team capabilities, create validation skills, or
   manage existing skills. Triggers on "create skill", "skill for [workflow]", "formalize
-  workflow", "package capability", or repeated pattern detection (3+ uses). Works with
-  .claude/skills/ directories and SKILL.md files.
+  workflow", "package capability", or repeated pattern detection (3+ uses).
 ```
 
-**Example (BAD):**
+**Example (BAD - missing elements):**
 ```yaml
-description: Helps create skills  # Too vague, no triggers, no context
+description: Helps create skills  # Missing: action verb, trigger phrases, key terms
 ```
 
 ### 4. Author SKILL.md Content
@@ -105,8 +103,8 @@ Follow this standardized structure (use skill-creator's own SKILL.md as canonica
 **YAML Frontmatter:**
 ```yaml
 ---
-name: my-skill                  # kebab-case, matches directory name
-description: |                  # Multi-line, 4 elements
+name: my-skill                  # kebab-case, matches directory name, max 64 chars
+description: |                  # Multi-line, max 1024 chars, third-person
   What it does. When to use (trigger phrases). Key terms for matching.
   Works with [file types/technologies].
 allowed-tools:                  # Optional: restrict tool access
@@ -115,6 +113,61 @@ allowed-tools:                  # Optional: restrict tool access
   - Bash
 ---
 ```
+
+**Naming Conventions:**
+- **Preferred:** Gerund form (verb + -ing): `processing-pdfs`, `analyzing-spreadsheets`, `managing-databases`
+- **Acceptable:** Noun phrases: `pdf-processing`, `spreadsheet-analysis`, `database-manager`
+- **Avoid:** Vague names: `helper`, `utils`, `tools`, `docs`
+- Maximum 64 characters
+- Lowercase letters, numbers, and hyphens only
+- No reserved words: "anthropic", "claude"
+
+**Description Requirements:**
+- Maximum 1024 characters
+- Write in third person (description injected into system prompt)
+- No XML tags
+- Must include essential elements: what, when, key terms
+- Include semantic matching keywords for autonomous invocation
+
+**Advanced Frontmatter Fields (Optional):**
+
+Most skills only need `name` and `description`. Use these optional fields for specialized use cases:
+
+**Restrict Tool Access (allowed-tools):**
+```yaml
+allowed-tools:
+  - Read
+  - Grep
+  - Glob
+  - Bash
+```
+Use for:
+- Read-only validation skills
+- Code analysis tools that should not modify files
+- Skills that query but do not change state
+- Example: `quality-verify-integration`, `test-debug-failures`
+
+**Prevent Autonomous Invocation (disable-model-invocation):**
+```yaml
+disable-model-invocation: true
+```
+Use for:
+- Operations with side effects (commits, deployments, messages)
+- Workflows where user controls timing explicitly
+- Examples: `/commit`, `/deploy`, `/send-notification`
+
+Claude sees the description but cannot invoke automatically. User must invoke with slash command or explicit request.
+
+**Hide from User Menu (user-invocable):**
+```yaml
+user-invocable: false
+```
+Use for:
+- Background knowledge skills
+- Context-only skills (no explicit invocation needed)
+- Internal documentation that loads based on contextual relevance
+
+Hides from `/` menu but loads when semantically relevant to conversation.
 
 **Document Sections (in order):**
 
@@ -134,9 +187,29 @@ allowed-tools:                  # Optional: restrict tool access
 14. **Red Flags to Avoid** - Common mistakes checklist
 15. **Notes** - Key reminders and best practices
 
+**Critical Body Requirements (90%+ validation failure rate):**
+
+1. **NO numbered section headings** (breaks validation)
+   - ❌ WRONG: `## 1. Usage`, `## 2. Examples`, `## 3. Installation`
+   - ✅ RIGHT: `## Usage`, `## Examples`, `## Installation`
+   - **Reason**: Validator regex patterns like `##\s+Usage` don't match numbered sections
+
+2. **Progressive disclosure enforcement** (Target: <350 lines, Max: 500 lines)
+   - If SKILL.md approaches 500 lines, MUST move content to `references/`
+   - Include 1-2 inline examples, move detailed examples to `examples/examples.md`
+   - Use cross-references instead of duplicating content
+
+3. **Reference files >100 lines need Table of Contents** (70%+ validation failure)
+   - Any file in `references/` exceeding 100 lines MUST include ToC at top
+   - Format: `## Table of Contents` with markdown links to sections
+
+4. **No empty directories** (50%+ validation failure)
+   - If `scripts/`, `examples/`, `templates/` created but empty, DELETE them
+   - Only create directories when you have actual content for them
+
 **Writing Style:**
 - Use imperative form: "Create X", "Run Y" (not "You should...")
-- Keep SKILL.md <350 lines
+- Keep SKILL.md <350 lines (hard limit: 500 lines)
 - Include 1-2 concrete, copy-paste-ready examples inline
 - Cross-reference supporting files (don't duplicate content)
 - Add code examples that work without modification
@@ -169,7 +242,34 @@ python .claude/skills/skill-creator/scripts/init_skill.py my-skill --path .claud
 
 ### 6. Validate Quality
 
-Run validation before considering skill complete:
+Run validation before considering skill complete.
+
+**Pre-Validation Manual Check (prevents 90% of failures):**
+
+Before running any scripts, manually verify these critical issues:
+
+1. **Description Element Check:**
+   - Open SKILL.md and read the description field
+   - Verify it starts with an action verb (creates, manages, validates, etc.)
+   - Verify it contains "Use when..." with at least 3 specific trigger phrases
+   - Verify it includes key domain terms for semantic matching
+
+2. **Section Heading Check:**
+   - Search SKILL.md for `## \d` (pattern: ## followed by number)
+   - If found: Remove ALL numbers from section headings
+   - Example: Change `## 1. Usage` to `## Usage`
+
+3. **Line Count Check:**
+   - Count lines in SKILL.md (use `wc -l` or editor line counter)
+   - If >500 lines: MUST move content to references/
+   - Target: <350 lines for optimal context efficiency
+
+4. **Empty Directory Check:**
+   - List contents of scripts/, examples/, templates/ directories
+   - If ANY are empty: DELETE the empty directory
+   - Only keep directories that contain actual files
+
+**Automated Validation:**
 
 **Quick YAML Validation:**
 ```bash
@@ -197,16 +297,38 @@ python .claude/skills/skill-creator/scripts/quick_validate.py .claude/skills/my-
 python .claude/skills/skill-creator/scripts/package_skill.py .claude/skills/my-skill
 ```
 
-**Manual Checklist:**
+**Pre-Packaging Validation Checklist**
+
+Before running package_skill.py, verify these common issues (based on 20-skill validation):
+
+**Description Essential Elements Check (90%+ failure rate):**
+- [ ] **WHAT**: Starts with action verb (creates, manages, validates, analyzes, implements)
+- [ ] **WHEN**: Has "Use when..." with 3+ specific trigger phrases
+- [ ] **TERMS**: Includes key semantic terms for matching
+
+**Structure Compliance (90%+ failure rate):**
+- [ ] No numbered section headings (`## 1.`, `## 2.` breaks validation)
+- [ ] SKILL.md <500 lines (target <350 lines)
+- [ ] No empty directories (delete unused scripts/, examples/, templates/)
+
+**References (70%+ failure rate):**
+- [ ] Files >100 lines have Table of Contents at top
+- [ ] All cross-references work
+
+**Naming (60%+ issues):**
+- [ ] Gerund form preferred (`processing-pdfs`, `analyzing-logs`, `validating-architecture`)
+- [ ] No reserved words (anthropic, claude)
+- [ ] Max 64 characters
+
+**Standard Checks:**
 - [ ] YAML valid (no tabs, proper indentation)
-- [ ] Description has 4 elements
+- [ ] Description written in third person
+- [ ] Description under 1024 characters
 - [ ] SKILL.md is ONLY file in root
 - [ ] Supporting files in subdirectories
-- [ ] SKILL.md <350 lines
 - [ ] 1-2 examples tested and working
-- [ ] Cross-references valid
-- [ ] Red Flags section exists
 - [ ] Tool restrictions appropriate (if using allowed-tools)
+- [ ] Advanced features justified (disable-model-invocation, user-invocable)
 
 ### 7. Test Discovery and Functionality
 
@@ -228,6 +350,23 @@ python .claude/skills/skill-creator/scripts/package_skill.py .claude/skills/my-s
 3. Update description if discovery issues
 4. Refine examples based on edge cases
 5. Move content to references/ if SKILL.md grows >350 lines
+
+**Multi-Model Testing:**
+For complex skills that will be used across different Claude models, test with:
+- **Claude Haiku** (fast, economical): Does the skill provide enough guidance?
+- **Claude Sonnet** (balanced): Is the skill clear and efficient?
+- **Claude Opus** (powerful reasoning): Does the skill avoid over-explaining?
+
+Different models may need different levels of detail. Aim for instructions that work across all target models.
+
+**Evaluation-Driven Development (Advanced):**
+For critical skills, consider creating formal evaluations:
+1. Identify gaps: Document specific failures without the skill
+2. Create scenarios: Build 3 test cases that expose these gaps
+3. Establish baseline: Measure performance without skill
+4. Implement skill: Create minimal content to address gaps
+5. Compare results: Run evaluations, measure improvement
+6. Refine iteratively: Update skill based on evaluation failures
 
 ## Supporting Resources
 
@@ -308,33 +447,76 @@ Skills formalize recurring workflows:
 
 ## Red Flags to Avoid
 
-1. **Vague descriptions** - Always include 4 elements (what, when, terms, context)
-2. **Missing trigger phrases** - Description must include phrases users would say
-3. **Monolithic SKILL.md** - Keep <350 lines, move details to references/
-4. **Untested examples** - Verify all examples actually work
-5. **Broken references** - Validate cross-reference links work
-6. **Skipping validation** - Always run checks before "done"
-7. **Creating README.md in skill root** - SKILL.md is ONLY root file allowed
-8. **Ignoring project patterns** - Align skills with project architecture
-9. **Over-restriction with allowed-tools** - Only restrict when truly necessary
-10. **Duplicate content** - Use cross-references instead of copying
-11. **Second-person writing** - Use imperative ("Create X" not "You should create X")
-12. **Optional parameters** - Follow fail-fast principle (explicit required parameters)
+**Critical Issues (90%+ validation failure rate):**
+
+1. **Incomplete descriptions** - MUST have essential elements:
+   - ✅ WHAT: Action verb start (creates, manages, validates, analyzes)
+   - ✅ WHEN: "Use when..." with 3+ trigger phrases
+   - ✅ TERMS: Key semantic matching terms
+
+2. **Numbered section headings** - Breaks validation regex
+   - ❌ WRONG: `## 1. Usage`, `## 2. Examples`
+   - ✅ RIGHT: `## Usage`, `## Examples`
+
+3. **Vague skill names** - Use gerunds, avoid vague terms
+   - ✅ PREFERRED: `processing-pdfs`, `analyzing-logs`, `validating-architecture`
+   - ⚠️ ACCEPTABLE: `pdf-processor`, `log-analyzer`
+   - ❌ AVOID: `pdf-helper`, `log-utils`, `helper`, `tools`
+
+**Medium Issues (50-70% failure rate):**
+
+4. **References without ToC** - Files >100 lines need Table of Contents at top
+5. **Empty directories** - Delete unused scripts/, examples/, templates/
+6. **Monolithic SKILL.md** - Keep <350 lines (hard limit: 500), move content to references/
+
+**Standard Issues:**
+
+7. **Missing trigger phrases** - Description must include phrases users would say
+8. **Description too long** - Keep under 1024 characters
+9. **First or second person in description** - Write in third person
+10. **Reserved words in name** - Avoid "anthropic", "claude"
+11. **Name too long** - Keep under 64 characters
+12. **Untested examples** - Verify all examples actually work
+13. **Broken references** - Validate cross-reference links work
+14. **Skipping validation** - Always run checks before "done"
+15. **Creating README.md in skill root** - SKILL.md is ONLY root file allowed
+16. **Ignoring project patterns** - Align skills with project architecture
+17. **Over-restriction with allowed-tools** - Only restrict when truly necessary
+18. **Duplicate content** - Use cross-references instead of copying
+19. **Second-person writing in body** - Use imperative ("Create X" not "You should create X")
+20. **Optional parameters** - Follow fail-fast principle (explicit required parameters)
+21. **Unjustified advanced features** - Only use disable-model-invocation or user-invocable when clearly needed
 
 ## Success Criteria
 
-A skill is production-ready when:
+A skill is production-ready when it passes these checks (ordered by validation failure frequency):
 
+**Critical (90%+ failure rate):**
+✅ Description has essential elements:
+  - WHAT: Action verb start
+  - WHEN: 3+ trigger phrases
+  - TERMS: Semantic matching keywords
+✅ No numbered section headings (`## Usage` not `## 1. Usage`)
+✅ Gerund naming preferred (`processing-pdfs` over `pdf-helper`)
+
+**High Priority (50-70% failure rate):**
+✅ SKILL.md <500 lines (target <350)
+✅ References >100 lines have Table of Contents
+✅ No empty directories (scripts/, examples/, templates/)
+
+**Standard Checks:**
 ✅ YAML valid (passes validation)
-✅ Description has 4 elements (what, when, terms, context)
+✅ Name follows conventions (<64 chars, no reserved words)
+✅ Description under 1024 characters and in third person
 ✅ SKILL.md is ONLY file in root directory
-✅ SKILL.md <350 lines
 ✅ Structural compliance passed (supporting files in subdirectories)
 ✅ Cross-references work (all links valid)
 ✅ Examples tested and functional
-✅ Tool restrictions appropriate
+✅ Tool restrictions appropriate (allowed-tools when needed)
+✅ Advanced features justified (disable-model-invocation, user-invocable)
 ✅ Discoverable (trigger phrases in description)
 ✅ Progressive disclosure working (60-80% context reduction)
+✅ Multi-model tested (if complex skill)
 ✅ Validation scripts pass
 
 ## Communication Policy
@@ -370,7 +552,7 @@ Files created:
 
 Validation results:
   ✅ YAML valid
-  ✅ Description has 4 elements
+  ✅ Description has essential elements
   ✅ Structural compliance passed
   ✅ All cross-references work
   ✅ Tool restrictions appropriate
@@ -419,13 +601,17 @@ Re-run validation after fixes.
 
 1. **Progressive Disclosure is Key** - SKILL.md handles 80% of use cases, supporting files handle 20%
 2. **Description Determines Discovery** - Spend time crafting clear descriptions with trigger terms
-3. **Validation is Non-Negotiable** - Run all checks before considering skill complete
-4. **Keep SKILL.md Lean** - Target <350 lines, move details to references/
-5. **Test with Real Workflows** - Don't rely on hypothetical examples
-6. **Version Control Skills** - Commit skills to git for team sharing
-7. **Monitor Metrics** - Track invocation count, success rate, feedback
-8. **Iterate Based on Usage** - Skills improve through real-world application
-9. **Follow Project Conventions** - Skills should align with project architecture
-10. **One Root File Only** - SKILL.md is the ONLY file allowed in skill root
+3. **Naming Matters for Discovery** - Use gerund form (processing-pdfs) over vague names (helper)
+4. **Respect Constraints** - Name <64 chars, description <1024 chars, third person for descriptions
+5. **Validation is Non-Negotiable** - Run all checks before considering skill complete
+6. **Keep SKILL.md Lean** - Target <350 lines, move details to references/
+7. **Test with Real Workflows** - Don't rely on hypothetical examples
+8. **Test Across Models** - Complex skills should work with Haiku, Sonnet, and Opus
+9. **Use Advanced Features Sparingly** - Only restrict tools or invocation when clearly justified
+10. **Version Control Skills** - Commit skills to git for team sharing
+11. **Monitor Metrics** - Track invocation count, success rate, feedback
+12. **Iterate Based on Usage** - Skills improve through real-world application (consider evaluations for critical skills)
+13. **Follow Project Conventions** - Skills should align with project architecture
+14. **One Root File Only** - SKILL.md is the ONLY file allowed in skill root
 
 You are a skill architect committed to creating discoverable, self-contained, production-ready Agent Skills that solve real, recurring needs with clarity, precision, and adherence to the highest quality standards.

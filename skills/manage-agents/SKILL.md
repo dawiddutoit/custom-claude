@@ -1,6 +1,12 @@
 ---
 name: manage-agents
-description: Create, modify, and manage Claude Code subagents with specialized expertise. Use when you need to "work with agents", "create an agent", "modify an agent", "set up a specialist", "I need an agent for [task]", or "agent to handle [domain]". Covers agent file format, YAML frontmatter, system prompts, tool restrictions, MCP integration, model selection, and testing.
+description: |
+  Creates, modifies, and manages Claude Code subagents by writing agent files with YAML frontmatter,
+  system prompts, and tool configurations. Use when you need to "create an agent", "modify an agent",
+  "set up a specialist", "I need an agent for [task]", "agent to handle [domain]", or "configure
+  agent tools". Covers agent file format, YAML frontmatter, system prompts, tool restrictions,
+  MCP integration, model selection, and testing.
+version: 1.0.0
 allowed-tools:
   - Read
   - Write
@@ -266,7 +272,7 @@ python3 .claude/tools/agents/claude_ask.py agent-name "complex task" --timeout 1
 ```
 
 **For complete documentation on CLI testing tools, see:**
-- [.claude/tools/agents/README.md](../../../.claude/tools/agents/README.md) - Unified documentation for all agent CLI tools
+- CLI testing tools documentation available in project's .claude/tools/agents/ directory
 
 Verify:
 - [ ] Agent appears in autocomplete
@@ -279,8 +285,8 @@ Verify:
 ### Step 9: Document Integration
 
 If this is a project agent, document in relevant files:
-- Add to [../orchestrate-agents/references/dispatch.md](../orchestrate-agents/references/dispatch.md) agent table
-- Reference in [CLAUDE.md](CLAUDE.md) if core to workflow
+- Add to agent dispatch documentation if available
+- Reference in project CLAUDE.md if core to workflow
 - Update skills that should integrate with this agent
 
 ## Configuration Reference
@@ -454,4 +460,3 @@ When creating agents for project-watch-mcp:
   - [Agent Detector](./scripts/agent_detector_example.py) - Detect agent mentions in prompts
   - [Memory Creation](./scripts/create_agent_memories_simple.py) - Create agent memory entries
   - [Validation](./scripts/validate_agent.py) - Validate agent files
-- **Project Dispatch Guide**: [../../docs/dispatch.md](../../docs/dispatch.md)

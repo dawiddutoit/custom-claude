@@ -8,6 +8,7 @@ description: |
   "SSL certificate status", "backup certificates", or "force certificate renewal".
   Works with Let's Encrypt certificates, Caddy auto-renewal, and caddy_data Docker
   volume.
+version: 1.0.0
 allowed-tools:
   - Read
   - Bash
@@ -55,7 +56,7 @@ docker logs caddy 2>&1 | grep -E "renewal|renew|certificate obtained"
 6. [Requirements](#6-requirements)
 7. [Red Flags to Avoid](#7-red-flags-to-avoid)
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 **Explicit Triggers:**
 - "Check certificate expiry"
@@ -75,7 +76,7 @@ docker logs caddy 2>&1 | grep -E "renewal|renew|certificate obtained"
 - "Is auto-renewal working?"
 - "How to backup certificates?"
 
-## 2. What This Skill Does
+## What This Skill Does
 
 1. **Checks Expiry** - Verifies certificate validity dates for all domains
 2. **Monitors Renewal** - Reviews Caddy logs for renewal activity
@@ -84,7 +85,7 @@ docker logs caddy 2>&1 | grep -E "renewal|renew|certificate obtained"
 5. **Backs Up** - Creates backup of caddy_data volume
 6. **Restores** - Restores certificates from backup
 
-## 3. Instructions
+## Instructions
 
 ### 3.1 Check Certificate Expiry
 
@@ -342,7 +343,7 @@ If complete infrastructure loss:
 
 No certificate backup needed if Cloudflare API token valid.
 
-## 4. Supporting Files
+## Supporting Files
 
 | File | Purpose |
 |------|---------|
@@ -350,7 +351,7 @@ No certificate backup needed if Cloudflare API token valid.
 | `scripts/check-expiry.sh` | Automated certificate expiry checker |
 | `examples/examples.md` | Example certificate checks, backup procedures |
 
-## 5. Expected Outcomes
+## Expected Outcomes
 
 **Success:**
 - All certificates valid and not expiring soon (> 30 days)
@@ -367,14 +368,14 @@ No certificate backup needed if Cloudflare API token valid.
 - Renewal failing repeatedly
 - No certificate obtained after manual renewal attempt
 
-## 6. Requirements
+## Requirements
 
 - Docker running with Caddy container
 - Valid Cloudflare API token for DNS-01 challenge
 - Network connectivity for ACME protocol
 - Sufficient disk space for backups
 
-## 7. Red Flags to Avoid
+## Red Flags to Avoid
 
 - [ ] Do not delete caddy_data volume without backup (unless can re-obtain quickly)
 - [ ] Do not exceed Let's Encrypt rate limits (50 certs/domain/week)

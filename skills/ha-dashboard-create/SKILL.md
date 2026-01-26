@@ -1,8 +1,15 @@
 ---
 name: ha-dashboard-create
-description: "Create and update Home Assistant Lovelace dashboards programmatically via WebSocket API. Use when building custom dashboards, automating dashboard creation, or managing multiple dashboards for different users/views. Covers WebSocket protocol, dashboard structure, view configuration, and card layout patterns."
+description: |
+  Creates and updates Home Assistant Lovelace dashboards programmatically via WebSocket API
+  with dashboard structure, view configuration, and entity validation. Use when asked to
+  "create HA dashboard", "automate dashboard creation", "WebSocket dashboard API", "programmatic
+  Lovelace", or "validate dashboard entities".
+
+version: 1.0.0
 ---
 
+Works with Python websocket-client, WebSocket API authentication, and Lovelace configuration.
 # Home Assistant Dashboard Creation
 
 Create and update Lovelace dashboards programmatically using the WebSocket API.
@@ -15,6 +22,29 @@ Create and update Lovelace dashboards programmatically using the WebSocket API.
 - ❌ WRONG: "climate", "mobile", "energy"
 
 **Rule:** Always use kebab-case with at least one hyphen in the `url_path` field.
+
+## When to Use This Skill
+
+Use this skill when you need to:
+- Create Home Assistant dashboards programmatically via WebSocket API
+- Automate dashboard creation and updates for multiple environments
+- Build dashboard generators for dynamic card configurations
+- Validate dashboard entities before deployment
+- Manage dashboards as code with version control
+- Programmatically update existing dashboard configurations
+
+Do NOT use when:
+- You can use the Home Assistant UI dashboard editor (simpler for manual changes)
+- Building simple static dashboards (UI editor is more intuitive)
+- You haven't created a long-lived access token for API authentication
+
+## Usage
+
+1. **Connect to WebSocket**: Authenticate with long-lived access token
+2. **Check if exists**: Query existing dashboards with `lovelace/dashboards/list`
+3. **Create dashboard**: Use `lovelace/dashboards/create` with url_path containing hyphen
+4. **Save configuration**: Update config with `lovelace/config/save`
+5. **Verify**: Check HA UI and system logs for errors
 
 ## Quick Start
 
@@ -78,31 +108,6 @@ def create_dashboard(url_path: str, title: str, config: dict):
     ws.close()
 ```
 
-## Dashboard Configuration Structure
-
-```python
-dashboard_config = {
-    "views": [
-        {
-            "title": "Overview",
-            "path": "overview",  # View path (no hyphen required)
-            "cards": [
-                # Card configurations here
-            ],
-        },
-        {
-            "title": "Climate",
-            "path": "climate",  # View path (no hyphen required)
-            "cards": [
-                # More cards
-            ],
-        },
-    ],
-}
-```
-
-**Note:** View paths (within a dashboard) don't require hyphens, only the dashboard `url_path` does.
-
 ## WebSocket Message Types
 
 | Type | Purpose |
@@ -114,62 +119,7 @@ dashboard_config = {
 | `lovelace/config` | Get dashboard config |
 | `system_log/list` | Check for lovelace errors |
 
-## Common Card Types
-
-### Entities Card
-
-```python
-{
-    "type": "entities",
-    "title": "Climate",
-    "entities": [
-        "climate.snorlug",
-        "climate.val_hella_wam",
-        "climate.mines_of_moria",
-    ],
-}
-```
-
-### Gauge Card
-
-```python
-{
-    "type": "gauge",
-    "entity": "sensor.officeht_temperature",
-    "name": "Temperature",
-    "min": 0,
-    "max": 50,
-    "severity": {
-        "green": 18,
-        "yellow": 26,
-        "red": 35,
-    },
-}
-```
-
-### Grid Layout
-
-```python
-{
-    "type": "grid",
-    "columns": 3,
-    "square": False,
-    "cards": [
-        # Cards here
-    ],
-}
-```
-
-### Vertical Stack
-
-```python
-{
-    "type": "vertical-stack",
-    "cards": [
-        # Multiple cards stacked vertically
-    ],
-}
-```
+See [references/card-types.md](references/card-types.md) for dashboard configuration structure and common card types.
 
 ## Error Checking
 
@@ -210,93 +160,15 @@ for card in dashboard_config["views"][0]["cards"]:
 
 ## Entity Validation
 
-### Verify Entity IDs Before Creating Dashboard
+Verify entity IDs exist before using them in dashboards.
 
-```python
-def get_entity_ids(ws) -> list[str]:
-    """Get all available entity IDs from HA."""
-    ws.send(json.dumps({"id": 1, "type": "get_states"}))
-    response = json.loads(ws.recv())
-    return [state["entity_id"] for state in response.get("result", [])]
+See [references/entity-patterns.md](references/entity-patterns.md) for entity validation functions and common entity patterns.
 
-def validate_dashboard_entities(config: dict, available_entities: set[str]) -> list[str]:
-    """Validate all entities in dashboard exist.
+## Supporting Files
 
-    Returns:
-        List of missing entity IDs
-    """
-    used_entities = []
-    missing = []
-
-    for view in config.get("views", []):
-        for card in view.get("cards", []):
-            # Extract entities from card (handles different card types)
-            if "entity" in card:
-                used_entities.append(card["entity"])
-            if "entities" in card:
-                used_entities.extend(card["entities"])
-
-    for entity in used_entities:
-        # Handle entity strings and dicts
-        entity_id = entity if isinstance(entity, str) else entity.get("entity")
-        if entity_id and entity_id not in available_entities:
-            missing.append(entity_id)
-
-    return missing
-
-# Usage
-ws = connect_to_ha()
-available = set(get_entity_ids(ws))
-missing = validate_dashboard_entities(dashboard_config, available)
-
-if missing:
-    print(f"Warning: Missing entities: {missing}")
-```
-
-## Entity ID Patterns (from HA instance)
-
-### Enviro+ Sensors
-```python
-enviro_sensors = [
-    "sensor.enviro_sensor_temperature",
-    "sensor.enviro_sensor_humidity",
-    "sensor.enviro_sensor_pressure",
-    "sensor.enviro_sensor_light",
-    "sensor.enviro_sensor_pm1_0",
-    "sensor.enviro_sensor_pm2_5",
-    "sensor.enviro_sensor_pm10",
-]
-```
-
-### Office Sensors
-```python
-office_sensors = [
-    "sensor.officeht_temperature",
-    "sensor.officeht_humidity",
-    "sensor.officeht_battery",
-]
-```
-
-### Climate Devices
-```python
-climate_devices = [
-    "climate.snorlug",
-    "climate.val_hella_wam",
-    "climate.mines_of_moria",
-]
-```
-
-### Shelly Power Monitoring
-```python
-power_sensors = [
-    "sensor.shellyplus1pm_*_switch_0_power",
-    "sensor.shellyswitch25_*_channel_1_power",
-]
-```
-
-## Complete Example
-
-See [scripts/create_dashboard.py](scripts/create_dashboard.py) for a complete working example.
+- **scripts/create_dashboard.py** - Complete working example with entity validation
+- **references/card-types.md** - Dashboard configuration structure and card types
+- **references/entity-patterns.md** - Entity validation and common patterns
 
 ## Workflow
 
@@ -341,7 +213,7 @@ See [scripts/create_dashboard.py](scripts/create_dashboard.py) for a complete wo
 3. Fix entity IDs or remove missing entities
 4. Ensure entity has proper `state_class` for sensors
 
-## Resources
+## Official Documentation
 
-- [scripts/create_dashboard.py](scripts/create_dashboard.py) - Complete dashboard creation script
-- [references/card_types.md](references/card_types.md) - All available card types and configurations
+- [Lovelace Dashboards - Home Assistant](https://www.home-assistant.io/dashboards/)
+- [WebSocket API - Home Assistant](https://developers.home-assistant.io/docs/api/websocket)

@@ -8,43 +8,6 @@ description: |
 
 # Micrometer Skill
 
-## Table of Contents
-
-1. [Purpose](#purpose)
-2. [When to Use](#when-to-use)
-3. [Quick Start](#quick-start)
-4. [Instructions](#instructions)
-5. [Examples](#examples)
-6. [Requirements](#requirements)
-7. [See Also](#see-also)
-
----
-
-## Purpose
-
-Master Micrometer for comprehensive metrics instrumentation in Java/Spring Boot microservices. This skill covers meter types, dimensional metrics with tags, cardinality management, Spring Boot integration, and monitoring system backends.
-
-## When to Use
-
-Use this skill when you need to:
-
-- **Add metrics to microservices** - Instrument application code with counters, timers, gauges, and distribution summaries
-- **Integrate with monitoring systems** - Export metrics to Prometheus, GCP Cloud Monitoring, Datadog, or other backends
-- **Understand meter types** - Choose the right meter type (Counter, Gauge, Timer, DistributionSummary) for your use case
-- **Implement dimensional metrics** - Use tags to add context to metrics for filtering and aggregation
-- **Manage metric cardinality** - Prevent memory issues from unbounded tag values
-- **Configure Spring Boot Actuator** - Enable and customize auto-configured metrics
-- **Create custom metrics** - Instrument business logic with application-specific measurements
-- **Set up histogram buckets** - Configure SLO-aligned buckets for latency percentiles
-
-**When NOT to use:**
-- For initial Micrometer setup (use `python-micrometer-metrics-setup` instead)
-- For business-specific KPI metrics (use `python-micrometer-business-metrics` instead)
-- For high-cardinality tag management (use `python-micrometer-cardinality-control` instead)
-- For GCP-specific export configuration (use `python-micrometer-gcp-cloud-monitoring` instead)
-
----
-
 ## Quick Start
 
 Add metrics to a Spring Boot service in 2 minutes:
@@ -98,50 +61,62 @@ curl http://localhost:8080/actuator/metrics/charge.processed
 curl http://localhost:8080/actuator/prometheus
 ```
 
-## Instructions
+## Table of Contents
 
-### Step 1: Add Dependencies
+1. [When to Use](#when-to-use)
+2. [Setup](#setup)
+3. [Meter Types](#meter-types)
+4. [Tags and Cardinality](#tags-and-cardinality)
+5. [Common Patterns](#common-patterns)
+6. [Supporting Files](#supporting-files)
+7. [Requirements](#requirements)
 
-Add Micrometer to your Gradle build:
+## When to Use
+
+Use this skill when you need to:
+
+- Add metrics to microservices (counters, timers, gauges, distributions)
+- Integrate with monitoring systems (Prometheus, GCP Cloud Monitoring, Datadog)
+- Implement dimensional metrics with tags for filtering
+- Configure Spring Boot Actuator auto-metrics
+- Create custom application-specific measurements
+
+**When NOT to use:**
+- For initial Micrometer setup (use `python-micrometer-metrics-setup`)
+- For business KPI metrics (use `python-micrometer-business-metrics`)
+- For cardinality management (use `python-micrometer-cardinality-control`)
+- For GCP export (use `python-micrometer-gcp-cloud-monitoring`)
+
+## Setup
+
+### Dependencies
 
 ```kotlin
 dependencies {
     // Spring Boot Actuator (includes Micrometer)
     implementation("org.springframework.boot:spring-boot-starter-actuator")
 
-    // Backend registries (choose based on monitoring system)
-    implementation("io.micrometer:micrometer-registry-prometheus")  // For Prometheus
-    implementation("io.micrometer:micrometer-registry-stackdriver")  // For GCP Cloud Monitoring
-
-    // OpenTelemetry bridge for tracing
-    implementation("io.micrometer:micrometer-tracing-bridge-otel")
+    // Backend registries
+    implementation("io.micrometer:micrometer-registry-prometheus")  // Prometheus
+    implementation("io.micrometer:micrometer-registry-stackdriver")  // GCP
 }
 ```
 
-### Step 2: Configure Actuator & Metrics
-
-Update `application.yml`:
+### Configuration
 
 ```yaml
+# application.yml
 management:
   endpoints:
     web:
       exposure:
         include: health,info,metrics,prometheus
-      base-path: /actuator
-
-  endpoint:
-    metrics:
-      enabled: true
-    prometheus:
-      enabled: true
 
   metrics:
     enable:
       jvm: true
       process: true
       system: true
-      logback: true
 
     distribution:
       percentiles-histogram:
@@ -155,9 +130,10 @@ management:
       environment: ${ENVIRONMENT:local}
 ```
 
-### Step 3: Understand Meter Types
+## Meter Types
 
-**Counter** - Monotonically increasing value:
+### Counter - Monotonically Increasing
+
 ```java
 Counter counter = Counter.builder("api.requests")
     .tag("endpoint", "/charges")
@@ -167,21 +143,17 @@ counter.increment();    // +1
 counter.increment(5);   // +5
 ```
 
-**Gauge** - Point-in-time value (up or down):
+### Gauge - Point-in-Time Value
+
 ```java
 // Function-based (recommended)
 Gauge.builder("queue.size", queue, Queue::size)
     .register(registry);
-
-// AtomicInteger
-AtomicInteger depth = new AtomicInteger(0);
-Gauge.builder("queue.depth", depth, AtomicInteger::get)
-    .register(registry);
 ```
 
-**Timer** - Measures duration and frequency:
+### Timer - Duration and Frequency
+
 ```java
-// Record operation duration
 Timer timer = Timer.builder("database.query")
     .register(registry);
 
@@ -192,11 +164,11 @@ timer.record(() -> {
 // Or with Sample
 Timer.Sample sample = Timer.start(registry);
 // ... perform operation
-sample.stop(Timer.builder("api.latency")
-    .register(registry));
+sample.stop(Timer.builder("api.latency").register(registry));
 ```
 
-**DistributionSummary** - Tracks distribution of non-time values:
+### DistributionSummary - Non-Time Distributions
+
 ```java
 DistributionSummary summary = DistributionSummary.builder("request.size")
     .baseUnit("bytes")
@@ -205,9 +177,12 @@ DistributionSummary summary = DistributionSummary.builder("request.size")
 summary.record(fileSize);
 ```
 
-### Step 4: Master Tag Cardinality (CRITICAL!)
+See [references/meter-types-reference.md](references/meter-types-reference.md) for comprehensive meter type guide and decision trees.
 
-**Safe Tags** (bounded, low cardinality):
+## Tags and Cardinality
+
+### Safe Tags (Bounded, Low Cardinality)
+
 ```java
 // ✅ HTTP method (4-10 values)
 .tag("method", "GET")
@@ -219,7 +194,8 @@ summary.record(fileSize);
 .tag("env", "production")
 ```
 
-**Dangerous Tags** (unbounded, high cardinality):
+### Dangerous Tags (Unbounded, High Cardinality)
+
 ```java
 // ❌ User ID (millions of values) → Use tracing instead
 .tag("user.id", userId)
@@ -231,7 +207,8 @@ summary.record(fileSize);
 .tag("uri", "/api/charges?supplier=123&date=2025-01-01")
 ```
 
-**Prevent OOM from High Cardinality**:
+### Cardinality Limits
+
 ```java
 @Bean
 public MeterFilter cardinalityLimiter() {
@@ -243,57 +220,46 @@ public MeterFilter cardinalityLimiter() {
         MeterFilter.deny()  // Deny new meters after limit
     );
 }
-
-// OR normalize tags to bounded categories
-@Bean
-public MeterFilter uriNormalization() {
-    return MeterFilter.replaceTagValues("uri", uri -> {
-        // /api/charges/12345 → /api/charges/{id}
-        return uri.replaceAll("/\\d+", "/{id}");
-    });
-}
 ```
 
-### Step 5: Create Custom Metrics
+See [python-micrometer-cardinality-control](../python-micrometer-cardinality-control/SKILL.md) for comprehensive cardinality management.
 
-**Method 1: Direct Registry (Recommended)**
+## Common Patterns
+
+### Service Metrics
+
 ```java
 @Service
-public class SupplierService {
+public class OrderService {
 
-    private final Counter suppliersCreated;
-    private final Timer supplierLookup;
-    private final DistributionSummary supplierWeight;
+    private final Counter ordersCreated;
+    private final Timer orderLookup;
 
-    public SupplierService(MeterRegistry registry) {
-        this.suppliersCreated = Counter.builder("supplier.created")
-            .description("New suppliers created")
+    public OrderService(MeterRegistry registry) {
+        this.ordersCreated = Counter.builder("order.created")
+            .description("Orders created")
             .register(registry);
 
-        this.supplierLookup = Timer.builder("supplier.lookup.duration")
-            .description("Time to lookup supplier")
-            .register(registry);
-
-        this.supplierWeight = DistributionSummary.builder("supplier.weight")
-            .baseUnit("kg")
-            .description("Supplier shipment weight")
+        this.orderLookup = Timer.builder("order.lookup.duration")
+            .description("Time to lookup order")
             .register(registry);
     }
 
-    public Supplier createSupplier(String name) {
+    public Order createOrder(OrderRequest request) {
         Timer.Sample sample = Timer.start();
         try {
-            Supplier supplier = new Supplier(name);
-            suppliersCreated.increment();
-            return supplier;
+            Order order = new Order(request);
+            ordersCreated.increment();
+            return order;
         } finally {
-            sample.stop(supplierLookup);
+            sample.stop(orderLookup);
         }
     }
 }
 ```
 
-**Method 2: @Timed Annotation**
+### @Timed Annotation
+
 ```java
 @Configuration
 public class MetricsConfig {
@@ -318,7 +284,7 @@ public class InvoiceService {
 }
 ```
 
-### Step 6: Apply Common Tags Organization-Wide
+### Common Tags Organization-Wide
 
 ```java
 @Configuration
@@ -331,229 +297,36 @@ public class MetricsConfig {
 
         return registry -> registry.config()
             .commonTags(
-                "application", appName,           // "supplier-charges-api"
-                "environment", environment,        // "production"
-                "region", "europe-west2",         // GKE region
-                "cluster", "supplier-charges-gke" // Cluster name
+                "application", appName,
+                "environment", environment,
+                "region", "europe-west2"
             );
     }
 }
 ```
 
-## Examples
+## Supporting Files
 
-### Example 1: Comprehensive Service Metrics
-
-```java
-@Service
-public class ChargeProcessingService {
-
-    private final Counter chargesProcessed;
-    private final Counter chargesFailed;
-    private final Timer processingTimer;
-    private final DistributionSummary chargeAmount;
-    private final Gauge queueDepth;
-
-    public ChargeProcessingService(MeterRegistry registry) {
-        this.chargesProcessed = Counter.builder("charge.processed")
-            .tag("type", "supplier")
-            .description("Total charges processed successfully")
-            .register(registry);
-
-        this.chargesFailed = Counter.builder("charge.failed")
-            .tag("type", "supplier")
-            .description("Failed charge processing attempts")
-            .register(registry);
-
-        this.processingTimer = Timer.builder("charge.processing.duration")
-            .description("Time to process a charge")
-            .serviceLevelObjectives(
-                Duration.ofMillis(100),
-                Duration.ofMillis(500),
-                Duration.ofMillis(1000)
-            )
-            .register(registry);
-
-        this.chargeAmount = DistributionSummary.builder("charge.amount")
-            .baseUnit("GBP")
-            .description("Charge amount distribution")
-            .register(registry);
-
-        this.queueDepth = Gauge.builder("charge.queue.depth",
-                this::getCurrentQueueDepth)
-            .description("Current charge processing queue size")
-            .register(registry);
-    }
-
-    public void processCharge(Charge charge) {
-        Timer.Sample sample = Timer.start();
-
-        try {
-            validateCharge(charge);
-            persistCharge(charge);
-
-            chargeAmount.record(charge.getAmount().doubleValue());
-            chargesProcessed.increment();
-
-        } catch (ValidationException e) {
-            chargesFailed.increment();
-            throw e;
-        } finally {
-            sample.stop(processingTimer);
-        }
-    }
-
-    private int getCurrentQueueDepth() {
-        // Return queue size at observation time
-        return chargingQueue.size();
-    }
-}
-```
-
-### Example 2: Actuator Integration with Spring Boot
-
-```yaml
-# application.yml
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,metrics,prometheus
-
-  metrics:
-    distribution:
-      percentiles-histogram:
-        http.server.requests: true
-
-      slo:
-        http.server.requests: 50ms,100ms,500ms,1s
-
-    enable:
-      jvm: true
-      process: true
-      system: true
-      logback: true
-
-    tags:
-      application: ${spring.application.name}
-      environment: ${ENVIRONMENT:labs}
-      region: europe-west2
-
-  endpoint:
-    health:
-      show-details: always
-    prometheus:
-      enabled: true
-```
-
-**Endpoints**:
-- `/actuator/metrics` - List all metrics
-- `/actuator/metrics/charge.processed` - View specific metric
-- `/actuator/prometheus` - Prometheus scrape endpoint
-- `/actuator/health` - Application health
-
-### Example 3: GCP Cloud Monitoring Integration
-
-```yaml
-# application.yml
-spring:
-  cloud:
-    gcp:
-      project-id: ecp-wtr-supplier-charges-labs
-
-management:
-  metrics:
-    export:
-      stackdriver:
-        enabled: true
-        project-id: ecp-wtr-supplier-charges-labs
-        step: 1m
-        use-semantic-metric-names: true
-```
-
-With Gradle dependency:
-```kotlin
-implementation("io.micrometer:micrometer-registry-stackdriver")
-```
-
-Metrics automatically exported to Cloud Monitoring!
-
-### Example 4: Prevent High Cardinality OOM
-
-```java
-@Configuration
-public class MetricsConfig {
-
-    /**
-     * Limits metric cardinality to prevent OutOfMemoryError.
-     * Each unique URI creates a separate metric, so we cap at 100.
-     */
-    @Bean
-    public MeterFilter cardinalityDefense() {
-        return MeterFilter.maximumAllowableTags(
-            "http.server.requests",
-            "uri",
-            100,  // Max 100 unique URIs
-            MeterFilter.deny()  // Reject new meters after limit
-        );
-    }
-
-    /**
-     * Normalize URIs to bounded categories.
-     * /api/charges/12345 → /api/charges/{id}
-     * /api/charges/67890 → /api/charges/{id}
-     */
-    @Bean
-    public MeterFilter uriNormalization() {
-        return MeterFilter.replaceTagValues("uri", uri -> {
-            // Strip query parameters
-            int queryIndex = uri.indexOf('?');
-            if (queryIndex > 0) {
-                uri = uri.substring(0, queryIndex);
-            }
-
-            // Replace IDs with placeholders
-            return uri.replaceAll("/\\d+", "/{id}")
-                     .replaceAll("/[a-f0-9-]{36}", "/{uuid}");
-        });
-    }
-
-    /**
-     * Monitor metric cardinality itself.
-     */
-    @Bean
-    public MeterBinder cardinalityMonitor(MeterRegistry registry) {
-        return (r) -> Gauge.builder("micrometer.meter.count",
-                registry, MeterRegistry::getMeters,
-                Collection::size)
-            .description("Number of meters in registry")
-            .register(r);
-    }
-}
-```
+| File | Purpose |
+|------|---------|
+| [references/meter-types-reference.md](references/meter-types-reference.md) | Comprehensive meter types guide with decision trees |
 
 ## Requirements
 
 - Spring Boot 2.2+ (Micrometer included)
 - Micrometer core library (auto-included with Actuator)
 - JVM application with Spring Boot
-- Monitoring system backend (Prometheus, Cloud Monitoring, etc.)
+- Monitoring system backend (Prometheus, Cloud Monitoring)
 
-**Dependencies**:
+**Dependencies:**
 ```gradle
 implementation("org.springframework.boot:spring-boot-starter-actuator")
-
-// Choose one or more backends:
-implementation("io.micrometer:micrometer-registry-prometheus")
-implementation("io.micrometer:micrometer-registry-stackdriver")
-implementation("io.micrometer:micrometer-tracing-bridge-otel")
+implementation("io.micrometer:micrometer-registry-prometheus")  // Choose backend
 ```
 
 ## See Also
 
-- **Meter Types**: Counter, Gauge, Timer, DistributionSummary
-- **Dimensional Metrics**: Tags, Cardinality Management, Tag Normalization
-- **Spring Boot Integration**: Actuator, Auto-configuration, Common Metrics
-- **Monitoring Backends**: Prometheus, Cloud Monitoring, Datadog, New Relic
-- **Performance**: Percentiles, Histograms, SLO Buckets
-- **Troubleshooting**: High Cardinality, Memory Usage, Metric Naming
+- **[python-micrometer-cardinality-control](../python-micrometer-cardinality-control/SKILL.md)** - High cardinality prevention
+- **[python-micrometer-business-metrics](../python-micrometer-business-metrics/SKILL.md)** - Business KPIs
+- **[python-micrometer-gcp-cloud-monitoring](../python-micrometer-gcp-cloud-monitoring/SKILL.md)** - GCP export
+- **[python-micrometer-metrics-setup](../python-micrometer-metrics-setup/SKILL.md)** - Initial setup

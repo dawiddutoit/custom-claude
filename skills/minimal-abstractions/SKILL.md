@@ -1,11 +1,12 @@
 ---
 name: minimal-abstractions
 description: |
-  Enforces the principle of avoiding unnecessary abstractions and complexity in codebases.
-  Use when evaluating new abstractions, reviewing architecture proposals, detecting over-engineering,
-  or simplifying existing code. Triggers on "is this abstraction necessary", "too many layers",
-  "simplify architecture", "reduce complexity", "over-engineered", "do we need this interface",
-  or when reviewing design patterns. Works with architecture reviews, code reviews, and refactoring tasks.
+  Evaluates and prevents unnecessary abstractions by analyzing interfaces, layers, and patterns
+  against concrete requirements. Use when evaluating new abstractions, reviewing architecture proposals,
+  detecting over-engineering, or simplifying existing code. Triggers on "is this abstraction necessary",
+  "too many layers", "simplify architecture", "reduce complexity", "over-engineered", "do we need
+  this interface", or when reviewing design patterns.
+version: 1.0.0
 allowed-tools:
   - Read
   - Grep
@@ -35,7 +36,7 @@ If any answer is "no" or "maybe" → Don't add it. Use the simplest solution tha
 8. Expected Outcomes
 9. Red Flags to Avoid
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 **Explicit Triggers (User asks):**
 - "Is this abstraction necessary?"
@@ -59,7 +60,7 @@ If any answer is "no" or "maybe" → Don't add it. Use the simplest solution tha
 - Tests are difficult to write due to layering
 - Simple changes require touching multiple abstraction layers
 
-## 2. What This Skill Does
+## What This Skill Does
 
 This skill provides a systematic framework for:
 - Evaluating whether new abstractions are warranted
@@ -68,7 +69,17 @@ This skill provides a systematic framework for:
 - Preventing abstraction proliferation
 - Simplifying code by removing unneeded layers
 
-## 3. Core Philosophy
+## Instructions
+
+When evaluating an abstraction:
+
+1. **Search for existing abstractions** - Use Grep/Read to find similar patterns in codebase
+2. **Apply the evaluation checklist** - Run through all 5 questions in section 4
+3. **Check for red flags** - Scan code for patterns in section 5
+4. **Recommend simpler alternative** - Provide concrete code example
+5. **Document decision** - Explain why abstraction is/isn't needed
+
+## Core Philosophy
 
 ### The Abstraction Principle
 
@@ -98,7 +109,7 @@ Before creating a new abstraction:
 3. Reuse project-standard patterns (e.g., Repository, Service, Handler)
 4. Only create new abstractions when existing ones truly don't fit
 
-## 4. Abstraction Evaluation Checklist
+## Abstraction Evaluation Checklist
 
 Use this checklist before adding ANY new abstraction (interface, abstract class, wrapper, layer):
 
@@ -139,7 +150,7 @@ Use this checklist before adding ANY new abstraction (interface, abstract class,
 
 **Action:** If simpler solution exists → Use it.
 
-## 5. Detection Patterns (Red Flags)
+## Detection Patterns (Red Flags)
 
 ### Red Flag 1: Lonely Interface
 ```python
@@ -225,7 +236,7 @@ class YamlParser(Parser[dict]): ...
 
 **Better approach:** Start with simple JSON config loader. Generalize when second format is needed.
 
-## 6. Examples: Good vs Over-Engineered
+## Examples: Good vs Over-Engineered
 
 ### Example 1: Repository Pattern
 
@@ -306,7 +317,7 @@ class ProductRepository(Protocol):  # Follows project convention
     def save_product(self, product: Product) -> None: ...
 ```
 
-## 7. Integration with Architecture Validation
+## Integration with Architecture Validation
 
 This skill complements existing architecture validation skills:
 
@@ -320,7 +331,7 @@ This skill complements existing architecture validation skills:
 2. Use minimal-abstractions to evaluate NEW abstractions
 3. Ensure new code follows project patterns (don't reinvent)
 
-## 8. Expected Outcomes
+## Expected Outcomes
 
 ### Successful Simplification
 
@@ -374,7 +385,7 @@ Recommendation: SKIP THIS ABSTRACTION
   - Wait for concrete multi-service requirement before abstracting
 ```
 
-## 9. Red Flags to Avoid
+## Red Flags to Avoid
 
 ### Anti-Patterns
 - ❌ "We might need it later" (YAGNI violation)

@@ -1,16 +1,17 @@
 ---
 name: lotus-analyze-reference-dependencies
 description: |
-  Identify and map Lotus Notes reference database dependencies, lookups, and cross-database relationships.
+  Identifies and maps Lotus Notes reference database dependencies, lookups, and cross-database relationships.
   Use when analyzing how applications depend on shared reference databases (suppliers, catalogs, employees),
   tracking bidirectional relationships, handling orphaned references, or planning database synchronization.
-  Works with reference field mapping, dependency graphs, circular reference detection, and orphan handling.
+version: 1.0.0
 allowed-tools:
   - Read
   - Bash
   - Grep
 ---
 
+Works with reference field mapping, dependency graphs, circular reference detection, and orphan handling.
 # Analyze Lotus Notes Reference Database Dependencies
 
 ## Table of Contents
@@ -618,6 +619,6 @@ Dependency analysis:
 
 ## See Also
 
-- [analyze-lotus-nsf-structure](../analyze-lotus-nsf-structure/SKILL.md) - Understanding NSF database forms and fields
-- [lotus-notes-migration](../lotus-notes-migration/SKILL.md) - Overall migration planning
-- [replace-lotus-odbc-direct-writes](../replace-lotus-odbc-direct-writes/SKILL.md) - Replacing direct database access with APIs
+- [lotus-analyze-nsf-structure](../lotus-analyze-nsf-structure/SKILL.md) - Understanding NSF database forms and fields
+- [lotus-migration](../lotus-migration/SKILL.md) - Overall migration planning
+- [lotus-replace-odbc-direct-writes](../lotus-replace-odbc-direct-writes/SKILL.md) - Replacing direct database access with APIs

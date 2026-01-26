@@ -1,6 +1,7 @@
 ---
 name: util-manage-todo
 description: Manage project todos in todo.md files with task states (pending, in_progress, completed). PROACTIVELY invoke when Claude detects need to create or update a todo during a session. Use when breaking down work into tasks, tracking progress across sessions, organizing complex multi-step projects, or coordinating task states. Supports refactor/migration tracking with ADR integration.
+version: 1.0.0
 allowed-tools:
   - Read
   - Write

@@ -1,11 +1,12 @@
 ---
 name: gcp-gke-workload-identity
 description: |
-  Implement Workload Identity for secure, keyless authentication between GKE pods
-  and Google Cloud services. Use when setting up pod authentication to Pub/Sub, Cloud SQL,
-  Secret Manager, or other GCP services. Eliminates service account key management,
-  reduces security blast radius, and implements least privilege access patterns.
-  Works with Spring Boot applications and IAM bindings.
+  Implements Workload Identity for secure, keyless authentication between GKE pods
+  and Google Cloud services. Use when setting up pod authentication to Pub/Sub,
+  Cloud SQL, Secret Manager, or other GCP services. Eliminates service account key
+  management, reduces security blast radius, and implements least privilege access
+  patterns. Works with Spring Boot applications and IAM bindings.
+version: 1.0.0
 allowed-tools:
   - Bash
   - Read
@@ -339,6 +340,6 @@ echo "Workload Identity verification complete!"
 
 ## See Also
 
-- [gke-cluster-setup](../gke-cluster-setup/SKILL.md) - Ensure Workload Identity is enabled
-- [gke-troubleshooting](../gke-troubleshooting/SKILL.md) - Diagnose Workload Identity issues
-- [google-cloud-pubsub](../google-cloud-pubsub/SKILL.md) - Configure Pub/Sub integration
+- [gcp-gke-cluster-setup](../gcp-gke-cluster-setup/SKILL.md) - Ensure Workload Identity is enabled
+- [gcp-gke-troubleshooting](../gcp-gke-troubleshooting/SKILL.md) - Diagnose Workload Identity issues
+- [gcp-pubsub](../gcp-pubsub/SKILL.md) - Configure Pub/Sub integration

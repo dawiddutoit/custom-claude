@@ -8,6 +8,7 @@ description: |
   for each required parameter. Works with Python service classes following
   dependency injection pattern. High automation opportunity (100+ test classes
   use this pattern).
+version: 1.0.0
 allowed-tools:
   - Read
   - Grep

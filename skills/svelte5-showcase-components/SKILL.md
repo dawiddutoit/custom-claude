@@ -1,14 +1,15 @@
 ---
 name: svelte5-showcase-components
 description: |
-  Comprehensive guide to the Svelte 5 Showcase component library with 49 production-ready
+  Provides Comprehensive guide to the Svelte 5 Showcase component library with 49 production-ready
   components organized into 7 categories. Use when you need to discover available components,
   understand component usage patterns, integrate components into new projects, or reference
   best practices for Svelte 5 development. Triggers on "what components are available",
   "how to use [component name]", "integrate showcase components", "copy component from showcase",
   "Svelte 5 component examples", or "showcase component library". Works with shadcn-svelte,
   Bits UI, TailwindCSS v4, sveltekit-superforms, and Svelte 5 runes.
----
+
+version: 1.0.0---
 
 # Svelte 5 Showcase Components
 
@@ -54,7 +55,7 @@ The Svelte 5 Showcase is a production-ready component library with **49 componen
 
 ---
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 ### Explicit Triggers
 
@@ -89,7 +90,7 @@ Invoke when troubleshooting:
 
 ---
 
-## 2. Component Inventory
+## Component Inventory
 
 ### Complete Component List (49 Total)
 
@@ -177,7 +178,7 @@ Invoke when troubleshooting:
 
 ---
 
-## 3. Quick Integration
+## Quick Integration
 
 ### Method 1: Using shadcn-svelte CLI (Recommended)
 
@@ -252,7 +253,7 @@ export type WithElementRef<T, U extends HTMLElement = HTMLElement> = T & { ref?:
 
 ---
 
-## 4. Common Usage Patterns
+## Common Usage Patterns
 
 ### Svelte 5 Runes (Required Syntax)
 
@@ -373,7 +374,7 @@ All components use Svelte 5 runes:
 
 ---
 
-## 5. Form Handling
+## Form Handling
 
 ### Complete Form Integration
 
@@ -497,7 +498,7 @@ export const actions: Actions = {
 
 ---
 
-## 6. Supporting Files
+## Supporting Files
 
 ### examples/component-examples.md
 
@@ -531,7 +532,7 @@ Complete integration guide covering:
 
 ---
 
-## 7. Expected Outcomes
+## Expected Outcomes
 
 ### Successful Component Discovery
 
@@ -604,7 +605,7 @@ Retry integration after installing dependencies.
 
 ---
 
-## 8. Requirements
+## Requirements
 
 ### Environment
 
@@ -654,7 +655,7 @@ Retry integration after installing dependencies.
 
 ---
 
-## 9. Red Flags to Avoid
+## Red Flags to Avoid
 
 **❌ Using Svelte 4 Syntax**
 

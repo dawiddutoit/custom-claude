@@ -1,20 +1,53 @@
 ---
 name: export-and-analyze-jira-data
 description: |
-  Export Jira issues with flexible filtering and analyze data using multiple formats (JSON, CSV, JSONL).
-  Use when extracting bulk data from Jira, filtering issues, exporting for external analysis, or analyzing
-  Jira metrics and trends. Covers export patterns, format selection, pagination, filtering strategies,
-  and analysis workflows for large datasets.
-  Trigger keywords: "export", "bulk data", "extract data", "filter issues", "analyze", "metrics",
-  "CSV export", "JSON format", "large dataset", "streaming", "pagination", "data pipeline",
-  "prepare data", "analysis workflow", "save to file", "filter by status".
+  Exports Jira issues with flexible filtering and analyzes data using multiple formats (JSON, CSV, JSONL).
+  Use when asked to "export Jira data", "bulk export tickets", "analyze Jira metrics", "extract issues to CSV",
+  "get all issues from project", "export with filters", "analyze issue trends", or "prepare Jira data for reporting".
+  Covers export patterns, format selection, pagination, filtering strategies, and analysis workflows for large datasets.
+  Works with jira-tool CLI, JQL queries, and Python analysis scripts.
+version: 1.0.0
 ---
 
 # Export and Analyze Jira Data
 
-## Purpose
+## When to Use This Skill
 
-Master the art of extracting and analyzing Jira data at scale. Learn how to export issues with complex filters, choose the right data format for your use case (JSON for readability, JSONL for streaming, CSV for spreadsheets), analyze trends and metrics, and integrate data into external tools. This skill covers the complete data pipeline: query → export → transform → analyze → report.
+**Explicit Triggers:**
+- "Export Jira issues to CSV"
+- "Bulk export all tickets from project X"
+- "Get all issues with status Y"
+- "Extract Jira data for analysis"
+- "Export with changelog for state analysis"
+- "Analyze Jira metrics and trends"
+- "Prepare Jira data for BI tool"
+
+**Implicit Triggers:**
+- Need to analyze issue distribution by status/priority/assignee
+- Want to create weekly/monthly metrics reports
+- Need to archive historical data
+- Preparing data for external tools (Excel, Tableau, Power BI)
+- Investigating workflow bottlenecks
+- Comparing multiple projects
+
+**Debugging Context:**
+- "How do I export large datasets without timeout?"
+- "What format should I use for streaming analysis?"
+- "Why is my export missing issues?"
+- "How to include changelog in export?"
+
+## What This Skill Does
+
+This skill provides expertise in extracting and analyzing Jira data at scale. It covers:
+- Exporting issues with complex filters and JQL queries
+- Choosing the right format (JSON, CSV, JSONL, Table) for your use case
+- Handling pagination for large datasets (1000+ issues)
+- Expanding fields (changelog, transitions) for deep analysis
+- Transforming and filtering exported data with jq and Python
+- Generating insights (status distribution, workload, age analysis)
+- Integrating Jira data into external tools and reports
+
+The complete pipeline: query → export → transform → analyze → report.
 
 ## Quick Start
 
@@ -97,158 +130,34 @@ uv run jira-tool search "project = PROJ AND created >= -30d AND labels = urgent"
 
 ### Step 2: Choose the Right Export Format
 
-Each format has trade-offs. Choose based on your use case:
+Pick format based on your use case:
 
-**Format 1: CSV (Spreadsheet-Friendly)**
-```bash
-uv run jira-tool export --format csv -o issues.csv
-```
+| Format | Command | Best For | Characteristics |
+|--------|---------|----------|-----------------|
+| **CSV** | `--format csv` | Excel, spreadsheets | Flat structure, easy to open, lossy |
+| **JSON** | `--format json` | Human reading, processing | Full structure, pretty-printed, memory-intensive |
+| **JSONL** | `--format jsonl` | Large datasets (10K+ issues) | One issue per line, streaming-friendly |
+| **Table** | `--format table` | Quick console viewing | Color-coded, cannot save to file |
 
-**Best for**:
-- Excel/spreadsheet analysis
-- Non-technical stakeholders
-- Simple tabular data
-- Importing to other tools
+**Quick Decision**:
+- Excel analysis → CSV
+- < 1000 issues → JSON
+- 1000+ issues → JSONL
+- Just checking → Table
 
-**Characteristics**:
-- Flat structure (one row per issue)
-- Limited to top-level fields only
-- Easy to sort/filter in Excel
-- Lossy (complex data simplified)
-
-**Example output**:
-```csv
-key,summary,status,assignee,priority,created
-PROJ-1,Fix login bug,In Progress,alice@co.com,High,2024-01-15
-PROJ-2,Add profile page,To Do,bob@co.com,Medium,2024-01-16
-```
-
----
-
-**Format 2: JSON (Readable, Processable)**
-```bash
-uv run jira-tool export --format json -o issues.json
-```
-
-**Best for**:
-- Human-readable processing
-- Small-to-medium datasets (< 100MB)
-- Pretty-printed output
-- Version control/review
-
-**Characteristics**:
-- Full nested structure preserved
-- All fields included
-- Pretty-printed for readability
-- Entire file in memory
-
-**Example output**:
-```json
-{
-  "issues": [
-    {
-      "key": "PROJ-1",
-      "fields": {
-        "summary": "Fix login bug",
-        "status": { "name": "In Progress" },
-        "changelog": {
-          "histories": [
-            {
-              "created": "2024-01-15T10:00:00Z",
-              "items": [...]
-            }
-          ]
-        }
-      }
-    }
-  ]
-}
-```
-
----
-
-**Format 3: JSONL (Streaming-Friendly)**
-```bash
-uv run jira-tool export --format jsonl -o issues.jsonl
-```
-
-**Best for**:
-- Large datasets (100MB - GB scale)
-- Streaming/processing pipeline
-- Line-by-line consumption
-- Minimal memory usage
-
-**Characteristics**:
-- One JSON object per line
-- Perfect for `jq`, `grep`, Python streaming
-- Full structure per line
-- Process without loading entire file
-
-**Example output**:
-```
-{"key":"PROJ-1","fields":{"summary":"Fix login bug","status":{"name":"In Progress"}}}
-{"key":"PROJ-2","fields":{"summary":"Add profile page","status":{"name":"To Do"}}}
-```
-
-**Processing JSONL efficiently**:
+**JSONL Processing Example**:
 ```bash
 # Count issues
 wc -l issues.jsonl
 
 # Filter with jq
-jq 'select(.fields.status.name == "In Progress")' issues.jsonl > in_progress.jsonl
+jq 'select(.fields.status.name == "In Progress")' issues.jsonl > filtered.jsonl
 
-# Extract specific field
-jq '.key' issues.jsonl | wc -l
-
-# Python streaming
-python3 << 'EOF'
-import json
-
-total = 0
-for line in open('issues.jsonl'):
-    issue = json.loads(line)
-    if issue['fields']['status']['name'] == 'In Progress':
-        total += 1
-
-print(f"In Progress: {total}")
-EOF
+# Python streaming (process line-by-line without loading entire file)
+python3 -c "import json; \
+  print(sum(1 for line in open('issues.jsonl') \
+  if json.loads(line)['fields']['status']['name'] == 'In Progress'))"
 ```
-
----
-
-**Format 4: Table (Console-Only)**
-```bash
-uv run jira-tool export --format table
-```
-
-**Best for**:
-- Quick viewing
-- Console output
-- Not saving to file
-
-**Characteristics**:
-- Rich formatting (colors, alignment)
-- Limited fields shown
-- Cannot be saved
-- Interactive review
-
----
-
-**Format Comparison**:
-
-| Format | Size | Speed | Readability | Scalability | Use Case |
-|--------|------|-------|-------------|-------------|----------|
-| CSV | Small | Fast | High | Medium | Excel, simple tools |
-| JSON | Large | Medium | High | Small | Processing, review |
-| JSONL | Large | Fast | Medium | Very High | Streaming, big data |
-| Table | N/A | Fast | Highest | N/A | Quick viewing |
-
-**Decision Tree**:
-- Want to open in Excel? → CSV
-- Want human-readable? → JSON
-- Have 10,000+ issues? → JSONL
-- Just checking results? → Table
 
 ### Step 3: Handle Pagination and Large Datasets
 
@@ -336,33 +245,24 @@ uv run jira-tool search "project = PROJ AND created >= -30d" \
 
 ### Step 5: Filter and Prepare Data
 
-Export is just the first step. Prepare data for analysis:
+Export is just the first step. Transform data for analysis.
 
-**Filter After Export** (with jq):
+**Filter with jq** (extract open issues):
 ```bash
-# Extract only open issues
 jq '.issues[] | select(.fields.status.name == "Open")' issues.json > open_issues.json
-
-# Get issue keys and summaries
-jq '.issues[] | {key: .key, summary: .fields.summary}' issues.json > keys_summaries.jsonl
-
-# Count by status
-jq '.issues | group_by(.fields.status.name) | map({status: .[0].fields.status.name, count: length})' issues.json
 ```
 
-**Filter After Export** (with Python):
+**Convert with Python** (JSON to CSV):
 ```python
 import json
 import csv
 
-# Convert JSON to CSV (with selected fields)
 with open('issues.json') as f:
     data = json.load(f)
 
 with open('issues_simple.csv', 'w', newline='') as out:
     writer = csv.DictWriter(out, fieldnames=['key', 'summary', 'status', 'priority'])
     writer.writeheader()
-
     for issue in data['issues']:
         writer.writerow({
             'key': issue['key'],
@@ -372,52 +272,45 @@ with open('issues_simple.csv', 'w', newline='') as out:
         })
 ```
 
-**Aggregation After Export**:
+**Aggregate** (count by status):
 ```python
-import json
 from collections import defaultdict
+import json
 
 with open('issues.json') as f:
     data = json.load(f)
 
-# Count by status
 by_status = defaultdict(int)
 for issue in data['issues']:
-    status = issue['fields']['status']['name']
-    by_status[status] += 1
+    by_status[issue['fields']['status']['name']] += 1
 
-print("Issues by Status:")
 for status, count in sorted(by_status.items(), key=lambda x: x[1], reverse=True):
-    print(f"  {status}: {count}")
+    print(f"{status}: {count}")
 ```
+
+See `references/detailed-analysis-patterns.md` for comprehensive filtering and analysis examples.
 
 ### Step 6: Analyze and Generate Insights
 
-Transform exported data into actionable insights:
+Quick analysis patterns:
 
-**Analysis 1: Status Distribution**
+**Status Distribution**:
 ```python
-import json
 from collections import Counter
+import json
 
 with open('issues.json') as f:
     data = json.load(f)
 
-statuses = Counter(
-    issue['fields']['status']['name']
-    for issue in data['issues']
-)
-
-print("Status Distribution:")
+statuses = Counter(issue['fields']['status']['name'] for issue in data['issues'])
 for status, count in statuses.most_common():
-    pct = (count / len(data['issues'])) * 100
-    print(f"  {status}: {count} ({pct:.1f}%)")
+    print(f"{status}: {count} ({count/len(data['issues'])*100:.1f}%)")
 ```
 
-**Analysis 2: Workload by Assignee**
+**Workload by Assignee**:
 ```python
-import json
 from collections import Counter
+import json
 
 with open('issues.json') as f:
     data = json.load(f)
@@ -428,260 +321,102 @@ for issue in data['issues']:
     if assignee:
         assignees[assignee['displayName']] += 1
 
-print("Workload Distribution:")
 for name, count in assignees.most_common(10):
-    print(f"  {name}: {count}")
+    print(f"{name}: {count}")
 ```
 
-**Analysis 3: Age of Open Issues**
-```python
-import json
-from datetime import datetime, UTC
-
-with open('issues.json') as f:
-    data = json.load(f)
-
-now = datetime.now(UTC)
-open_issues = [
-    issue for issue in data['issues']
-    if issue['fields']['status']['name'] != 'Done'
-]
-
-# Calculate age
-for issue in open_issues[:5]:  # Top 5
-    created = datetime.fromisoformat(
-        issue['fields']['created'].replace('Z', '+00:00')
-    )
-    age = (now - created).days
-    print(f"{issue['key']}: {age} days old")
-```
-
-**Analysis 4: Priority vs Status** (correlation analysis)
-```python
-import json
-
-with open('issues.json') as f:
-    data = json.load(f)
-
-matrix = {}
-for issue in data['issues']:
-    priority = issue['fields']['priority']['name'] if issue['fields'].get('priority') else 'None'
-    status = issue['fields']['status']['name']
-
-    key = (priority, status)
-    matrix[key] = matrix.get(key, 0) + 1
-
-print("Priority vs Status Matrix:")
-print("Priority\tTo Do\tIn Progress\tDone")
-for priority in ['Highest', 'High', 'Medium', 'Low']:
-    row = f"{priority}"
-    for status in ['To Do', 'In Progress', 'Done']:
-        count = matrix.get((priority, status), 0)
-        row += f"\t{count}"
-    print(row)
-```
+For more analysis patterns including age calculation, priority correlation, and trend analysis, see `references/detailed-analysis-patterns.md`.
 
 ### Step 7: Export for External Tools
 
-Jira data can fuel other systems:
+Target specific systems:
 
-**Export for BI Tools** (Tableau, Power BI):
+**BI Tools** (Tableau, Power BI):
 ```bash
-# CSV format for most BI tools
 uv run jira-tool export --all --format csv -o issues_for_bi.csv
-
-# Or combine with advanced tools
-# Power BI: CSV import with automatic refresh
-# Tableau: Direct CSV or API connection
 ```
 
-**Export for Analytics** (spreadsheet):
+**Spreadsheets** (Excel, Google Sheets):
 ```bash
-# Export to CSV, then open in Excel/Google Sheets
 uv run jira-tool export --format csv -o team_metrics.csv
-
-# In spreadsheet: Add formulas, pivot tables, charts
 ```
 
-**Export for Reporting** (Markdown/HTML):
+**Reports** (Markdown):
 ```python
 import json
-import csv
 
-# Read JSON, write Markdown report
 with open('issues.json') as f:
     data = json.load(f)
 
 with open('report.md', 'w') as out:
     out.write("# Jira Export Report\n\n")
     out.write(f"Total Issues: {len(data['issues'])}\n\n")
-    out.write("## Issues\n\n")
     out.write("| Key | Summary | Status |\n")
     out.write("|-----|---------|--------|\n")
-
-    for issue in data['issues'][:20]:  # First 20
-        key = issue['key']
-        summary = issue['fields']['summary']
-        status = issue['fields']['status']['name']
-        out.write(f"| {key} | {summary} | {status} |\n")
+    for issue in data['issues'][:20]:
+        out.write(f"| {issue['key']} | {issue['fields']['summary']} | {issue['fields']['status']['name']} |\n")
 ```
 
-**Export for Archive** (JSON backup):
+**Archive** (full backup):
 ```bash
-# Keep full JSON backup with all data
-uv run jira-tool export --all \
-  --expand "changelog,transitions" \
-  --format json \
-  -o archive_$(date +%Y%m%d).json
+uv run jira-tool export --all --expand "changelog,transitions" --format json -o archive_$(date +%Y%m%d).json
 ```
 
-## Examples
+## Common Workflows
 
-### Example 1: Weekly Metrics Report
+### Weekly Metrics Report
 
 ```bash
-#!/bin/bash
-# Export this week's activity
-uv run jira-tool export \
-  --project PROJ \
-  --created "-7d" \
-  --format json \
-  -o weekly_issues.json
-
-# Analyze
-python3 << 'EOF'
-import json
-from datetime import datetime, UTC, timedelta
-
-with open('weekly_issues.json') as f:
-    data = json.load(f)
-
-issues = data['issues']
-now = datetime.now(UTC)
-week_ago = now - timedelta(days=7)
-
-print(f"Weekly Metrics ({week_ago.date()} to {now.date()})")
-print(f"====================================")
-print(f"Total Issues Created: {len(issues)}")
-
-by_status = {}
-for issue in issues:
-    status = issue['fields']['status']['name']
-    by_status[status] = by_status.get(status, 0) + 1
-
-print("\nBy Status:")
-for status, count in sorted(by_status.items()):
-    print(f"  {status}: {count}")
-EOF
+# Export and analyze in one command chain
+uv run jira-tool export --project PROJ --created "-7d" --format json -o weekly.json && \
+  python3 -c "import json; from collections import Counter; \
+  data = json.load(open('weekly.json')); \
+  statuses = Counter(i['fields']['status']['name'] for i in data['issues']); \
+  print(f'Total: {len(data[\"issues\"])}'); \
+  [print(f'{s}: {c}') for s, c in statuses.items()]"
 ```
 
-### Example 2: Archive Old Issues with History
+### Archive Closed Issues
 
 ```bash
-# Export all closed issues with full changelog (for archive)
+# Export with changelog for complete archive
 uv run jira-tool search "status = Done AND updated <= -30d" \
-  --expand changelog \
-  --format jsonl \
-  -o archived_issues.jsonl
-
-# Verify integrity
-wc -l archived_issues.jsonl
+  --expand changelog --format jsonl -o archived_issues.jsonl
 ```
 
-### Example 3: Prepare Data for Analysis Tool
+### Sprint Analysis for Excel
 
 ```bash
-# Export with all expansions for external analysis
+# Export sprint data, then use Python to convert to CSV
 uv run jira-tool search "sprint in openSprints()" \
-  --expand "changelog,transitions,operations" \
-  --format json \
-  -o sprint_full.json
-
-# Convert to simplified CSV for Excel analysis
-python3 << 'EOF'
-import json
-import csv
-
-with open('sprint_full.json') as f:
-    data = json.load(f)
-
-with open('sprint_analysis.csv', 'w', newline='') as out:
-    fields = ['key', 'summary', 'status', 'assignee', 'created', 'updated']
-    writer = csv.DictWriter(out, fieldnames=fields)
-    writer.writeheader()
-
-    for issue in data['issues']:
-        assignee = issue['fields']['assignee']
-        writer.writerow({
-            'key': issue['key'],
-            'summary': issue['fields']['summary'],
-            'status': issue['fields']['status']['name'],
-            'assignee': assignee['displayName'] if assignee else 'Unassigned',
-            'created': issue['fields']['created'],
-            'updated': issue['fields']['updated']
-        })
-
-print(f"Converted {len(data['issues'])} issues to CSV")
-EOF
+  --expand changelog --format json -o sprint.json
+# (CSV conversion script in references/detailed-analysis-patterns.md)
 ```
 
-### Example 4: Compare Two Projects
-
-```bash
-# Export both projects
-uv run jira-tool export --project PROJ1 --format jsonl -o proj1.jsonl
-uv run jira-tool export --project PROJ2 --format jsonl -o proj2.jsonl
-
-# Analyze differences
-python3 << 'EOF'
-import json
-from collections import Counter
-
-def analyze_file(filename):
-    statuses = Counter()
-    types = Counter()
-    count = 0
-    for line in open(filename):
-        issue = json.loads(line)
-        statuses[issue['fields']['status']['name']] += 1
-        types[issue['fields']['issuetype']['name']] += 1
-        count += 1
-    return count, statuses, types
-
-proj1_count, proj1_status, proj1_types = analyze_file('proj1.jsonl')
-proj2_count, proj2_status, proj2_types = analyze_file('proj2.jsonl')
-
-print(f"PROJ1: {proj1_count} issues")
-print(f"  Status: {dict(proj1_status)}")
-print(f"PROJ2: {proj2_count} issues")
-print(f"  Status: {dict(proj2_status)}")
-EOF
-```
+For complete examples including project comparison, trend analysis, and advanced workflows, see `references/detailed-analysis-patterns.md`.
 
 ## Requirements
 
-### Core Requirements
-- **Jira Cloud instance** with REST API v3 access
-- **Python 3.10+** (for jira-tool CLI)
-- **Environment variables**:
-  - `JIRA_BASE_URL` - Your Jira instance (e.g., `https://company.atlassian.net`)
-  - `JIRA_USERNAME` - Email for authentication
-  - `JIRA_API_TOKEN` - API token from Jira user settings
+**Core:**
+- Jira Cloud instance with REST API v3 access
+- Python 3.10+ (for jira-tool CLI)
+- Environment variables: `JIRA_BASE_URL`, `JIRA_USERNAME`, `JIRA_API_TOKEN`
 
-### Recommended Tools
-- **jq** (command-line JSON processor): `brew install jq`
-- **Python pandas**: `pip install pandas` (optional, for advanced analysis)
-- **Python json**: Built-in (for JSON processing)
-- **csv module**: Built-in (for CSV operations)
+**Optional Tools:**
+- `jq` for JSON processing: `brew install jq`
+- Python `pandas` for advanced analysis
 
-### Data Requirements
-- **For state analysis**: Issues must be exported with `--expand changelog`
-- **For trend analysis**: Export with `--created` or `--updated` date filters
-- **For large datasets**: Use JSONL format and streaming tools
+**Data Requirements:**
+- State analysis: Export with `--expand changelog`
+- Trend analysis: Use `--created` or `--updated` filters
+- Large datasets: Use JSONL format
 
-## See Also
+## Supporting Files
 
-- [Design Jira State Analyzer](/skills/design-jira-state-analyzer) - Analyze state transitions and cycle time
-- [Jira REST API](/skills/jira-api) - API reference for filter and expand options
-- [Build Jira Document Format](/skills/build-jira-document-format) - Create formatted reports
-- CLAUDE.md - Project configuration and patterns
+- `references/detailed-analysis-patterns.md` - Complete analysis examples, filtering patterns, and external tool integration workflows
+
+## Related Skills
+
+- [Design Jira State Analyzer](../design-jira-state-analyzer/SKILL.md) - Analyze state transitions and cycle time
+- [Jira REST API](../jira-api/SKILL.md) - API reference for filter and expand options
+- [Build Jira Document Format](../build-jira-document-format/SKILL.md) - Create formatted reports

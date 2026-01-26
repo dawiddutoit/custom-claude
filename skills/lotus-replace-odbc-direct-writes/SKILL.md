@@ -1,17 +1,18 @@
 ---
 name: lotus-replace-odbc-direct-writes
 description: |
-  Replace direct ODBC database writes and backend connections with proper API-based integration patterns.
+  Replaces direct ODBC database writes and backend connections with proper API-based integration patterns.
   Use when migrating code that directly modifies Lotus Notes databases via ODBC, converting backend
   connections to HTTP APIs, implementing proper request/response patterns, or establishing secure
-  data synchronization. Works with ODBC query migration, connection string updates, transaction handling,
-  and error recovery patterns.
+  data synchronization.
+version: 1.0.0
 allowed-tools:
   - Read
   - Bash
   - Grep
 ---
 
+Works with ODBC query migration, connection string updates, transaction handling, and error recovery patterns.
 # Replace Lotus ODBC Direct Writes with API Patterns
 
 ## Table of Contents
@@ -477,6 +478,6 @@ def ship_order(order_id: str, user_id: str):
 
 ## See Also
 
-- [analyze-lotus-nsf-structure](../analyze-lotus-nsf-structure/SKILL.md) - Understanding NSF database structures before replacement
-- [lotus-notes-migration](../lotus-notes-migration/SKILL.md) - Comprehensive migration approach
-- [convert-lotus-rich-text-fields](../convert-lotus-rich-text-fields/SKILL.md) - Converting formatted data fields
+- [lotus-analyze-nsf-structure](../lotus-analyze-nsf-structure/SKILL.md) - Understanding NSF database structures before replacement
+- [lotus-migration](../lotus-migration/SKILL.md) - Comprehensive migration approach
+- [lotus-convert-rich-text-fields](../lotus-convert-rich-text-fields/SKILL.md) - Converting formatted data fields

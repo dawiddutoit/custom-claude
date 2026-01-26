@@ -4,7 +4,8 @@ description: |
   Provision and manage GCP resources with Terraform. Use when working with Pub/Sub topics/subscriptions, GKE clusters,
   Cloud SQL, IAM roles, Cloud Storage, VPCs, service accounts, or any GCP service. Covers provider configuration,
   resource patterns, authentication, and GCP-specific best practices.
----
+
+version: 1.0.0---
 
 # Terraform GCP Integration Skill
 
@@ -565,6 +566,6 @@ gcloud services enable sqladmin.googleapis.com
 
 ## See Also
 
-- [terraform skill](../terraform/SKILL.md) - General reference
+- [terraform skill](../terraform-basics/SKILL.md) - General reference
 - [terraform-state-management](../terraform-state-management/SKILL.md) - State management
 - [terraform-troubleshooting](../terraform-troubleshooting/SKILL.md) - GCP-specific errors

@@ -1,5 +1,7 @@
 ---
 name: architecture-single-responsibility-principle
+version: 1.0.0
+tags: [architecture, srp, solid, validation, code-quality, clean-architecture]
 description: |
   Automated SRP validation using multi-dimensional detection. Use when reviewing code for SRP compliance, checking "is this doing too much", validating architectural boundaries, before commits, or during refactoring. Detects God classes, method naming violations, complexity issues.
 allowed-tools:
@@ -16,11 +18,11 @@ allowed-tools:
 
 ## Table of Contents
 
-**Quick Start** → [When to Use](#when-to-use-this-skill) | [What It Does](#purpose) | [Simple Example](#quick-start)
+**Quick Start** → [When to Use](#when-to-use-this-skill) | [Triggers](#triggers) | [What It Does](#purpose) | [Examples](./examples/usage-examples.md)
 
 **How to Implement** → [Detection Process](#instructions) | [Validation Levels](#step-1-determine-validation-level) | [Expected Output](#step-5-output-report)
 
-**Patterns** → [Detection Patterns](#detection-patterns) | [Project Patterns](./references/project-patterns.md)
+**Patterns & Scripts** → [Detection Patterns](#detection-patterns) | [Detection Script](./scripts/detect-patterns.sh) | [Project Patterns](./references/project-patterns.md)
 
 **Help** → [Troubleshooting](#troubleshooting) | [Requirements](#requirements) | [Integration](#integration-points)
 
@@ -37,7 +39,9 @@ allowed-tools:
 - When user says "check SRP", "validate single responsibility"
 - After implementing new services or handlers
 
-**User trigger phrases:**
+## Triggers
+
+Trigger with phrases like:
 - "check SRP"
 - "single responsibility"
 - "is this doing too much?"
@@ -52,19 +56,13 @@ Automatically detect Single Responsibility Principle violations using multi-dime
 
 ## Quick Start
 
-```bash
-# Validate entire codebase (thorough level)
-Skill(command: "single-responsibility-principle")
+See [usage-examples.md](./examples/usage-examples.md) for complete examples with expected output.
 
-# Validate specific directory
-Skill(command: "single-responsibility-principle --path=src/services/")
-
-# Fast validation (pre-commit)
-Skill(command: "single-responsibility-principle --level=fast")
-
-# Full validation with JSON output
-Skill(command: "single-responsibility-principle --level=full --format=json")
-```
+Basic usage:
+- Validate entire codebase: `Skill(command: "single-responsibility-principle")`
+- Fast pre-commit check: `Skill(command: "single-responsibility-principle --level=fast")`
+- Validate specific path: `Skill(command: "single-responsibility-principle --path=src/services/")`
+- JSON output for CI/CD: `Skill(command: "single-responsibility-principle --format=json")`
 
 ## Instructions
 
@@ -176,72 +174,13 @@ Next Steps:
 
 ## Examples
 
-### Example 1: Validate Entire Codebase
+See [usage-examples.md](./examples/usage-examples.md) for complete usage examples including:
+- Example 1: Validate entire codebase
+- Example 2: Fast pre-commit check
+- Example 3: Validate specific service
+- Example 4: JSON output for CI/CD
 
-```python
-# Default: thorough validation of src/
-Skill(command: "single-responsibility-principle")
-```
-
-**Expected Output**: Full report with all violation types, confidence scores, fix guidance.
-
-### Example 2: Fast Pre-Commit Check
-
-```python
-# Quick validation before commit
-Skill(command: "single-responsibility-principle --level=fast")
-```
-
-**Expected Output**: Naming patterns + basic size metrics only (5-10s).
-
-### Example 3: Validate Specific Service
-
-```python
-# Deep analysis of specific file
-Skill(command: "single-responsibility-principle --path=src/application/services/indexing_service.py --level=full")
-```
-
-**Expected Output**: Comprehensive analysis including actor identification, cohesion metrics.
-
-### Example 4: JSON Output for CI/CD
-
-```python
-# Machine-readable output
-Skill(command: "single-responsibility-principle --level=thorough --format=json")
-```
-
-**Expected Output**:
-```json
-{
-  "summary": {
-    "files_analyzed": 45,
-    "classes_analyzed": 78,
-    "violations": 12,
-    "passed": 66,
-    "pass_rate": 0.846
-  },
-  "violations": [
-    {
-      "level": "critical",
-      "type": "god_class",
-      "file": "src/services/user_service.py",
-      "line": 45,
-      "class": "UserService",
-      "metrics": {
-        "lines": 450,
-        "methods": 23,
-        "params": 9,
-        "atfd": 8,
-        "wmc": 52,
-        "tcc": 0.28
-      },
-      "confidence": 0.85,
-      "fix": "Split into UserServicePersistence, UserServiceValidator, UserServiceCoordinator",
-      "effort_hours": [4, 6]
-    }
-  ]
-}
-```
+All examples include expected output and timing information.
 
 ## Requirements
 
@@ -270,51 +209,21 @@ pylint --version
 
 ## Detection Patterns
 
-### Pattern 1: Method Names with "and"
-```yaml
-id: method-name-and
-language: python
-rule:
-  pattern: "def $NAME_and_$REST"
+The skill uses multi-dimensional detection patterns. See [detection-patterns.md](./references/detection-patterns.md) for complete AST patterns and metrics thresholds.
+
+Quick detection using provided script:
+```bash
+# Run all detection patterns
+./scripts/detect-patterns.sh all /path/to/project
+
+# Run specific pattern
+./scripts/detect-patterns.sh method-and /path/to/project
+./scripts/detect-patterns.sh god-class /path/to/project
+./scripts/detect-patterns.sh constructor-params /path/to/project
+./scripts/detect-patterns.sh optional-config /path/to/project
 ```
 
-### Pattern 2: God Classes
-```yaml
-id: god-class
-language: python
-rule:
-  pattern: |
-    class $NAME:
-      $$$BODY
-  has:
-    stopBy: end
-    kind: function_definition
-    count: { min: 15 }
-```
-
-### Pattern 3: Constructor with Many Parameters
-```yaml
-id: constructor-params
-language: python
-rule:
-  pattern: |
-    def __init__(self, $$$PARAMS):
-      $$$BODY
-  constraints:
-    PARAMS:
-      count: { min: 5 }
-```
-
-### Pattern 4: Optional Config Anti-Pattern
-```yaml
-id: optional-config
-language: python
-rule:
-  pattern: "$NAME: $TYPE | None = None"
-  inside:
-    kind: function_definition
-    pattern: "def __init__"
-```
+See [detect-patterns.sh](./scripts/detect-patterns.sh) for implementation details.
 
 ## Integration Points
 

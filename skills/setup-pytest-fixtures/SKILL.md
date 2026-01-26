@@ -1,10 +1,8 @@
 ---
 name: setup-pytest-fixtures
 description: |
-  Create pytest fixtures following project patterns including factory fixtures,
-  async fixtures, and multi-layer organization. Use when setting up test fixtures,
-  creating test data, organizing test utilities, or structuring conftest.py files.
-  Works with Python test files, pytest configuration, and .py test utilities.
+  Creates pytest fixtures following project patterns including factory fixtures, async fixtures, and multi-layer organization. Use when setting up test fixtures, creating test data, organizing test utilities, or structuring conftest.py files. Works with Python test files, pytest configuration, and .py test utilities.
+version: 1.0.0
 allowed-tools: Read, Write, Edit, Grep, Glob, Bash
 ---
 

@@ -14,42 +14,6 @@ allowed-tools:
 
 # Micrometer Cardinality Control
 
-## Table of Contents
-
-1. [Purpose](#purpose)
-2. [When to Use](#when-to-use)
-3. [Quick Start](#quick-start)
-4. [Instructions](#instructions)
-5. [Examples](#examples)
-6. [Requirements](#requirements)
-7. [Anti-Patterns to Avoid](#anti-patterns-to-avoid)
-8. [See Also](#see-also)
-
----
-
-## Purpose
-
-Metric cardinality (number of unique tag combinations) directly impacts memory usage and monitoring costs. Unbounded tags like user IDs, request IDs, or full URIs create millions of unique metrics, causing memory exhaustion and expensive billing. This skill provides patterns to detect, prevent, and remediate cardinality issues.
-
-## When to Use
-
-Use this skill when you need to:
-
-- **Add tags to metrics** - Ensure tags have bounded cardinality before adding to counters, timers, or gauges
-- **Normalize high-cardinality data** - Convert unbounded values (user IDs, URIs) to bounded categories
-- **Prevent OutOfMemoryError** - Limit metric explosion that crashes JVM with heap exhaustion
-- **Control monitoring costs** - Reduce metric volume to avoid expensive billing from monitoring backends
-- **Monitor metric growth** - Detect cardinality explosions before they impact production
-- **Implement MeterFilter limits** - Configure hard limits on tag values per metric
-- **Debug metric explosion** - Investigate why metric count is growing unexpectedly
-
-**When NOT to use:**
-- For truly unbounded data like user IDs (use distributed tracing instead)
-- When you need per-request details (use structured logging with correlation IDs)
-- Before understanding basic Micrometer setup (use `python-micrometer-metrics-setup` first)
-
----
-
 ## Quick Start
 
 For any metric with dynamic tags, apply this pattern:
@@ -68,339 +32,161 @@ private String normalizeSupplier(Supplier s) {
 }
 ```
 
-## Instructions
+## When to Use
 
-### Step 1: Identify Dangerous Tag Values
+- Add tags to metrics (ensure bounded cardinality)
+- Normalize high-cardinality data (URIs, IDs)
+- Prevent OutOfMemoryError from metric explosion
+- Control monitoring costs
+- Debug metric growth
 
-Before adding any tag, ask: "How many unique values could this tag have?"
+**When NOT to use:**
+- Truly unbounded data (use distributed tracing)
+- Per-request details (use structured logging)
 
-**High-cardinality tags (AVOID):**
-- User IDs, Customer IDs, Supplier IDs (unbounded)
-- Request IDs, Transaction IDs (infinite unique values)
-- Full URIs with query parameters (`/api/charges?supplier=123&date=2025-01-01`)
-- Timestamps, email addresses, UUIDs
-- Full exception class names (can vary with stack traces)
+## Cardinality Rules
 
-**Low-cardinality tags (SAFE):**
-- HTTP methods: GET, POST, PUT, DELETE (4-10 values)
-- HTTP status codes: 200, 201, 400, 404, 500 (≤20 values)
-- Status class: 1xx, 2xx, 3xx, 4xx, 5xx (5 values)
-- Environment: dev, staging, production (3-5 values)
-- Supplier category: tier1, direct, international, standard (5-10 values)
-- Feature flags: enabled, disabled (2 values)
-
-**Cardinality Rule of Thumb:**
-- Safe per metric family: < 1,000 unique tag combinations
-- Safe application-wide: < 10,000 active metrics
-- Monitor via: `/actuator/metrics` endpoint
-
-### Step 2: Normalize to Bounded Categories
-
-For naturally high-cardinality data, create a normalization function:
+### Safe Tags (Low Cardinality)
 
 ```java
-// Example: Normalize supplier ID to category
-private String normalizeSupplierCategory(String supplierId) {
-    Supplier supplier = supplierRepository.findById(supplierId);
+// ✅ HTTP method (4-10 values)
+.tag("method", "GET")
 
-    // Business logic: categorize suppliers
+// ✅ Status class (5 values)
+.tag("status.class", "2xx")
+
+// ✅ Environment (3-5 values)
+.tag("env", "production")
+```
+
+### Dangerous Tags (High Cardinality)
+
+```java
+// ❌ User ID (millions) → Use tracing
+.tag("user.id", userId)
+
+// ❌ Request ID (infinite) → Use tracing
+.tag("request.id", requestId)
+
+// ❌ Full URI → Normalize!
+.tag("uri", "/api/charges?supplier=123")
+```
+
+**Rule of Thumb:**
+- Safe per metric: < 1,000 combinations
+- Safe application-wide: < 10,000 active metrics
+
+## Normalization Patterns
+
+### URI Normalization
+
+```java
+@Bean
+public MeterFilter uriNormalization() {
+    return MeterFilter.replaceTagValues("uri", uri -> {
+        // Strip query parameters
+        int queryIndex = uri.indexOf('?');
+        if (queryIndex > 0) uri = uri.substring(0, queryIndex);
+
+        // Replace IDs: /charges/123 → /charges/{id}
+        return uri.replaceAll("/\\d+", "/{id}")
+                  .replaceAll("/[a-f0-9-]{36}", "/{uuid}");
+    });
+}
+```
+
+### Business Category Normalization
+
+```java
+private String normalizeSupplier(String supplierId) {
+    Supplier supplier = supplierRepository.findById(supplierId);
+    
     if (supplier.getAnnualVolume() > 1_000_000) return "enterprise";
     if (supplier.getAnnualVolume() > 100_000) return "mid-market";
     if (supplier.isDirect()) return "direct";
     return "standard";
 }
-
-// Usage in metrics
-Counter.builder("supplier.charges")
-    .tag("supplier.category", normalizeSupplierCategory(supplierId))
-    .register(registry)
-    .increment();
 ```
 
-**Normalization Examples:**
-- Supplier ID → Supplier category (tier1, direct, standard)
-- Full URI → Template URI (`/charges/123` → `/charges/{id}`)
-- Exception class → Exception type (validation, timeout, auth, other)
-- HTTP status → Status class (2xx, 4xx, 5xx)
-
-### Step 3: Implement MeterFilter Cardinality Limits
-
-Use Spring's `MeterFilter` to enforce hard limits:
+## Cardinality Limits
 
 ```java
-@Configuration
-public class CardinalityLimitConfig {
-
-    @Bean
-    public MeterRegistryCustomizer<MeterRegistry> cardinalityLimiter() {
-        return registry -> {
-            // Limit unique URIs to 100
-            registry.config().meterFilter(
-                MeterFilter.maximumAllowableTags(
-                    "http.server.requests",
-                    "uri",
-                    100,
-                    MeterFilter.deny()  // Deny new meters after limit
-                )
-            );
-
-            // Limit unique supplier categories to 20
-            registry.config().meterFilter(
-                MeterFilter.maximumAllowableTags(
-                    "supplier.charges",
-                    "supplier.category",
-                    20,
-                    MeterFilter.deny()
-                )
-            );
-        };
-    }
+@Bean
+public MeterFilter cardinalityLimiter() {
+    // Limit unique URIs to 100
+    return MeterFilter.maximumAllowableTags(
+        "http.server.requests",
+        "uri",
+        100,
+        MeterFilter.deny()  // Deny new meters after limit
+    );
 }
 ```
 
-**MeterFilter.deny() behaviors:**
-- New meters exceeding limit are rejected
-- No metric is recorded for exceeded values
-- Application continues normally (fails gracefully)
-
-### Step 4: Monitor Cardinality
-
-Create a scheduled task to detect cardinality explosions:
+## Monitor Cardinality
 
 ```java
 @Component
 public class CardinalityMonitor {
 
     private final MeterRegistry registry;
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public CardinalityMonitor(MeterRegistry registry) {
-        this.registry = registry;
-    }
-
-    @Scheduled(fixedRate = 60_000) // Every minute
+    @Scheduled(fixedRate = 60_000)
     public void monitorMetricCount() {
         int meterCount = registry.getMeters().size();
 
-        // Alert thresholds
         if (meterCount > 8000) {
-            log.error("CRITICAL: Metric count {} exceeds 8000 threshold", meterCount);
-        } else if (meterCount > 5000) {
-            log.warn("WARNING: Metric count {} exceeds 5000 threshold", meterCount);
+            log.error("CRITICAL: {} metrics (threshold 8000)", meterCount);
         }
 
-        // Record cardinality as a metric itself
-        Gauge.builder("micrometer.meter.count",
-                      () -> meterCount)
-             .description("Total number of metrics in registry")
+        Gauge.builder("micrometer.meter.count", () -> meterCount)
              .register(registry);
     }
 }
 ```
 
-### Step 5: Handle User/Request-Specific Data
+## Alternatives to High-Cardinality Tags
 
-For truly unbounded data (user IDs, request IDs), use these alternatives:
+### Use Distributed Tracing
 
-**Option A: Use Distributed Tracing (Recommended)**
 ```java
-@Service
-public class ChargeService {
+// Store user ID in span, NOT metrics
+span.setAttribute("user.id", userId);
 
-    private final Tracer tracer;
-    private final MeterRegistry registry;
-
-    public void processCharge(String userId, Charge charge) {
-        Span span = tracer.currentSpan();
-
-        // Store user ID in span attributes, NOT metrics
-        span.setAttribute("user.id", userId);
-        span.setAttribute("supplier.id", charge.getSupplierId());
-
-        // Metrics use only bounded tags
-        Timer.builder("charge.processing")
-            .tag("status", "processing") // bounded
-            .register(registry)
-            .record(() -> {
-                // Processing logic
-            });
-    }
-}
+// Metrics use only bounded tags
+Timer.builder("charge.processing")
+    .tag("status", "processing")  // bounded
+    .register(registry);
 ```
 
-**Option B: Store in Logs (with correlation)**
-```java
-@Component
-public class CorrelationFilter extends OncePerRequestFilter {
-
-    @Override
-    protected void doFilterInternal(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain chain) throws ServletException, IOException {
-
-        String userId = extractUserId(request);
-
-        // Add to logging context, NOT metrics
-        MDC.put("user.id", userId);
-
-        try {
-            chain.doFilter(request, response);
-        } finally {
-            MDC.clear();
-        }
-    }
-}
-```
-
-**Option C: Separate Time-Series Database**
-```java
-// For detailed per-user analytics, use separate backend
-@Service
-public class UserAnalyticsService {
-
-    private final AnalyticsDatabase analyticsDb;
-
-    public void recordUserAction(String userId, Action action) {
-        // Record in analytics DB, not Micrometer
-        analyticsDb.insert(userId, action.getTimestamp(), action.getType());
-    }
-}
-```
-
-## Examples
-
-### Example 1: URI Normalization Filter
-
-Automatically replace path parameters with placeholders:
+### Use Structured Logging
 
 ```java
-@Configuration
-public class URINormalizationConfig {
-
-    @Bean
-    public MeterRegistryCustomizer<MeterRegistry> uriNormalizationFilter() {
-        return registry -> {
-            registry.config().meterFilter(
-                MeterFilter.replaceTagValues("uri", uri -> {
-                    // Strip query parameters
-                    int queryIndex = uri.indexOf('?');
-                    if (queryIndex > 0) {
-                        uri = uri.substring(0, queryIndex);
-                    }
-
-                    // Replace numeric IDs with {id}
-                    uri = uri.replaceAll("/\\d+", "/{id}");
-
-                    // Replace UUIDs with {uuid}
-                    uri = uri.replaceAll(
-                        "/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}",
-                        "/{uuid}"
-                    );
-
-                    return uri;
-                })
-            );
-        };
-    }
-}
-```
-
-**Before:** `/charges/12345`, `/charges/67890`, `/charges/11111` = 3 metrics
-**After:** `/charges/{id}` = 1 metric
-
-### Example 2: Exception Type Normalization
-
-Normalize exception classes to categories:
-
-```java
-@Configuration
-public class ExceptionNormalizationConfig {
-
-    @Bean
-    public MeterRegistryCustomizer<MeterRegistry> exceptionNormalization() {
-        return registry -> {
-            registry.config().meterFilter(
-                MeterFilter.replaceTagValues("exception", exception -> {
-                    if (exception.contains("ValidationException")) {
-                        return "validation";
-                    } else if (exception.contains("TimeoutException")) {
-                        return "timeout";
-                    } else if (exception.contains("AuthenticationException")) {
-                        return "auth";
-                    } else if (exception.contains("SQLException")) {
-                        return "database";
-                    }
-                    return "other";
-                })
-            );
-        };
-    }
-}
-```
-
-### Example 3: Detect Cardinality Explosion
-
-Automatically alert when cardinality exceeds thresholds:
-
-```java
-@Component
-public class CardinalityGuardian {
-
-    private final MeterRegistry registry;
-    private final AlertService alertService;
-    private int previousCount = 0;
-
-    @Scheduled(fixedRate = 30_000) // Every 30 seconds
-    public void checkCardinalityGrowth() {
-        int currentCount = registry.getMeters().size();
-
-        // Spike detection: +500 meters in 30 seconds
-        if (currentCount - previousCount > 500) {
-            alertService.alert(
-                "CARDINALITY_SPIKE",
-                String.format(
-                    "Metric count jumped from %d to %d (added %d in 30s)",
-                    previousCount, currentCount, currentCount - previousCount
-                )
-            );
-        }
-
-        previousCount = currentCount;
-    }
-}
+// Add to MDC for logging, NOT metrics
+MDC.put("user.id", userId);
 ```
 
 ## Requirements
 
-- Spring Boot 2.1+ (auto-configures `MeterRegistry`)
-- `spring-boot-starter-actuator` dependency
+- Spring Boot 2.1+
+- spring-boot-starter-actuator
 - Java 11+
-- For distributed tracing: `micrometer-tracing-bridge-otel`
+- For tracing: micrometer-tracing-bridge-otel
 
-## Anti-Patterns to Avoid
+## Anti-Patterns
 
 ```java
 // ❌ NEVER add unbounded tags
-.tag("user.id", userId)              // Millions of unique values
-.tag("request.id", requestId)        // Infinite unique values
-.tag("full.uri", fullUriWithParams)  // Dynamic query strings
-.tag("timestamp", Instant.now())     // Time-based explosion
+.tag("user.id", userId)
+.tag("request.id", requestId)
+.tag("timestamp", Instant.now())
 
-// ❌ NEVER use exception names directly
-.tag("exception", e.getClass().getName()) // Can vary with stack traces
-
-// ❌ NEVER trust external IDs
-.tag("customer.id", externalCustomerId)  // No control over cardinality
-
-// ✅ DO normalize everything to bounded categories
-.tag("customer.tier", normalizeCustomerTier(customer))  // 3-5 values
-.tag("request.type", normalizeRequestType(request))    // 5-10 values
-.tag("error.type", normalizeException(e))              // 10-15 values
+// ✅ DO normalize to bounded categories
+.tag("customer.tier", normalizeCustomer(customer))
+.tag("request.type", normalizeRequest(request))
 ```
 
 ## See Also
 
-- [micrometer-metrics-setup](../micrometer-metrics-setup/SKILL.md) - Initial Micrometer configuration
-- [micrometer-business-metrics](../micrometer-business-metrics/SKILL.md) - Domain-specific KPI metrics
-- [micrometer-testing-metrics](../micrometer-testing-metrics/SKILL.md) - Testing custom metrics
+- [python-micrometer-core](../python-micrometer-core/SKILL.md) - Meter types
+- [python-micrometer-business-metrics](../python-micrometer-business-metrics/SKILL.md) - Business KPIs

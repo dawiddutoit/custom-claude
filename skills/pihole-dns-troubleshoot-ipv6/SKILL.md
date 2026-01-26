@@ -8,6 +8,7 @@ description: |
   WiFi", "IPv6 DNS issue", "clients prefer IPv6", "disable IPv6 DNS", or "fix local access".
   Works with Pi-hole FTLCONF_misc_dnsmasq_lines filter-AAAA configuration and client DNS
   cache management.
+version: 1.0.0
 allowed-tools:
   - Read
   - Bash
@@ -50,7 +51,7 @@ docker exec pihole env | grep FTLCONF_misc_dnsmasq_lines
 6. [Requirements](#6-requirements)
 7. [Red Flags to Avoid](#7-red-flags-to-avoid)
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 **Explicit Triggers:**
 - "Connecting to Cloudflare instead of local"
@@ -70,7 +71,7 @@ docker exec pihole env | grep FTLCONF_misc_dnsmasq_lines
 - "Why is local access slow?"
 - "How to disable IPv6 DNS?"
 
-## 2. What This Skill Does
+## What This Skill Does
 
 1. **Explains Problem** - Details how IPv6 DNS causes Cloudflare routing
 2. **Verifies Config** - Checks FTLCONF_misc_dnsmasq_lines is set to filter-AAAA
@@ -80,7 +81,7 @@ docker exec pihole env | grep FTLCONF_misc_dnsmasq_lines
 6. **Checks DoH** - Verifies browser DNS-over-HTTPS is disabled
 7. **Confirms Fix** - Tests local access works without OAuth
 
-## 3. Instructions
+## Instructions
 
 ### 3.1 Understanding the Problem
 
@@ -248,14 +249,14 @@ Test local access works without OAuth:
 
 Re-check steps 3.4, 3.5, and 3.6.
 
-## 4. Supporting Files
+## Supporting Files
 
 | File | Purpose |
 |------|---------|
 | `references/reference.md` | IPv6 DNS filtering technical details, FTL configuration |
 | `examples/examples.md` | Example configurations, troubleshooting scenarios |
 
-## 5. Expected Outcomes
+## Expected Outcomes
 
 **Success:**
 - Pi-hole blocks all IPv6 DNS responses
@@ -272,14 +273,14 @@ Re-check steps 3.4, 3.5, and 3.6.
 - Services still require OAuth on local WiFi
 - Pi-hole returning IPv6 addresses
 
-## 6. Requirements
+## Requirements
 
 - Pi-hole v6+ using FTL DNS server
 - Docker running with Pi-hole container
 - FTLCONF_misc_dnsmasq_lines environment variable access
 - Client device access to clear DNS cache
 
-## 7. Red Flags to Avoid
+## Red Flags to Avoid
 
 - [ ] Do not disable IPv6 at network level (breaks other services)
 - [ ] Do not delete IPv6 DNS records in Cloudflare (needed for remote access)

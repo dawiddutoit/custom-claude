@@ -5,6 +5,7 @@ description: |
   Use when rendering data tables, building list views, displaying hierarchical data,
   scrolling large content, pagination, and efficient rendering of large datasets.
   Covers DataTable, ListView, Tree, and scrolling patterns.
+version: 1.0.0
 allowed-tools: Read, Write, Edit, Bash
 ---
 

@@ -8,6 +8,7 @@ description: |
   access with", "allow [email] to authenticate", or "update access users". Works with .env,
   update-access-emails.sh, and Cloudflare Access policies for pihole, jaeger, langfuse,
   sprinkler, ha, and temet.ai services.
+version: 1.0.0
 allowed-tools:
   - Read
   - Edit
@@ -43,7 +44,7 @@ The skill will:
 6. [Requirements](#6-requirements)
 7. [Red Flags to Avoid](#7-red-flags-to-avoid)
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 **Explicit Triggers:**
 - "Add [email] to Cloudflare Access"
@@ -62,7 +63,7 @@ The skill will:
 - "Access denied for [email]"
 - "How do I add another user?"
 
-## 2. What This Skill Does
+## What This Skill Does
 
 1. **Validates Email** - Ensures valid email format
 2. **Checks Duplicates** - Prevents adding existing users
@@ -72,7 +73,7 @@ The skill will:
 6. **Verifies** - Confirms all 6 services updated successfully
 7. **Provides Test Steps** - Instructions for new user to verify access
 
-## 3. Instructions
+## Instructions
 
 ### 3.1 Gather Email Address
 
@@ -185,14 +186,14 @@ All accessible services:
 - https://temet.ai (Services dashboard)
 ```
 
-## 4. Supporting Files
+## Supporting Files
 
 | File | Purpose |
 |------|---------|
 | `references/reference.md` | Technical details, API structure, troubleshooting |
 | `examples/examples.md` | Common scenarios and edge cases |
 
-## 5. Expected Outcomes
+## Expected Outcomes
 
 **Success:**
 - Email added to ACCESS_ALLOWED_EMAIL in .env
@@ -210,7 +211,7 @@ All accessible services:
 - Duplicate email detected
 - API token expired or missing permissions
 
-## 6. Requirements
+## Requirements
 
 **Environment:**
 - Valid `.env` with CLOUDFLARE_ACCESS_API_TOKEN
@@ -229,7 +230,7 @@ If adding personal Gmail (not @temet.ai), Google OAuth consent screen must be se
 - Bash (run update script)
 - Grep (check for duplicates)
 
-## 7. Red Flags to Avoid
+## Red Flags to Avoid
 
 - [ ] Do not add invalid email format
 - [ ] Do not add duplicate emails (check first)

@@ -6,6 +6,7 @@ description: |
   validate the migration, and plan team rollout. Use when converting legacy
   projects to modern uv tooling, consolidating different package managers,
   or standardizing Python development workflows across teams.
+version: 1.0.0
 allowed-tools: Bash, Read, Write, Edit
 ---
 

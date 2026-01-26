@@ -1,11 +1,8 @@
 ---
 name: gcp-gke-cluster-setup
 description: |
-  Set up and configure Google Kubernetes Engine (GKE) clusters for production use.
-  Use when creating new GKE clusters, choosing between Autopilot vs Standard modes,
-  configuring networking (VPC-native, private clusters), setting up node pools, or
-  planning cluster architecture for Spring Boot microservices. Includes regional vs
-  zonal decisions, security hardening, and resource provisioning guidance.
+  Sets up and configures Google Kubernetes Engine (GKE) clusters for production use. Use when creating new GKE clusters, choosing between Autopilot vs Standard modes, configuring networking (VPC-native, private clusters), setting up node pools, or planning cluster architecture for Spring Boot microservices. Includes regional vs zonal decisions, security hardening, and resource provisioning guidance.
+version: 1.0.0
 allowed-tools:
   - Bash
   - Read
@@ -274,6 +271,6 @@ gcloud container node-pools create batch-pool \
 
 ## See Also
 
-- [gke-workload-identity](../gke-workload-identity/SKILL.md) - Set up secure service-to-service authentication
-- [gke-deployment-strategies](../gke-deployment-strategies/SKILL.md) - Deploy and update applications
-- [gke-troubleshooting](../gke-troubleshooting/SKILL.md) - Diagnose and fix cluster issues
+- [gcp-gke-workload-identity](../gcp-gke-workload-identity/SKILL.md) - Set up secure service-to-service authentication
+- [gcp-gke-deployment-strategies](../gcp-gke-deployment-strategies/SKILL.md) - Deploy and update applications
+- [gcp-gke-troubleshooting](../gcp-gke-troubleshooting/SKILL.md) - Diagnose and fix cluster issues

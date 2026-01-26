@@ -1,17 +1,19 @@
 ---
 name: java-best-practices-code-review
 description: |
-  Review Java code against industry best practices and design principles.
-  Use when reviewing Java files, checking code quality, analyzing SOLID principles,
-  evaluating exception handling, assessing thread safety, or auditing resource management.
-  Covers naming conventions, Stream API usage, Optional patterns, and general code quality.
-  Works with .java files, Spring components, and Java projects of any size.
+  Analyzes Java code against industry best practices and evaluates design principles
+  including SOLID, exception handling, thread safety, and resource management. Reviews
+  naming conventions, Stream API usage, Optional patterns, and general code quality.
+  Use when reviewing Java files, checking code quality, evaluating exception handling,
+  or auditing resource management.
+version: 1.0.0
 allowed-tools:
   - Read
   - Glob
   - Grep
 ---
 
+Works with .java files, Spring components, and Java projects of any size.
 # Java Code Review
 
 ## Table of Contents

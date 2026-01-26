@@ -1,10 +1,8 @@
 ---
 name: python-micrometer-metrics-setup
 description: |
-  Set up Micrometer metrics in a Spring Boot service from scratch, including dependencies,
-  Actuator configuration, and registry customization. Use when starting a new microservice,
-  configuring metrics export backends, enabling Prometheus scraping, or auto-configured JVM metrics.
-  Foundational skill for metrics instrumentation in Java/Spring Boot applications.
+  Sets up Micrometer metrics in a Spring Boot service from scratch, including dependencies, Actuator configuration, and registry customization. Use when starting a new microservice, configuring metrics export backends, enabling Prometheus scraping, or auto-configured JVM metrics. Foundational skill for metrics instrumentation in Java/Spring Boot applications.
+version: 1.0.0
 allowed-tools:
   - Read
   - Edit
@@ -46,9 +44,9 @@ Use this skill when you need to:
 - **Understand baseline metrics** - Learn what's automatically collected by Spring Boot
 
 **When NOT to use:**
-- For implementing custom business metrics (use `python-micrometer-business-metrics` instead)
-- For managing metric cardinality (use `python-micrometer-cardinality-control` instead)
-- For GCP-specific export setup (use `python-micrometer-gcp-cloud-monitoring` instead)
+- For implementing custom business metrics (use `python-python-micrometer-business-metrics` instead)
+- For managing metric cardinality (use `python-python-micrometer-cardinality-control` instead)
+- For GCP-specific export setup (use `python-python-micrometer-gcp-cloud-monitoring` instead)
 - When Micrometer is already configured (skip to specific skill for your need)
 
 ---
@@ -708,7 +706,7 @@ public class Service {
 
 ## See Also
 
-- [micrometer-business-metrics](../micrometer-business-metrics/SKILL.md) - Create custom business metrics
-- [micrometer-cardinality-control](../micrometer-cardinality-control/SKILL.md) - Prevent metric explosion
-- [micrometer-testing-metrics](../micrometer-testing-metrics/SKILL.md) - Test metrics
-- [micrometer-gcp-cloud-monitoring](../micrometer-gcp-cloud-monitoring/SKILL.md) - Export to GCP
+- [python-micrometer-business-metrics](../python-micrometer-business-metrics/SKILL.md) - Create custom business metrics
+- [python-micrometer-cardinality-control](../python-micrometer-cardinality-control/SKILL.md) - Prevent metric explosion
+- [python-test-micrometer-testing-metrics](../python-test-micrometer-testing-metrics/SKILL.md) - Test metrics
+- [python-micrometer-gcp-cloud-monitoring](../python-micrometer-gcp-cloud-monitoring/SKILL.md) - Export to GCP

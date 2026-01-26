@@ -9,7 +9,8 @@ description: |
   "drawer clearance", "door swing", "check overlap", "assembly interference", or
   "fits in cabinet". Works with .scad files, woodworkers-lib patterns, BOSL2
   attachments, and OpenSCAD 2025 Manifold engine.
----
+
+version: 1.0.0---
 
 # OpenSCAD Collision Detection
 
@@ -57,7 +58,7 @@ check_collision() {
 10. [Requirements](#10-requirements)
 11. [Red Flags to Avoid](#11-red-flags-to-avoid)
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 ### Explicit Triggers
 - "Check collision between drawer and cabinet"
@@ -84,7 +85,7 @@ check_collision() {
 - Workbench depth exceeds available space
 - Parametric model generates invalid dimensions
 
-## 2. What This Skill Does
+## What This Skill Does
 
 Provides systematic approach to collision detection:
 
@@ -96,7 +97,7 @@ Provides systematic approach to collision detection:
 6. **Integrate with project libraries** (woodworkers-lib, BOSL2, labels.scad)
 7. **Validate assemblies** before fabrication or room layout
 
-## 3. Core Techniques
+## Core Techniques
 
 ### intersection() - Reveal Overlaps
 
@@ -134,7 +135,7 @@ debug_this() drawer();  // Shows bounding box + transparent object
 ghost() cabinet();      // Semantic equivalent to %
 ```
 
-## 4. Reusable Patterns
+## Reusable Patterns
 
 ### Pattern 1: Basic Collision Checker
 
@@ -228,7 +229,7 @@ assembly_check(explode=$preview) {
 }
 ```
 
-## 5. Woodworking Scenarios
+## Woodworking Scenarios
 
 ### Drawer Clearance Check
 
@@ -308,7 +309,7 @@ module shelf_spacing_check(cabinet_dim, shelf_positions, item_height, panel=18) 
 }
 ```
 
-## 6. Debugging Workflow
+## Debugging Workflow
 
 Follow this systematic 5-step process:
 
@@ -359,7 +360,7 @@ module drawer_with_clearance(interior_width) {
 }
 ```
 
-## 7. Supporting Files
+## Supporting Files
 
 ### examples/examples.md
 Comprehensive collision detection examples:
@@ -379,7 +380,7 @@ Technical reference:
 - Mathematical clearance calculations
 - Integration with BOSL2 and woodworkers-lib
 
-## 8. Expected Outcomes
+## Expected Outcomes
 
 ### Successful Collision Detection
 
@@ -409,7 +410,7 @@ Preview shows red overlap region.
 | Blue | Fixed structure |
 | Transparent | Reference geometry |
 
-## 9. Integration Points
+## Integration Points
 
 ### With woodworkers-lib
 
@@ -469,7 +470,7 @@ cuboid([100, 100, 50])
         cyl(d=20, h=30);  // Check if penetrates too deep
 ```
 
-## 10. Requirements
+## Requirements
 
 ### Tools
 - OpenSCAD 2025.x (Manifold engine for fast intersections)
@@ -486,7 +487,7 @@ cuboid([100, 100, 50])
 - Preview mode (F5) for fast iteration
 - Console output visible for echo statements
 
-## 11. Red Flags to Avoid
+## Red Flags to Avoid
 
 - [ ] **Not checking clearances before fabrication** - Always validate fits
 - [ ] **Ignoring echo warnings** - Console output reveals dimension problems

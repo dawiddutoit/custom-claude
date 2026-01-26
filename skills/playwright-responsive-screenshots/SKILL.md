@@ -7,7 +7,8 @@ description: |
   Triggers on "test responsive design", "screenshot at breakpoints", "capture mobile and
   desktop views", "responsive design testing", or "multi-device screenshots". Works with
   Playwright MCP tools (browser_navigate, browser_resize, browser_take_screenshot).
----
+
+version: 1.0.0---
 
 # Playwright Responsive Screenshots
 
@@ -41,7 +42,7 @@ This skill automates:
 7. Requirements
 8. Red Flags to Avoid
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 **Explicit Triggers:**
 - "Test responsive design for [URL]"
@@ -63,7 +64,7 @@ This skill automates:
 - CSS breakpoint testing
 - Responsive component validation
 
-## 2. What This Skill Does
+## What This Skill Does
 
 This skill provides an automated workflow for capturing screenshots at multiple viewport sizes:
 
@@ -80,7 +81,7 @@ This skill provides an automated workflow for capturing screenshots at multiple 
 - Full-page screenshots by default
 - Reproducible test results
 
-## 3. Standard Breakpoints
+## Standard Breakpoints
 
 This skill uses industry-standard breakpoints by default:
 
@@ -101,7 +102,7 @@ This skill uses industry-standard breakpoints by default:
 - Client-specific device requirements
 - Edge case viewport testing (ultra-wide, small tablets, etc.)
 
-## 4. Instructions
+## Instructions
 
 ### 4.1. Basic Screenshot Capture
 
@@ -216,7 +217,7 @@ Result: 9 screenshots (3 pages × 3 breakpoints)
 
 See `examples/examples.md` for full report template example.
 
-## 5. Supporting Files
+## Supporting Files
 
 ### references/playwright-api.md
 
@@ -239,7 +240,7 @@ Comprehensive screenshot capture examples:
 
 Python utility to validate screenshot dimensions match expected breakpoints.
 
-## 6. Expected Outcomes
+## Expected Outcomes
 
 ### Successful Screenshot Capture
 
@@ -296,7 +297,7 @@ Breakpoint progress:
 Recommendation: Verify URL is accessible and site is responding.
 ```
 
-## 7. Requirements
+## Requirements
 
 **Playwright MCP Tools:**
 - `browser_navigate` - Navigate to URLs
@@ -316,7 +317,7 @@ Recommendation: Verify URL is accessible and site is responding.
 - Access to target URLs
 - Stable connection for page loading
 
-## 8. Red Flags to Avoid
+## Red Flags to Avoid
 
 1. ❌ **Skipping layout settling wait** - Always wait minimum 1s after resize
 2. ❌ **Not using fullPage: true** - Missing content below fold

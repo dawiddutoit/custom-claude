@@ -8,10 +8,26 @@ description: |
   Use when diagnosing ClickHouse problems, optimizing performance, planning capacity, setting up
   monitoring, implementing backups, or managing production clusters. Includes resource management
   strategies for disk space, connections, and background operations plus production checklists.
+version: 1.0.0
 allowed-tools: Read, Bash, Grep
 ---
 
 # ClickHouse Operations & Production Management
+
+## When to Use This Skill
+
+Use when asked to:
+- Diagnose ClickHouse performance problems ("query is slow", "out of memory")
+- Set up production monitoring and alerting
+- Scale ClickHouse vertically (more resources) or horizontally (clustering)
+- Implement backup and disaster recovery procedures
+- Troubleshoot replication lag, disk space, or resource issues
+- Plan capacity for growing data volumes
+
+Do NOT use when:
+- Optimizing specific queries (use clickhouse-query-optimization instead)
+- Building materialized views (use clickhouse-materialized-views instead)
+- Initial ClickHouse installation (this is for operations, not setup)
 
 ## Table of Contents
 

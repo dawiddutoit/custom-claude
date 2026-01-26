@@ -1,10 +1,8 @@
 ---
 name: textual-reactive-programming
 description: |
-  Build reactive Textual widgets using computed properties, watchers, and reactive attributes.
-  Use when implementing data-binding patterns, responding to state changes, computed properties,
-  efficient updates based on attribute changes, and validation patterns.
-  Covers reactive decorators, watch methods, and avoiding manual refresh patterns.
+  Builds reactive Textual widgets using computed properties, watchers, and reactive attributes. Use when implementing data-binding patterns, responding to state changes, computed properties, efficient updates based on attribute changes, and validation patterns. Covers reactive decorators, watch methods, and avoiding manual refresh patterns.
+version: 1.0.0
 allowed-tools: Read, Write, Edit, Bash
 ---
 

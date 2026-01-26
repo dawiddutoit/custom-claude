@@ -1,12 +1,9 @@
 ---
 name: playwright-console-monitor
 description: |
-  Execute browser workflows while monitoring JavaScript console for errors, warnings,
-  and messages. Use when you need error-free validation, debugging context during
-  automation, or proactive error detection in web applications. Triggers on "check for
-  console errors", "monitor JavaScript errors", "validate error-free execution", or
-  "debug browser workflow". Works with Playwright MCP browser automation tools.
----
+  Executes browser workflows while monitoring JavaScript console for errors, warnings, and messages. Use when you need error-free validation, debugging context during automation, or proactive error detection in web applications. Triggers on "check for console errors", "monitor JavaScript errors", "validate error-free execution", or "debug browser workflow". Works with Playwright MCP browser automation tools.
+
+version: 1.0.0---
 
 # Playwright Console Monitor
 
@@ -42,7 +39,7 @@ Monitor console errors during a login workflow:
 10. Red Flags to Avoid
 11. Notes
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 ### Explicit Triggers
 - User says "check for console errors"
@@ -64,7 +61,7 @@ Monitor console errors during a login workflow:
 - When validating frontend error handling
 - When checking third-party script integration
 
-## 2. What This Skill Does
+## What This Skill Does
 
 This skill wraps browser automation workflows with console monitoring to:
 
@@ -74,7 +71,7 @@ This skill wraps browser automation workflows with console monitoring to:
 4. **Report Generation** - Provide structured error reports with debugging context
 5. **Continuous Monitoring** - Check console after each critical operation
 
-## 3. Console Error Monitoring Workflow
+## Console Error Monitoring Workflow
 
 ### 3.1 Setup and Navigation
 
@@ -181,7 +178,7 @@ Recommendations:
   - [specific debugging suggestions]
 ```
 
-## 4. Console Message Levels
+## Console Message Levels
 
 Playwright console messages follow browser console API levels:
 
@@ -210,7 +207,7 @@ Playwright console messages follow browser console API levels:
 
 **Default recommendation:** Use `level: "error"` after critical operations, `level: "warning"` for general monitoring.
 
-## 5. Supporting Files
+## Supporting Files
 
 This skill includes:
 
@@ -218,7 +215,7 @@ This skill includes:
 - **examples/examples.md** - 5+ real-world monitoring scenarios (e-commerce checkout, form submission, SPA navigation, authentication, third-party integrations)
 - **assets/error-report-template.md** - Template for structured error reports
 
-## 6. Expected Outcomes
+## Expected Outcomes
 
 ### Successful Monitoring (No Errors)
 ```
@@ -259,7 +256,7 @@ Debugging Recommendations:
   - Review discount code application logic
 ```
 
-## 7. Integration Points
+## Integration Points
 
 ### With Browser Automation Workflows
 - Wrap existing automation with console monitoring
@@ -281,7 +278,7 @@ Debugging Recommendations:
 - Track error trends across deployments
 - Validate error-free user flows
 
-## 8. Success Metrics
+## Success Metrics
 
 | Metric | Before (Manual) | After (Skill) | Improvement |
 |--------|----------------|---------------|-------------|
@@ -290,7 +287,7 @@ Debugging Recommendations:
 | **False Negatives** | High (errors missed) | Low (systematic checking) | 90% reduction |
 | **Context Quality** | Minimal (user description) | Rich (screenshots, state, messages) | 10x improvement |
 
-## 9. Requirements
+## Requirements
 
 ### Required Tools
 - Playwright MCP browser automation
@@ -310,7 +307,7 @@ Debugging Recommendations:
 - Familiarity with browser automation workflows
 - Understanding of error severity levels
 
-## 10. Red Flags to Avoid
+## Red Flags to Avoid
 
 - [ ] **Checking console only at end** - Check after each critical operation
 - [ ] **Ignoring warnings** - Warnings often predict future critical errors
@@ -323,7 +320,7 @@ Debugging Recommendations:
 - [ ] **Ignoring network correlation** - Console errors often correlate with network failures
 - [ ] **Not providing recommendations** - Error reports should suggest debugging steps
 
-## 11. Notes
+## Notes
 
 **Key Principles:**
 1. **Monitor critical operations** - Focus on checkout, submit, auth, payment

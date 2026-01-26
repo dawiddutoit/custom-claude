@@ -1,16 +1,15 @@
 ---
 name: ha-validate-dashboards
 description: |
-  Validates Home Assistant dashboard and configuration changes using a 3-tier approach:
-  pre-publish validation (entity checks, config structure), post-publish verification
-  (log analysis), and visual validation (browser console, rendering). Use when validating
-  HA dashboards, checking dashboard configs, verifying entity IDs, debugging rendering
-  issues, or before deploying dashboard changes. Triggers on "validate dashboard",
-  "check HA config", "verify entities", "dashboard errors", or before publish operations.
-  Works with Home Assistant WebSocket/REST APIs, Chrome extension MCP tools, and Python
-  dashboard builders.
+  Provides 3-tier validation approach for Home Assistant dashboards including pre-publish
+  validation (entity checks, config structure), post-publish verification (log analysis),
+  and visual validation (browser console, rendering). Use when validating HA dashboards,
+  checking dashboard configs, verifying entity IDs, debugging rendering issues, or before
+  deploying dashboard changes. Triggers on "validate dashboard", "check HA config", "dashboard
+  errors", "entity not found", or "test dashboard". Works with Home Assistant WebSocket/REST APIs,
+  Chrome extension MCP tools, Python dashboard builders, and YAML dashboard configurations.
+version: 1.0.0
 ---
-
 # Home Assistant Dashboard Validation
 
 Validates Home Assistant dashboard and configuration changes using a comprehensive 3-tier validation approach to catch errors before they impact users.
@@ -67,7 +66,7 @@ mcp-cli call claude-in-chrome/read_console_messages '{}'
 7. Requirements
 8. Red Flags to Avoid
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 **Explicit Triggers:**
 - "validate my dashboard"
@@ -86,7 +85,11 @@ mcp-cli call claude-in-chrome/read_console_messages '{}'
 - Console shows JavaScript errors
 - HACS card doesn't appear after installation
 
-## 2. The 3-Tier Validation Approach
+## Usage
+
+Use this skill to validate Home Assistant dashboards before deployment. Run the Quick Start workflow for a complete validation, or use individual tiers (pre-publish, post-publish, visual) for specific validation needs. Always run pre-publish validation first to catch config errors before they reach production.
+
+## The 3-Tier Validation Approach
 
 ### Tier 1: Pre-Publish Validation (API-Based)
 
@@ -261,7 +264,7 @@ Skip for:
 - Confirms HACS cards loaded correctly
 - Provides visual proof of correctness
 
-## 3. Validation Workflows
+## Validation Workflows
 
 ### Quick Validation (Minor Changes)
 
@@ -333,7 +336,7 @@ def build_dashboard_incrementally():
     })
 ```
 
-## 4. Common Failure Modes
+## Common Failure Modes
 
 ### Configuration Errors
 
@@ -360,7 +363,7 @@ def build_dashboard_incrementally():
 | Entity renamed | API 404 | Update entity ID |
 | Entity removed | Pre-publish check | Remove/update card |
 
-## 5. Supporting Files
+## Supporting Files
 
 ### references/validation-reference.md
 
@@ -385,7 +388,7 @@ Detailed workflow documentation including:
 
 **When to read:** Setting up automation, implementing CI/CD, or need complete deployment scripts.
 
-## 6. Integration with Project
+## Integration with Project
 
 This skill integrates with the Home Assistant dashboard management workflow:
 
@@ -438,7 +441,7 @@ def build_climate_dashboard():
     return success
 ```
 
-## 7. Requirements
+## Requirements
 
 ### Environment
 
@@ -461,7 +464,7 @@ export HA_LONG_LIVED_TOKEN="your-token"
 - Dashboard config structure (views, cards)
 - curl and bash scripting basics
 
-## 8. Red Flags to Avoid
+## Red Flags to Avoid
 
 - [ ] Skipping pre-publish validation - Always validate BEFORE deploying
 - [ ] Ignoring entity existence checks - Missing entities cause runtime errors

@@ -579,6 +579,5 @@ class ReportDistributor:          # Actor: IT/Communication
 
 **Last Updated:** 2025-11-02
 **See Also:**
-- [detection-patterns.md](./detection-patterns.md) - How to detect violations
-- [project-patterns.md](./project-patterns.md) - Project-specific patterns
-- [examples.md](../examples/examples.md) - Real codebase examples
+- [../examples/examples.md](../examples/examples.md) - Real codebase examples with violations and fixes
+- [../SKILL.md](../SKILL.md) - Complete SRP validation workflow with detection methods

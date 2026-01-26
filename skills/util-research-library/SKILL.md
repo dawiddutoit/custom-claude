@@ -1,6 +1,7 @@
 ---
 name: util-research-library
-description: Systematic library evaluation with emphasis on readability, actionable insights, and informed decision-making. Use when asked "should we use X", "is there a better library", during security audits, or making migration decisions. Produces concise, scannable reports that drive adoption decisions - not walls of text.
+description: Provides Systematic library evaluation with emphasis on readability, actionable insights, and informed decision-making. Use when asked "should we use X", "is there a better library", during security audits, or making migration decisions. Produces concise, scannable reports that drive adoption decisions - not walls of text.
+version: 1.0.0
 allowed-tools:
   - Read
   - mcp__context7__get-library-docs

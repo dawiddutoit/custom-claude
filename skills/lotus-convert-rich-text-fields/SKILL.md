@@ -1,17 +1,18 @@
 ---
 name: lotus-convert-rich-text-fields
 description: |
-  Convert Lotus Notes rich text fields to standard formats (HTML, markdown, plain text).
+  Converts Lotus Notes rich text fields to standard formats (HTML, markdown, plain text).
   Use when migrating formatted content, extracting text styling and formatting,
   handling embedded objects (images, attachments, tables), or preparing rich text data
-  for new systems. Works with rich text content extraction, format conversion,
-  embedded media handling, and formatting preservation strategies.
+  for new systems.
+version: 1.0.0
 allowed-tools:
   - Read
   - Bash
   - Grep
 ---
 
+Works with rich text content extraction, format conversion, embedded media handling, and formatting preservation strategies.
 # Convert Lotus Notes Rich Text Fields
 
 ## Table of Contents
@@ -596,6 +597,6 @@ print(html_with_image)
 
 ## See Also
 
-- [analyze-lotus-nsf-structure](../analyze-lotus-nsf-structure/SKILL.md) - Understanding field types in NSF databases
-- [lotus-notes-migration](../lotus-notes-migration/SKILL.md) - Overall migration approach
-- [replace-lotus-odbc-direct-writes](../replace-lotus-odbc-direct-writes/SKILL.md) - API patterns for data operations
+- [lotus-analyze-nsf-structure](../lotus-analyze-nsf-structure/SKILL.md) - Understanding field types in NSF databases
+- [lotus-migration](../lotus-migration/SKILL.md) - Overall migration approach
+- [lotus-replace-odbc-direct-writes](../lotus-replace-odbc-direct-writes/SKILL.md) - API patterns for data operations

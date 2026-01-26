@@ -1,11 +1,12 @@
 ---
 name: implement-dependency-injection
 description: |
-  Guide adding services to dependency injection Container using dependency-injector
-  patterns. Use when creating new service, adding dependency to Container, debugging
-  circular dependency errors, or wiring components for injection. Covers Singleton vs
-  Factory vs Dependency providers, override patterns for testing, and circular
-  dependency detection. Works with container.py and container_factory.py files.
+  Provides comprehensive guide for adding services to dependency injection Container using
+  dependency-injector library patterns including Singleton vs Factory vs Dependency
+  providers, override patterns for testing, and circular dependency detection. Use when
+  creating new service, adding dependency to Container, debugging circular dependency
+  errors, or wiring components for injection.
+version: 1.0.0
 allowed-tools:
   - Read
   - Grep
@@ -13,6 +14,7 @@ allowed-tools:
   - MultiEdit
 ---
 
+Works with container.py and container_factory.py files.
 # Implement Dependency Injection
 
 ## Purpose

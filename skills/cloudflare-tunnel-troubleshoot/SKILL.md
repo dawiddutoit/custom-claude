@@ -8,6 +8,7 @@ description: |
   "tunnel down", "Error 1033", "remote access broken", "fix tunnel", or "cloudflared
   not working". Works with Cloudflare Tunnel (cloudflared), QUIC connection health,
   and tunnel registration verification.
+version: 1.0.0
 allowed-tools:
   - Read
   - Bash
@@ -53,7 +54,7 @@ docker compose -f /home/dawiddutoit/projects/network/docker-compose.yml restart 
 6. [Requirements](#6-requirements)
 7. [Red Flags to Avoid](#7-red-flags-to-avoid)
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 **Explicit Triggers:**
 - "Tunnel not connecting"
@@ -74,7 +75,7 @@ docker compose -f /home/dawiddutoit/projects/network/docker-compose.yml restart 
 - "Why is tunnel disconnected?"
 - "What is Error 1033?"
 
-## 2. What This Skill Does
+## What This Skill Does
 
 1. **Checks Container** - Verifies cloudflared container is running
 2. **Validates Token** - Confirms CLOUDFLARE_TUNNEL_TOKEN is set
@@ -84,7 +85,7 @@ docker compose -f /home/dawiddutoit/projects/network/docker-compose.yml restart 
 6. **Tests Access** - Attempts remote connection to verify tunnel routing
 7. **Provides Fix** - Gives specific recovery commands
 
-## 3. Instructions
+## Instructions
 
 ### 3.1 Check Cloudflared Container Status
 
@@ -322,14 +323,14 @@ docker logs cloudflared -f
 
 Watch for "Registered tunnel" messages appearing.
 
-## 4. Supporting Files
+## Supporting Files
 
 | File | Purpose |
 |------|---------|
 | `references/reference.md` | Cloudflare Tunnel architecture, Error 1033 details, QUIC protocol |
 | `examples/examples.md` | Example log outputs, common scenarios |
 
-## 5. Expected Outcomes
+## Expected Outcomes
 
 **Success:**
 - Cloudflared container running and healthy
@@ -348,7 +349,7 @@ Watch for "Registered tunnel" messages appearing.
 - Error 1033 persists after restart
 - Remote access returns 502 Bad Gateway
 
-## 6. Requirements
+## Requirements
 
 - Docker running with cloudflared container
 - Valid Cloudflare Tunnel token
@@ -356,7 +357,7 @@ Watch for "Registered tunnel" messages appearing.
 - Cloudflare Zero Trust account
 - Tunnel configured in Cloudflare dashboard
 
-## 7. Red Flags to Avoid
+## Red Flags to Avoid
 
 - [ ] Do not delete tunnel in Cloudflare dashboard (creates orphaned token)
 - [ ] Do not expose ports 80/443 if tunnel not working (security risk)

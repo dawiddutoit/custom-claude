@@ -5,6 +5,7 @@ description: |
   Use when managing async resources, database sessions, file handles, connections, or any
   resource requiring automatic cleanup. Works with Python async/await patterns. Analyzes
   .py files with async with statements, AsyncIterator type hints, and try/finally patterns.
+version: 1.0.0
 allowed-tools:
   - Read
   - Grep
@@ -19,6 +20,12 @@ allowed-tools:
 
 Create async context managers for automatic resource lifecycle management (setup, use, cleanup) in async Python code using the `@asynccontextmanager` decorator pattern.
 
+
+## When to Use This Skill
+
+Use when managing async resources with "create context manager", "manage database session", "async with pattern", or "resource cleanup".
+
+Do NOT use for synchronous resources (use regular context managers), simple try/finally (overkill), or testing (use pytest fixtures).
 ## When to Use
 
 Use this skill when:

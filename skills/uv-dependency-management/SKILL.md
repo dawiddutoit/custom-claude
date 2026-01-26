@@ -1,11 +1,8 @@
 ---
 name: uv-dependency-management
 description: |
-  Manage Python project dependencies with uv. Learn how to add, remove, and update
-  dependencies, organize them into groups (dev, test, lint, docs), pin versions,
-  handle conflicts, and manage lock files for reproducible installations across environments.
-  Use when adding or updating packages, organizing development dependencies, resolving
-  version conflicts, or managing lock files in CI/CD pipelines.
+  Manages Python project dependencies with uv. Learn how to add, remove, and updates dependencies, organize them into groups (dev, test, lint, docs), pin versions, handle conflicts, and manages lock files for reproducible installations across environments. Use when adding or updating packages, organizing development dependencies, resolving version conflicts, or managing lock files in CI/CD pipelines.
+version: 1.0.0
 allowed-tools: Bash, Read, Write, Edit
 ---
 

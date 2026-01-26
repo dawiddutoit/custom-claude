@@ -6,6 +6,7 @@ description: |
   "submit this application", or when user needs form automation with safety controls.
   Works with Chrome browser tabs via MCP tools (tabs_context_mcp, read_page, form_input).
   Enforces permission workflows, field verification, and never fills sensitive data.
+version: 1.0.0
 allowed-tools:
   - mcp__claude-in-chrome__tabs_context_mcp
   - mcp__claude-in-chrome__read_page

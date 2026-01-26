@@ -4,6 +4,7 @@ description: |
   Patterns for creating reusable test data: factory functions for domain objects, builder patterns for complex objects, fixture factories, parameterized test data, test data inheritance, and type-safe test data generators. Use when creating test data repeatedly, building objects with many optional fields, or generating realistic test datasets.
 
   Use when: Writing tests that need domain objects, creating fixtures for multiple tests, generating test data with defaults, building complex objects with optional fields, or parameterizing tests with various data.
+version: 1.0.0
 allowed-tools: Read, Bash, Write
 ---
 

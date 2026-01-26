@@ -1,11 +1,32 @@
 ---
 name: ha-rest-api
-description: "Interact with Home Assistant REST API for entity discovery, state retrieval, and service calls. Use when working with Home Assistant integrations, controlling devices, querying sensor data, or automating Home Assistant operations. Covers authentication, entity patterns, service calls, and state queries."
+description: |
+  Provides methods to interact with Home Assistant REST API for entity discovery, state
+  retrieval, and service calls including authentication, entity patterns, service calls,
+  and state queries. Use when working with Home Assistant integrations, controlling devices,
+  querying sensor data, or automating Home Assistant operations.
+version: 1.0.0
 ---
 
+Works with Home Assistant REST API, Python requests library, and bash/curl commands.
 # Home Assistant REST API
 
 Interact with Home Assistant using the REST API to discover entities, retrieve states, and call services.
+
+## When to Use This Skill
+
+Use this skill when you need to:
+- Discover and query Home Assistant entities programmatically
+- Retrieve entity states and attributes for external systems
+- Call Home Assistant services from Python scripts or bash commands
+- Build custom integrations or automation tools outside of Home Assistant
+- Monitor multiple sensors for data collection or analysis
+- Control devices programmatically via REST API
+
+Do NOT use when:
+- You can use Home Assistant automations (prefer built-in automation engine)
+- Building real-time dashboards (use WebSocket API instead for live updates)
+- You need to create or modify dashboards (use WebSocket API for dashboard management)
 
 ## Quick Start
 
@@ -20,6 +41,10 @@ curl -s "http://192.168.68.123:8123/api/" \
   -H "Authorization: Bearer $HA_LONG_LIVED_TOKEN" \
   -H "Content-Type: application/json"
 ```
+
+## Usage
+
+This skill provides REST API interaction methods for Home Assistant. Use the Quick Start section above to authenticate, then follow the Core Operations below for entity discovery, state retrieval, and service calls.
 
 ## Core Operations
 

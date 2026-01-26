@@ -6,7 +6,8 @@ description: |
   network activity during user flows. Triggers on "analyze network requests", "check API calls",
   "monitor network traffic", "debug API errors", or "performance analysis". Works with Playwright
   browser automation (browser_navigate, browser_network_requests, browser_click, browser_fill_form).
----
+
+version: 1.0.0---
 
 # Playwright Network Analyzer
 

@@ -1,10 +1,9 @@
 ---
 name: terraform-troubleshooting
 description: |
-  Debug and fix Terraform errors systematically. Use when encountering Terraform failures, state lock issues,
-  provider errors, syntax problems, or unexpected infrastructure changes. Includes debugging workflows, error
-  categorization, common GCP-specific issues, and recovery procedures.
----
+  Debugs and fixes Terraform errors systematically. Use when encountering Terraform failures, state lock issues, provider errors, syntax problems, or unexpected infrastructure changes. Includes debugging workflows, error categorization, common GCP-specific issues, and recovery procedures.
+
+version: 1.0.0---
 
 # Terraform Troubleshooting Skill
 
@@ -393,6 +392,6 @@ terraform apply
 
 ## See Also
 
-- [terraform skill](../terraform/SKILL.md) - General Terraform reference
+- [terraform-basics](../terraform-basics/SKILL.md) - General Terraform reference
 - [terraform-state-management](../terraform-state-management/SKILL.md) - Advanced state patterns
 - [terraform-gcp-integration](../terraform-gcp-integration/SKILL.md) - GCP-specific issues

@@ -1,19 +1,20 @@
 ---
 name: infra-manage-ssh-services
 description: |
-  Discover, test, and manage remote SSH infrastructure hosts and Docker services across
+  Discovers, tests, and manages remote SSH infrastructure hosts and Docker services across
   5 hosts (infra.local, deus, homeassistant, pi4-motor, armitage). Use when checking
   infrastructure status, verifying service connectivity, managing Docker containers,
   troubleshooting remote services, or before using remote resources (MongoDB, Langfuse,
   OTLP, Neo4j). Triggers on "check infrastructure", "connect to infra/deus/ha",
   "test MongoDB on infra", "view Docker services", "verify connectivity", "troubleshoot
-  remote service", "what services are running", or when remote connections fail. Works
-  with SSH commands, Docker remote management, and infrastructure health checks.
+  remote service", "what services are running", or when remote connections fail.
+version: 1.0.0
 allowed-tools:
   - Read
   - Bash
 ---
 
+Works with SSH commands, Docker remote management, and infrastructure health checks.
 # Infrastructure SSH Service Management
 
 ## Quick Start
@@ -309,187 +310,14 @@ syncpi zsh pull
 **Quick health check script** - Automated connectivity and service status checks.
 
 **Usage:**
-```bash
-# Run comprehensive health check
-bash /Users/dawiddutoit/.claude/skills/infra-manage-ssh-services/scripts/health_check.sh
 
-# Check specific host
-bash /Users/dawiddutoit/.claude/skills/infra-manage-ssh-services/scripts/health_check.sh infra
-```
+See [references/detailed-workflows.md](./references/detailed-workflows.md) for:
+- 7 comprehensive workflows (NomNom setup, connection debugging, service discovery, restart loop diagnosis, SSH setup, OTLP verification, file syncing)
+- Expected outcomes (successful/failed health checks, restart loop diagnosis)
+- Integration examples (NomNom, observability, Home Assistant, quality gates)
+- Troubleshooting guide (connection refused, permission denied, restart loops, slow SSH)
+- Advanced techniques (complex commands, real-time monitoring, batch health checks)
 
-## Common Workflows
-
-### Workflow 1: Starting NomNom Development
-
-**Goal:** Verify MongoDB is ready before starting NomNom backend
-
-```bash
-# 1. Check infra.local is reachable
-ping -c 1 infra.local || { echo "❌ infra.local unreachable"; exit 1; }
-
-# 2. Verify MongoDB container is running
-ssh infra "docker ps -f name=mongodb -q" | grep -q . || { echo "❌ MongoDB not running"; exit 1; }
-
-# 3. Test MongoDB connectivity
-nc -z infra.local 27017 || { echo "❌ MongoDB port closed"; exit 1; }
-
-# 4. Verify MongoDB responds to ping
-ssh infra "docker exec local-infra-mongodb-1 mongo off --quiet --eval 'db.runCommand({ping: 1})'" 2>/dev/null | grep -q "ok" || { echo "❌ MongoDB not responding"; exit 1; }
-
-# 5. Start NomNom backend
-cd ~/projects/play/nomnom && ./start.sh
-```
-
-### Workflow 2: Checking Claude Code Telemetry
-
-**Goal:** Verify observability infrastructure is capturing Claude Code sessions
-
-```bash
-# 1. Check OTLP Collector is running
-ssh infra "docker ps -f name=otel-collector -q" | grep -q . && echo "✅ OTLP Collector running"
-
-# 2. Check Langfuse is accessible
-curl -s -o /dev/null -w "%{http_code}" http://infra.local:3000 | grep -q "200" && echo "✅ Langfuse accessible"
-
-# 3. View OTLP logs (last 50 lines)
-ssh infra "docker logs --tail 50 local-infra-otel-collector-1"
-
-# 4. Open Langfuse dashboard
-open http://infra.local:3000
-
-# 5. Open Jaeger for trace visualization
-open http://infra.local:16686
-```
-
-### Workflow 3: Troubleshooting Remote Service Connection
-
-**Goal:** Diagnose why a service connection is failing
-
-```bash
-# 1. Verify network connectivity
-ping -c 3 infra.local || { echo "❌ Network unreachable"; exit 1; }
-
-# 2. Test port availability
-nc -z infra.local 27017 || { echo "❌ Port 27017 closed"; exit 1; }
-
-# 3. Check SSH access
-ssh infra "echo 'SSH OK'" || { echo "❌ SSH authentication failed"; exit 1; }
-
-# 4. Verify container is running
-ssh infra "docker ps -f name=mongodb"
-
-# 5. Check container health
-ssh infra "docker inspect --format='{{.State.Health.Status}}' local-infra-mongodb-1"
-
-# 6. View container logs for errors
-ssh infra "docker logs --tail 100 local-infra-mongodb-1"
-
-# 7. Restart container if unhealthy
-ssh infra "cd ~/projects/local-infra && docker compose restart mongodb"
-
-# 8. Wait 10 seconds and verify
-sleep 10 && ssh infra "docker inspect --format='{{.State.Health.Status}}' local-infra-mongodb-1"
-```
-
-### Workflow 4: Investigating Service in Restart Loop
-
-**Goal:** Diagnose why Neo4j or Infinity is restarting repeatedly
-
-```bash
-# 1. Check current status
-ssh infra "docker ps -a -f name=neo4j"
-
-# 2. View logs to find error
-ssh infra "docker logs --tail 200 local-infra-neo4j-1"
-
-# 3. Check Docker Compose configuration
-ssh infra "cd ~/projects/local-infra && docker compose config | grep -A 20 neo4j"
-
-# 4. Try manual stop/start
-ssh infra "cd ~/projects/local-infra && docker compose stop neo4j"
-sleep 5
-ssh infra "cd ~/projects/local-infra && docker compose up -d neo4j"
-
-# 5. Follow logs in real-time
-ssh infra "docker logs -f local-infra-neo4j-1"
-```
-
-## Expected Outcomes
-
-### Successful Discovery
-```
-✅ Infrastructure Discovery Complete
-
-Online Hosts: 3/5
-  ✅ infra.local (16 services running)
-  ✅ deus (0 services running)
-  ✅ homeassistant.local (1 service running)
-
-Offline Hosts: 2/5
-  ❌ pi4-motor.local
-  ❌ armitage.local
-
-Critical Services Status:
-  ✅ MongoDB (infra.local:27017) - healthy
-  ✅ Langfuse (infra.local:3000) - healthy
-  ✅ OTLP Collector (infra.local:4317) - healthy
-  ⚠️ Neo4j (infra.local:7687) - restarting
-  ⚠️ Infinity Embeddings (infra.local:7997) - restarting
-```
-
-### Successful Health Check
-```
-✅ Health Check Passed
-
-Host: infra.local
-SSH: Connected
-Docker: 16 containers running
-
-MongoDB:
-  Container: local-infra-mongodb-1
-  Status: healthy
-  Port: 27017 (open)
-  Database: off (632K products)
-  Ping: 1ms response
-
-Langfuse:
-  Container: local-infra-langfuse-web-1
-  Status: healthy
-  Port: 3000 (open)
-  HTTP: 200 OK
-
-Ready for development!
-```
-
-### Failed Health Check
-```
-❌ Health Check Failed
-
-Host: infra.local
-SSH: ✅ Connected
-Docker: ✅ Running
-
-MongoDB:
-  Container: local-infra-mongodb-1
-  Status: ❌ unhealthy
-  Port: 27017 (closed)
-  Error: Connection refused
-
-Recommended actions:
-1. View logs: ssh infra "docker logs --tail 100 local-infra-mongodb-1"
-2. Restart service: ssh infra "cd ~/projects/local-infra && docker compose restart mongodb"
-3. Check disk space: ssh infra "df -h"
-```
-
-## Integration Points
-
-### With NomNom Project
-
-**MongoDB dependency verification:**
-```bash
-# Before ./start.sh in NomNom, verify:
-nc -z infra.local 27017 || { echo "❌ Run 'connect infra' and check MongoDB"; exit 1; }
-```
 
 **Environment variables:**
 ```env

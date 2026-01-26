@@ -1,10 +1,17 @@
 ---
 name: svelte-runes
-# IMPORTANT: Keep description on ONE line for Claude Code compatibility
-# prettier-ignore
-description: Svelte runes guidance. Use for reactive state, props, effects, attachments, or migration. Covers $state, $derived, $effect, @attach. Prevents reactivity mistakes.
+description: |
+  Provides Svelte 5 runes guidance for reactive state, props, derived values, effects, and
+  attachments. Use when implementing reactivity, managing component props, computing derived
+  state, handling side effects, or migrating from Svelte 4. Triggers on "reactive state",
+  "component props", "computed value", "$state", "$derived", "$effect", "$props", or "Svelte 5
+  migration". Works with .svelte files using $state, $derived, $effect, $props, $bindable runes
+  and prevents common reactivity mistakes and Svelte 4/5 syntax mixing.
+version: 1.0.0
 ---
 
+# IMPORTANT: Keep description on ONE line for Claude Code compatibility
+# prettier-ignore
 # Svelte Runes
 
 ## Quick Start

@@ -1,11 +1,12 @@
 ---
 name: observability-instrument-with-otel
 description: |
-  Add OpenTelemetry instrumentation to service methods for distributed tracing and observability.
-  Use when adding new service methods, debugging complex flows, investigating performance issues,
-  or need distributed tracing across application layers. Works with Python files in Clean Architecture
-  (Application, Infrastructure, Interface layers). Applies @traced decorator, structured logging with
-  correlation IDs, and trace/span ID propagation. Ensures observability best practices.
+  Adds OpenTelemetry instrumentation to service methods by applying @traced decorators, structured logging,
+  and trace/span ID propagation for distributed tracing. Use when adding new service methods, debugging
+  complex flows, investigating performance issues, or need distributed tracing across application layers.
+  Triggers on "add tracing", "instrument this method", "add observability", "debug with traces", or
+  "track execution flow".
+version: 1.0.0
 allowed-tools:
   - Read
   - Grep

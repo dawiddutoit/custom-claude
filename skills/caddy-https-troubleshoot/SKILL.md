@@ -7,6 +7,7 @@ description: |
   or Caddy restart loops. Triggers on "HTTPS not working", "SSL certificate issue", "certificate
   error", "Caddy not starting", "fix HTTPS", "troubleshoot certificates", or "Invalid format
   for Authorization header". Works with Caddy, Cloudflare DNS-01 challenge, and Let's Encrypt.
+version: 1.0.0
 allowed-tools:
   - Read
   - Bash
@@ -46,7 +47,7 @@ Or follow the step-by-step diagnosis in [Instructions](#3-instructions).
 7. [Requirements](#7-requirements)
 8. [Red Flags to Avoid](#8-red-flags-to-avoid)
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 **Explicit Triggers:**
 - "HTTPS not working"
@@ -67,7 +68,7 @@ Or follow the step-by-step diagnosis in [Instructions](#3-instructions).
 - "Why can't Caddy get a certificate?"
 - "Cloudflare DNS challenge failing"
 
-## 2. What This Skill Does
+## What This Skill Does
 
 1. **Checks API Key** - Verifies CLOUDFLARE_API_KEY is set and passed to container
 2. **Verifies Plugin** - Confirms Cloudflare DNS plugin is compiled into Caddy
@@ -77,7 +78,7 @@ Or follow the step-by-step diagnosis in [Instructions](#3-instructions).
 6. **Identifies Error** - Matches symptoms to known issues
 7. **Provides Fix** - Gives specific commands to resolve the issue
 
-## 3. Instructions
+## Instructions
 
 ### 3.1 Check API Key Configuration
 
@@ -290,14 +291,14 @@ Build takes approximately 5 minutes on Raspberry Pi.
    docker exec caddy caddy reload --config /etc/caddy/Caddyfile
    ```
 
-## 4. Supporting Files
+## Supporting Files
 
 | File | Purpose |
 |------|---------|
 | `references/reference.md` | Complete error reference, API token creation guide, rate limit details |
 | `scripts/diagnose-https.sh` | Automated diagnostic script |
 
-## 5. Expected Outcomes
+## Expected Outcomes
 
 **Success:**
 - All diagnostic checks pass
@@ -315,7 +316,7 @@ Build takes approximately 5 minutes on Raspberry Pi.
 - Caddyfile syntax errors blocking startup
 - Let's Encrypt rate limit exceeded
 
-## 6. Common Error Reference
+## Common Error Reference
 
 | Error | Cause | Quick Fix |
 |-------|-------|-----------|
@@ -326,14 +327,14 @@ Build takes approximately 5 minutes on Raspberry Pi.
 | `403 Forbidden` | Token lacks DNS edit permission | Check/update token permissions |
 | Container restart loop | Caddyfile syntax error | Check logs, fix syntax, reload |
 
-## 7. Requirements
+## Requirements
 
 - Docker running with Caddy container
 - Valid Cloudflare API Token with "Edit zone DNS" permission
 - `.env` file with `CLOUDFLARE_API_KEY` set
 - Internet access for Cloudflare API calls
 
-## 8. Red Flags to Avoid
+## Red Flags to Avoid
 
 - [ ] Do not use Global API Key (format: `v4:...` or long hex) - use API Token instead
 - [ ] Do not skip verifying the plugin is compiled before troubleshooting further

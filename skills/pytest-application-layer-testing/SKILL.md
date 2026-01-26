@@ -4,6 +4,7 @@ description: |
   Testing use cases and application services: use case testing with mocked gateways, DTO testing, application exception testing, orchestration testing, mocking at adapter boundaries. Coverage target: 85-90%.
 
   Use when: Testing use cases, testing application services, testing DTOs and data transformation, testing error handling in use cases, mocking external dependencies at layer boundaries.
+version: 1.0.0
 allowed-tools: Read, Bash, Write
 ---
 
@@ -13,6 +14,12 @@ allowed-tools: Read, Bash, Write
 
 The application layer orchestrates domain logic with external dependencies. Tests verify that use cases correctly coordinate business logic and integration boundaries.
 
+
+## When to Use This Skill
+
+Use when testing use cases and application services with "test use case", "mock gateways", "test orchestration", or "test DTOs".
+
+Do NOT use for domain testing (use `pytest-domain-model-testing`), adapter testing (use `pytest-adapter-integration-testing`), or pytest configuration (use `pytest-configuration`).
 ## Quick Start
 
 Test use cases with mocked gateways:

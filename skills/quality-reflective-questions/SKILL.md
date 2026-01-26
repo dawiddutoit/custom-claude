@@ -7,7 +7,8 @@ description: |
   finished. Triggers on "is this really done", "self-review my work", "challenge my assumptions",
   "verify completeness", or proactively before marking tasks complete. Works with any type of
   implementation work. Enforces critical thinking about integration, testing, and execution proof.
----
+
+version: 1.0.0---
 
 # Reflective Questions for Work Completeness
 
@@ -46,7 +47,7 @@ Replace vague answers with specific evidence:
 10. Requirements
 11. Red Flags to Avoid
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 ### Explicit Triggers
 - "Challenge my assumptions about completeness"
@@ -70,7 +71,7 @@ Replace vague answers with specific evidence:
 - "I want to mark this done but have doubts"
 - "Am I missing something?"
 
-## 2. What This Skill Does
+## What This Skill Does
 
 This skill provides a **structured framework of reflective questions** that:
 
@@ -82,7 +83,7 @@ This skill provides a **structured framework of reflective questions** that:
 
 **This skill complements `quality-verify-implementation-complete`** by providing the mental framework for self-questioning BEFORE running technical verification.
 
-## 3. The Four Mandatory Questions (Deep Dive)
+## The Four Mandatory Questions (Deep Dive)
 
 These questions MUST be answered for EVERY piece of work before claiming "done".
 
@@ -205,7 +206,7 @@ These questions MUST be answered for EVERY piece of work before claiming "done".
 
 **If you cannot answer specifically:** No outcome proof → NOT COMPLETE
 
-## 4. Category-Specific Questions
+## Category-Specific Questions
 
 ### For New Modules/Files
 
@@ -307,7 +308,7 @@ These questions MUST be answered for EVERY piece of work before claiming "done".
 - Endpoint returns 404 when called
 - Endpoint returns errors or unexpected responses
 
-## 5. Red Flag Questions
+## Red Flag Questions
 
 These questions expose common self-deception patterns. If you answer "yes" to any, **stop and investigate**.
 
@@ -377,7 +378,7 @@ These questions expose common self-deception patterns. If you answer "yes" to an
     - If YES: You might miss blind spots
     - Action: Request reviewer agent or peer review
 
-## 6. The Honesty Checklist
+## The Honesty Checklist
 
 Before marking ANYTHING complete, answer these honestly:
 
@@ -428,7 +429,7 @@ Before marking ANYTHING complete, answer these honestly:
 
 ### If ANY checkbox is unchecked: **NOT COMPLETE**
 
-## 7. Common Self-Deception Patterns
+## Common Self-Deception Patterns
 
 ### Pattern 1: "Tests Pass" Syndrome
 
@@ -502,7 +503,7 @@ Before marking ANYTHING complete, answer these honestly:
 
 **Fix:** Verify now, don't defer to "later"
 
-## 8. Supporting Files
+## Supporting Files
 
 ### References
 - `references/four-questions-framework.md` - Deep dive into the Four Questions
@@ -517,7 +518,7 @@ Before marking ANYTHING complete, answer these honestly:
 - `templates/self-review-checklist.md` - Copy-paste checklist for self-review
 - `templates/four-questions-template.md` - Template for answering the Four Questions
 
-## 9. Expected Outcomes
+## Expected Outcomes
 
 ### Successful Self-Review
 
@@ -620,7 +621,7 @@ Critical issues found:
 DO NOT mark as done. Fix integration first.
 ```
 
-## 10. Requirements
+## Requirements
 
 ### Tools Required
 - None (this is a mental framework)
@@ -636,7 +637,7 @@ DO NOT mark as done. Fix integration first.
 - **Patience** - Take time to verify properly
 - **Courage** - Admit incompleteness vs rushing to "done"
 
-## 11. Red Flags to Avoid
+## Red Flags to Avoid
 
 ### Do Not
 - ❌ Accept vague answers from yourself

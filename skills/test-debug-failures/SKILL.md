@@ -7,6 +7,7 @@ description: |
   fixes by enforcing proper diagnostic sequence. Works with Python (.py),
   JavaScript/TypeScript (.js/.ts), Go, Rust test files. Supports pytest,
   jest, vitest, mocha, go test, cargo test, and other frameworks.
+version: 1.0.0
 allowed-tools:
   - Bash
   - Read
@@ -715,7 +716,7 @@ See [examples.md](./references/examples.md) for detailed walkthroughs of:
 ## Related Documentation
 
 - **Project CLAUDE.md:** Critical workflow rules and debugging approach
-- **Quality Gates:** [../run-quality-gates/references/shared-quality-gates.md](../run-quality-gates/references/shared-quality-gates.md)
+- **Quality Gates:** [../quality-run-quality-gates/references/shared-quality-gates.md](../quality-run-quality-gates/references/shared-quality-gates.md)
 - **Testing Strategy:** Project-specific testing documentation
 
 ## Philosophy

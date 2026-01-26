@@ -1,10 +1,9 @@
 ---
 name: terraform-state-management
 description: |
-  Manage Terraform state safely and efficiently. Use when setting up remote state, migrating between backends,
-  handling state locks, preventing state drift, backing up state, or understanding state dependencies and locking
-  mechanisms. Covers GCS backend configuration, state operations, and recovery procedures.
----
+  Manages Terraform state safely and efficiently. Use when setting up remote state, migrating between backends, handling state locks, preventing state drift, backing up state, or understanding state dependencies and locking mechanisms. Covers GCS backend configuration, state operations, and recovery procedures.
+
+version: 1.0.0---
 
 # Terraform State Management Skill
 
@@ -448,6 +447,6 @@ git commit -m "migrate: move state to centralized GCS backend"
 
 ## See Also
 
-- [terraform skill](../terraform/SKILL.md) - General Terraform reference
+- [terraform skill](../terraform-basics/SKILL.md) - General Terraform reference
 - [terraform-troubleshooting](../terraform-troubleshooting/SKILL.md) - Fixing state errors
 - [terraform-gcp-integration](../terraform-gcp-integration/SKILL.md) - GCP backend details

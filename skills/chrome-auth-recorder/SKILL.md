@@ -7,7 +7,8 @@ description: |
   "document authenticated process", "create tutorial from session", "capture this workflow as GIF",
   or "show me how to do this". Works with Chrome browser via MCP integration and authenticated
   sessions.
----
+
+version: 1.0.0---
 
 # Chrome Auth Recorder
 

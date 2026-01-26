@@ -1,9 +1,10 @@
 ---
 name: pytest-configuration
 description: |
-  Complete pytest configuration: pyproject.toml setup, custom markers registration, test discovery patterns, plugin configuration, environment-specific settings. Includes conftest.py hierarchy, fixture scoping, and coverage configuration.
+  Provides Complete pytest configuration: pyproject.toml setup, custom markers registration, test discovery patterns, plugin configuration, environment-specific settings. Includes conftest.py hierarchy, fixture scoping, and coverage configuration.
 
   Use when: Setting up pytest in a project, configuring test discovery, creating shared fixtures, setting up coverage reporting, managing test environments, organizing conftest.py files.
+version: 1.0.0
 allowed-tools: Read, Bash, Write
 ---
 
@@ -13,6 +14,12 @@ allowed-tools: Read, Bash, Write
 
 Proper pytest configuration ensures fast test discovery, correct isolation, and consistent behavior across environments. This skill provides production-ready configuration patterns.
 
+
+## When to Use This Skill
+
+Use when setting up pytest in a project with "configure pytest", "setup test discovery", "create conftest", or "configure coverage".
+
+Do NOT use for writing tests themselves (use layer-specific testing skills), debugging failures (use `test-debug-failures`), or mocking strategies (use `pytest-mocking-strategy`).
 ## Quick Start
 
 Minimal `pyproject.toml` configuration:

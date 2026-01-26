@@ -1,6 +1,12 @@
 ---
 name: quality-capture-baseline
-description: Captures quality metrics baseline (tests, coverage, type errors, linting) by running quality gates and storing results in memory. PROACTIVELY invoked at feature start, before refactor work, or after major changes to establish baseline for regression detection.
+description: |
+  Captures quality metrics baseline (tests, coverage, type errors, linting, dead code) by running
+  quality gates and storing results in memory for regression detection. Use at feature start,
+  before refactor work, or after major changes to establish baseline. Triggers on "capture baseline",
+  "establish baseline", or PROACTIVELY at start of any feature/refactor work. Works with pytest
+  output, pyright errors, ruff warnings, vulture results, and memory MCP server for baseline storage.
+version: 1.0.0
 allowed-tools:
   - Bash
   - Read

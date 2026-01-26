@@ -1,10 +1,8 @@
 ---
 name: textual-widget-development
 description: |
-  Design and implement custom Textual widgets with composition, styling, and lifecycle management.
-  Use when creating reusable widget components, composing widgets from built-in components,
-  implementing widget lifecycle (on_mount, on_unmount), handling widget state, and testing widgets.
-  Covers custom widgets extending Static, Container, and building complex widget hierarchies.
+  Designs and implements custom Textual widgets with composition, styling, and lifecycle management. Use when creating reusable widget components, composing widgets from built-in components, implementing widget lifecycle (on_mount, on_unmount), handling widget state, and testing widgets. Covers custom widgets extending Static, Container, and building complex widget hierarchies.
+version: 1.0.0
 allowed-tools: Read, Write, Edit, Bash
 ---
 
@@ -441,123 +439,20 @@ class StyledWidget(Static):
 
 ## Examples
 
-### Example 1: Custom Status Display Widget
+### Basic Widget Examples
 
-```python
-from rich.text import Text
-from textual.widgets import Static
-from datetime import datetime
+See above instructions for two fundamental widget examples:
+1. Custom Status Display Widget (rendering with Rich)
+2. Reusable Data Table Widget (composition pattern)
 
-class StatusWidget(Static):
-    """Displays status with color coding."""
-
-    DEFAULT_CSS = """
-    StatusWidget {
-        height: auto;
-        border: solid $primary;
-        padding: 1;
-    }
-
-    StatusWidget .status-running {
-        color: $success;
-        text-style: bold;
-    }
-
-    StatusWidget .status-idle {
-        color: $warning;
-    }
-
-    StatusWidget .status-error {
-        color: $error;
-    }
-    """
-
-    def __init__(self, status: str = "idle", **kwargs: object) -> None:
-        super().__init__(**kwargs)
-        self._status = status
-        self._last_updated = datetime.now()
-
-    def render(self) -> Text:
-        """Render status with appropriate styling."""
-        text = Text()
-        text.append("Status: ", style="bold")
-
-        # Status icon and color
-        status_icon = "●" if self._status == "running" else "○"
-        style = f"status-{self._status}"
-        text.append(status_icon, style=style)
-
-        text.append(" ")
-        text.append(self._status.upper(), style=style)
-
-        # Add timestamp
-        timestamp = self._last_updated.strftime("%H:%M:%S")
-        text.append(f" [{timestamp}]", style="dim")
-
-        return text
-
-    def update_status(self, status: str) -> None:
-        """Update status and refresh display."""
-        self._status = status
-        self._last_updated = datetime.now()
-        self.refresh()
-```
-
-### Example 2: Reusable Data Table Widget
-
-```python
-from textual.widgets import DataTable, Static
-from textual.app import ComposeResult
-from textual.containers import Vertical
-
-class DataTableWidget(Vertical):
-    """Reusable data table widget."""
-
-    DEFAULT_CSS = """
-    DataTableWidget {
-        height: 1fr;
-        border: solid $primary;
-    }
-
-    DataTableWidget > Static {
-        height: auto;
-        background: $boost;
-        text-style: bold;
-    }
-
-    DataTableWidget DataTable {
-        height: 1fr;
-    }
-    """
-
-    def __init__(self, title: str, columns: list[str], **kwargs: object) -> None:
-        super().__init__(**kwargs)
-        self._title = title
-        self._columns = columns
-
-    def compose(self) -> ComposeResult:
-        """Compose table with title."""
-        yield Static(self._title)
-        yield DataTable(id="data-table")
-
-    async def on_mount(self) -> None:
-        """Initialize table columns."""
-        table = self.query_one("#data-table", DataTable)
-
-        # Add columns
-        for column in self._columns:
-            table.add_column(column)
-
-    async def add_row(self, *values: str) -> None:
-        """Add row to table."""
-        table = self.query_one("#data-table", DataTable)
-        table.add_row(*values)
-
-    async def clear_rows(self) -> None:
-        """Clear all rows."""
-        table = self.query_one("#data-table", DataTable)
-        table.clear()
-```
+**For advanced widget patterns**, see [references/advanced-patterns.md](references/advanced-patterns.md):
+- Complex container widgets with multiple child types
+- Dynamic widget mounting/unmounting
+- Lazy loading patterns
+- Advanced reactive patterns with watchers
+- Custom message bubbling
+- Performance optimization (virtual scrolling, debouncing)
+- Comprehensive testing patterns
 
 ## Requirements
 - Textual >= 0.45.0

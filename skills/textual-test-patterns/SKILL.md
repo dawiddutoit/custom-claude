@@ -6,7 +6,8 @@ description: |
   management, reactive attributes, custom messages/events, CSS styling effects, data tables,
   scrolling, input validation, error/loading states, or background workers. Each pattern
   shows the complete test with proper async handling and assertions.
----
+
+version: 1.0.0---
 
 # Textual Test Patterns
 

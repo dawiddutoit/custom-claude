@@ -1,11 +1,12 @@
 ---
 name: gcp-gke-deployment-strategies
 description: |
-  Deploy and update applications on GKE using rolling updates, blue-green deployments,
-  and health checks. Use when deploying new versions, rolling back failed deployments,
-  configuring Spring Boot health probes (liveness/readiness), managing rollout status,
-  or implementing zero-downtime deployment strategies. Includes progressive rollout
-  patterns and automated health verification.
+  Implements zero-downtime deployments on GKE using rolling updates, blue-green
+  strategies, and health checks. Use when deploying new versions, rolling back failed
+  deployments, configuring Spring Boot health probes (liveness/readiness), managing
+  rollout status, or implementing progressive rollout patterns. Includes automated
+  health verification and rollback procedures.
+version: 1.0.0
 allowed-tools:
   - Bash
   - Read
@@ -460,6 +461,6 @@ kubectl exec $POD -n $NAMESPACE -- \
 
 ## See Also
 
-- [gke-cluster-setup](../gke-cluster-setup/SKILL.md) - Understand cluster configuration
-- [gke-troubleshooting](../gke-troubleshooting/SKILL.md) - Debug deployment issues
-- [gke-monitoring-observability](../gke-monitoring-observability/SKILL.md) - Monitor deployments
+- [gcp-gke-cluster-setup](../gcp-gke-cluster-setup/SKILL.md) - Understand cluster configuration
+- [gcp-gke-troubleshooting](../gcp-gke-troubleshooting/SKILL.md) - Debug deployment issues
+- [gcp-gke-monitoring-observability](../gcp-gke-monitoring-observability/SKILL.md) - Monitor deployments

@@ -2,6 +2,13 @@
 
 Complete reference of sensor configuration templates for Home Assistant MQTT auto-discovery.
 
+## Table of Contents
+
+1. [Device Classes](#device-classes)
+2. [Best Practices](#best-practices)
+3. [Testing Commands](#testing-commands)
+4. [Entity Removal](#entity-removal)
+
 ## Device Classes
 
 Comprehensive list of Home Assistant device classes with units and icons.
@@ -252,3 +259,93 @@ Binary sensor device classes: `motion`, `door`, `window`, `smoke`, `gas`, `moist
 | `availability_topic` | Separate online/offline topic | "device/status" |
 | `payload_available` | Online payload | "online" |
 | `payload_not_available` | Offline payload | "offline" |
+
+## Best Practices
+
+### Discovery Messages
+
+- **Use retain=True** - Discovery messages should be retained so HA receives them after restart
+- **Use QoS 1** - Ensures reliable delivery (at-least-once)
+- **Re-publish on reconnect** - Republish discovery in case HA restarted
+- **Unique IDs** - Use globally unique identifiers for each sensor
+
+### Device Grouping
+
+- **Use device.identifiers** - Group related sensors under a single device
+- **Consistent device info** - Use same manufacturer/model across all sensors
+- **Device naming** - Use descriptive device names (not just sensor IDs)
+
+### State Classes
+
+- **Choose appropriate state_class** - Enables statistics and history
+  - `measurement`: Current values (temperature, power)
+  - `total`: Monotonically increasing (odometer)
+  - `total_increasing`: Cumulative with resets (daily energy)
+
+### Device Classes
+
+- **Use standard device classes** - Enables proper icons and units automatically
+- **Match units to device class** - Use °C with temperature, % with humidity
+- **Test in Developer Tools** - Verify entities appear correctly
+
+## Testing Commands
+
+### Subscribe to All Discovery Messages
+
+```bash
+mosquitto_sub -h 192.168.68.123 -t "homeassistant/#" -v
+```
+
+### Publish Test Discovery
+
+```bash
+mosquitto_pub -h 192.168.68.123 \
+  -t "homeassistant/sensor/test_temp/config" \
+  -m '{"name":"Test Temp","unique_id":"test_temp","state_topic":"test/temp/state","device_class":"temperature","unit_of_measurement":"°C","state_class":"measurement"}' \
+  -r
+```
+
+### Publish Test Value
+
+```bash
+mosquitto_pub -h 192.168.68.123 -t "test/temp/state" -m "25.5"
+```
+
+### Check MQTT Broker Connection
+
+```bash
+mosquitto_sub -h 192.168.68.123 -t "\$SYS/#" -v
+```
+
+## Entity Removal
+
+### Remove Single Entity
+
+Publish empty payload with retain flag:
+
+```bash
+mosquitto_pub -h 192.168.68.123 \
+  -t "homeassistant/sensor/test_temp/config" \
+  -n -r
+```
+
+### Remove All Entities for Device
+
+```bash
+# For each sensor under the device
+for sensor in temperature humidity pressure; do
+  mosquitto_pub -h 192.168.68.123 \
+    -t "homeassistant/sensor/device_${sensor}/config" \
+    -n -r
+done
+```
+
+### Remove via Home Assistant UI
+
+1. Go to Settings → Devices & Services → Integrations
+2. Find "MQTT" integration
+3. Click device to remove
+4. Click "Delete" button
+5. Confirm removal
+
+**Note:** Removing via UI does not clear retained MQTT messages. Entity will reappear if HA restarts. Use MQTT commands to permanently remove.

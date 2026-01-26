@@ -1,12 +1,11 @@
 ---
 name: lotus-migration
 description: |
-  Analyze and plan migrations of Lotus Notes applications to modern platforms.
+  Analyzes and plans migrations of Lotus Notes applications to modern platforms.
   Use when understanding Lotus Notes architecture, analyzing NSF databases,
   identifying integration points, planning migration strategies, or translating
-  Notes concepts to modern equivalents. Covers Forms, Views, Agents, Script Libraries,
-  Formula Language, LotusScript, direct database writes, ODBC connections, and
-  replacement architecture decision frameworks.
+  Notes concepts to modern equivalents.
+version: 1.0.0
 allowed-tools:
   - Read
   - Glob
@@ -14,6 +13,7 @@ allowed-tools:
   - Bash
 ---
 
+Covers Forms, Views, Agents, Script Libraries, Formula Language, LotusScript, direct database writes, ODBC connections, and replacement architecture decision frameworks.
 # Lotus Notes Migration Skill
 
 ## Table of Contents
@@ -211,91 +211,30 @@ Not all integrations have equal migration complexity. Use this framework:
 
 ### Step 5: Choose Replacement Strategy
 
-Each integration pattern has optimal replacement strategies:
+Each integration pattern has optimal replacement strategies. See **[references/integration-strategies.md](references/integration-strategies.md)** for comprehensive details.
 
-#### Direct Database Writes (Highest Priority)
+#### Quick Decision Guide
 
-**Why This Matters:** Direct DB writes represent the tightest coupling and are highest priority for migration because they:
-- Create schema dependencies
-- Make testing difficult
-- Provide poor error visibility
-- Create change coordination challenges
+**Direct Database Writes (Highest Priority):**
+- REST API Integration ⭐ (most cases)
+- Message Queue ⭐ (high volume, async)
+- Staging Table (transitional)
+- Event Sourcing (strategic long-term)
 
-**Option A: REST API Integration** ⭐ Recommended for most cases
-- Source app calls API endpoint instead of writing database
-- Target system owns database changes
-- Clear error handling and versioning
-- Easier to monitor and debug
-- Overhead: Requires API development, network latency
+**ODBC Connections:**
+- Reference data → API with caching
+- Transactional data → API or direct SQL
+- Mainframe → API layer (path to retirement)
 
-**Option B: Message Queue Integration** ⭐ Best for asynchronous, high-volume
-- Source app publishes message (incident/charge data)
-- Target system subscribes and processes
-- Decoupled, scalable, replay capability
-- Better for high-volume scenarios
-- Overhead: Queue infrastructure, eventual consistency, monitoring
+**File-Based Integrations:**
+- Keep for batch exports/imports
+- Add API capability for new consumers
+- Standardize formats, add validation
 
-**Option C: Shared Staging Table** - Transitional approach
-- Source app writes to staging table
-- Target system polls and processes
-- Maintains existing database connectivity
-- Simple atomic transactions
-- Downside: Maintains coupling, less modern
-
-**Option D: Event Sourcing** - Strategic long-term
-- Apps emit domain events (IncidentCreated, ViolationDetected)
-- Event store captures all changes
-- Subscribers react to events
-- Full audit trail, replay capability
-- Overhead: Complex, requires event infrastructure
-
-**Decision Matrix:**
-```
-Integration Type          | Volume | Latency | Best Fit | Alternative
---------------------------|--------|---------|----------|-------------
-Direct DB Write (sync)   | Low    | <1s     | API      | Staging Table
-Direct DB Write (batch)  | High   | Hours   | API+Queue| Batch API
-ODBC Read (reference)    | Low    | Seconds | API      | Cache Layer
-ODBC Read (transactional)| Medium | <1s     | API/Query| Cached API
-File Export              | Medium | Minutes | Scheduled Job | Event Stream
-Email Notification       | Low    | Minutes | Message/Event | Direct Service
-```
-
-#### ODBC Connections
-
-**Replacement Strategy:**
-1. **If reading reference data:** Create API endpoint, cache results, sunset ODBC
-2. **If reading transactional data:** Refactor to direct SQL or service API
-3. **If writing data:** Replace with API or message-based approach
-4. **Mainframe dependencies:** Prioritize API layer to abstract mainframe
-
-**Example:** Mainframe DB2 ODBC queries in VRS validation
-- Current: VRS agents query DB2 via ODBC for product validation
-- Problem: Tight coupling, network latency, hard to troubleshoot
-- Solution: Create API wrapper around DB2 data, migrate VRS to call API, decommission ODBC
-
-#### File-Based Integrations
-
-**Current Usage in B&O:** Oracle Finance exports, PDP feeds
-
-**Replacement Strategy:**
-1. **For exports (outbound):** Keep file-based as intermediary, add API-first capability
-2. **For imports (inbound):** Prefer file over API for compatibility
-3. **For both:** Use file staging as transitional; move to API for new integrations
-4. **Improve:** Standardize formats, add schema validation, improve error handling
-
-#### Reference Data Integrations
-
-**Critical Issue in B&O:** BDL feeds being decommissioned
-- Current: Four reference databases (Assortment, Supplier Info, Buying Groups, Lookups) fed by BDL
-- Problem: BDL decommissioning creates immediate risk
-- Action: Identify alternative sources urgently
-
-**Replacement Strategy:**
-1. **Map data lineage:** Where does BDL data originate?
-2. **Identify alternatives:** Which systems own this data?
-3. **Design sync mechanism:** Periodic file-based? API? Real-time?
-4. **Create migration path:** Batch initial load, incremental updates ongoing
+**Reference Data:**
+- Identify alternative sources
+- Design sync mechanism (file/API/hybrid)
+- Batch initial load, incremental updates
 
 ### Step 6: Design API Replacement Specifications
 
@@ -503,163 +442,14 @@ Migrations require extensive testing at multiple levels:
 
 ## Examples
 
-### Example 1: Analyzing a Direct Database Integration
+**For comprehensive migration examples with complete analysis and implementation details**, see:
 
-**Scenario:** Understand the Product Incidents → B&O integration
+- **[references/detailed-examples.md](references/detailed-examples.md)** - Contains three complete examples:
+  1. Analyzing a Direct Database Integration (Product Incidents → B&O)
+  2. Replacing ODBC with API Layer (VRS Mainframe Integration)
+  3. Designing Multi-Integration Cutover Sequence (B&O System)
 
-**Steps:**
-
-1. **Gather details**
-   ```
-   Application: Product Incidents Lotus Notes
-   Owner: Quality Assurance team
-   Purpose: Track product quality issues, generate supplier charges
-   Integration: Direct database write to B&O
-   ```
-
-2. **Map integration**
-   ```
-   Direction: Inbound (to B&O)
-   Type: Direct database write
-   Trigger: When incident is marked as billable
-   Data: Supplier ID, charge amount, incident details
-   Frequency: ~50 incidents per day
-   Volume: Small (kilobytes per write)
-   Criticality: HIGH (blocks supplier charge processing)
-   ```
-
-3. **Identify constraints**
-   ```
-   - Tight coupling to B&O database schema
-   - No error handling visible to users
-   - No retry mechanism
-   - Schema changes in B&O break Product Incidents
-   - Hard to test (requires B&O database)
-   ```
-
-4. **Recommend replacement**
-   ```
-   Strategy: REST API
-   Reasoning:
-     - Decouples Product Incidents from B&O schema
-     - Enables proper error handling
-     - Allows versioning and evolution
-     - Easier testing (mock API)
-     - Standard pattern (more maintainable)
-   ```
-
-5. **Design API specification**
-   ```
-   POST /api/v1/supplier-charges
-   Request: { supplierId, amount, incidentId, description, ... }
-   Response: { chargeId, status, createdAt, ... }
-   Errors: 400 (validation), 409 (duplicate), 500 (server error)
-   Idempotency: Via idempotency-key header
-   ```
-
-6. **Plan cutover**
-   ```
-   Phase 1 (Week 1): Deploy API, run parallel
-   Phase 2 (Week 2): Validation, testing
-   Phase 3 (Week 3): Cutover
-     - Product Incidents app updated to call API
-     - Monitor for errors
-     - Rollback plan ready
-   ```
-
-### Example 2: Replacing ODBC with API Layer
-
-**Scenario:** Mainframe DB2 ODBC queries for product validation
-
-**Current State:**
-```
-VRS Agents → ODBC Query → Mainframe DB2 → Product validation data
-```
-
-**Problems:**
-- Network latency for every transaction
-- Hard to troubleshoot issues
-- Tight coupling to mainframe database
-- Performance bottleneck
-
-**Replacement:**
-```
-Step 1: Create API wrapper around DB2
-  - Query mainframe DB2 directly from new API
-  - Cache results to reduce mainframe hits
-  - Return consistent JSON format
-
-Step 2: Update VRS to call API instead of ODBC
-  - Replace ODBC connection string with API endpoint
-  - Add error handling for API failures
-  - Test fallback/retry logic
-
-Step 3: Decommission ODBC driver
-  - Remove from Notes agent
-  - Clean up configuration
-  - Remove from infrastructure
-```
-
-**Benefits:**
-- Single API layer can be called from multiple systems
-- Can add caching without touching mainframe
-- Network calls visible and monitorable
-- Easier to troubleshoot (API logs vs. ODBC traces)
-- Path to decommissioning mainframe
-
-### Example 3: Designing Multi-Integration Cutover Sequence
-
-**Scenario:** B&O system has 10+ integrations, cannot migrate all at once
-
-**Assessment:**
-```
-CRITICAL (Do First):
-  - Reference databases (BDL decommissioning)
-  - VRS configuration
-
-HIGH (Early):
-  - Product Incidents (direct DB write)
-  - Delivery Standards (direct DB write)
-  - Oracle Finance (business critical)
-
-MEDIUM (Mid):
-  - PDP (coordinate with their rework)
-  - Mainframe ODBC
-
-LOW (Later):
-  - Email system
-  - File uploads
-```
-
-**Sequence:**
-```
-Month 1 (Weeks 1-4):
-  - Resolve BDL alternatives (URGENT)
-  - Modernize reference database feeds
-  - Design VRS replacement
-
-Month 2 (Weeks 5-8):
-  - Build API for Product Incidents
-  - Build API for Delivery Standards
-  - Parallel testing begins
-
-Month 3 (Weeks 9-12):
-  - Cutover Phase 1 (test environment)
-  - Cutover Phase 2 (staging)
-  - Production cutover
-
-Month 4+ (Weeks 13+):
-  - Optimize remaining integrations
-  - Retire legacy Notes dependencies
-  - Document lessons learned
-```
-
-**Risk Mitigation:**
-- Parallel running reduces cutover risk
-- Early focus on critical dependencies
-- Clear communication with all teams
-- Well-documented rollback procedures
-- Dedicated testing environment
+Each example includes full requirements, technical specifications, API designs, cutover plans, and risk mitigation strategies.
 
 ## Requirements
 

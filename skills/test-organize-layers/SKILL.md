@@ -5,6 +5,7 @@ description: |
   Use when creating new test files, deciding test layer, organizing test structure,
   or determining fixture scope. Analyzes mocking patterns, dependencies, and test scope
   to recommend correct layer placement. Works with pytest test files (test_*.py).
+version: 1.0.0
 allowed-tools:
   - Read
   - Grep

@@ -1,10 +1,11 @@
 ---
 name: implement-cqrs-handler
 description: |
-  Create CQRS command or query handler following project patterns with ServiceResult,
-  dependency injection, and handler registration. Use when implementing new use cases,
-  adding features, creating API endpoints, or building application layer logic.
-  Works with Python handlers in application/commands/ and application/queries/.
+  Provides step-by-step implementation guide for creating CQRS command or query handlers
+  following project patterns with ServiceResult, dependency injection, and handler
+  registration. Use when implementing new use cases, adding features, creating API
+  endpoints, or building application layer logic.
+version: 1.0.0
 allowed-tools:
   - Read
   - Write
@@ -14,6 +15,7 @@ allowed-tools:
   - Bash
 ---
 
+Works with Python handlers in application/commands/ and application/queries/.
 # Implement CQRS Handler
 
 ## Purpose

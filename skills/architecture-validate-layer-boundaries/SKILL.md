@@ -1,12 +1,24 @@
 ---
 name: architecture-validate-layer-boundaries
-description: Validates Clean Architecture layer boundaries by checking that domain has no external imports, application doesn't import from interfaces, and infrastructure implements repository interfaces correctly. Use before architectural changes or as part of quality gates.
+description: |
+  Validates Clean Architecture layer boundaries by detecting import violations across domain,
+  application, infrastructure, and interfaces layers using grep-based analysis.
+
+  Use when asked to "validate architecture", "check layer boundaries", "verify Clean Architecture",
+  "validate my changes follow Clean Architecture", or before committing architectural changes.
+  layer, interfaces layer, dependency rules, architectural validation.
+
+  Works with Python files in layered architecture projects (domain/, application/, infrastructure/,
+  interfaces/ directories).
+version: 1.0.0
+tags: [architecture, validation, clean-architecture, layer-boundaries, quality-gates]
 allowed-tools:
   - Read
   - Grep
   - Bash
 ---
 
+Key terms: Clean Architecture, layer boundaries, domain layer, application layer, infrastructure
 # Validate Clean Architecture Layer Boundaries
 
 ## Purpose
@@ -18,6 +30,7 @@ Validates that all layers respect Clean Architecture dependency rules by checkin
 ### Core Sections
 - [Purpose](#purpose) - What this skill validates
 - [When to Use This Skill](#when-to-use-this-skill) - Triggers and use cases
+- [Triggers](#triggers) - Explicit trigger phrases
 - [What This Skill Does](#what-this-skill-does) - Layer dependency rules and validation process
 - [Quick Start](#quick-start) - Immediate validation workflow
 - [Usage Examples](#usage-examples) - Real-world scenarios
@@ -39,6 +52,18 @@ Use this skill when:
 - Reviewing code for architecture compliance
 - Running pre-commit quality gates
 - User asks "Does this follow Clean Architecture?"
+
+## Triggers
+
+Trigger with phrases like:
+- "validate architecture"
+- "check layer boundaries"
+- "verify Clean Architecture"
+- "does this follow Clean Architecture?"
+- "validate my changes follow Clean Architecture"
+- "check architectural compliance"
+- "are my layer dependencies correct?"
+- "validate domain layer imports"
 
 ## What This Skill Does
 
@@ -86,28 +111,24 @@ Validates that all layers respect Clean Architecture dependency rules:
 **Result:** ✅ Pass (boundaries respected) or ❌ Fail (violations with fixes)
 
 **Example output:**
-```
-✅ Clean Architecture Validation: PASSED - 15 files, 0 violations
-```
-or
-```
-❌ Domain Layer Violation
-   File: src/domain/models/entity.py:12
-   Issue: Importing from infrastructure
-   Fix: Use repository interface instead
-```
+
+Success: All files respect boundaries with 0 violations detected.
+
+Failure: Specific violations reported with file location, issue description, and fix guidance.
+
+See [examples/examples.md](./examples/examples.md) for detailed output examples.
 
 ## Supporting Files
 
 - [references/layer-rules.md](./references/layer-rules.md) - Complete layer dependency matrix with examples
 - [references/violation-fixes.md](./references/violation-fixes.md) - Common violations and how to fix them
+- [examples/examples.md](./examples/examples.md) - Detailed validation scenarios and expected outputs
 - [scripts/validate.sh](./scripts/validate.sh) - Executable validation script for Clean Architecture layer boundaries
 
 ## Usage Examples
 
 ### Example 1: Validate Single File
 
-```
 User: "Is this domain model valid?"
 
 Claude invokes skill by reading file and checking imports:
@@ -115,11 +136,11 @@ Claude invokes skill by reading file and checking imports:
 - Extract all imports using Grep
 - Check each import against layer rules
 - Report violations
-```
+
+See [examples/examples.md](./examples/examples.md#example-6-validating-single-file) for detailed output.
 
 ### Example 2: Validate All Changes
 
-```
 User: "Check if my changes follow Clean Architecture"
 
 Claude invokes skill for all modified files:
@@ -127,77 +148,43 @@ Claude invokes skill for all modified files:
 2. Filter Python files
 3. Validate each file's imports
 4. Report summary of violations
-```
+
+See [examples/examples.md](./examples/examples.md#example-4-multiple-violations) for detailed output.
 
 ### Example 3: Pre-Commit Gate
 
-```
 Invoked automatically by pre-commit hook:
 1. Get staged files
 2. Validate layer boundaries
 3. Block commit if violations found
-```
+
+See [examples/examples.md](./examples/examples.md#example-7-integration-with-pre-commit-hook) for implementation details.
 
 ## Expected Outcomes
 
 ### Success (No Violations)
 
-```
-✅ Clean Architecture Validation: PASSED
-
-Files checked: 15
-Violations: 0
-
-All layer boundaries respected.
-```
+All files checked with 0 violations detected. Layer boundaries are respected across all layers.
 
 ### Failure (Violations Found)
 
-```
-❌ Clean Architecture Validation: FAILED
+Violations reported with:
+- File path and line number
+- Issue description (which layer rule violated)
+- Offending code line
+- Specific fix guidance
 
-Violations found:
-
-1. Domain Layer Violation
-   File: src/project_watch_mcp/domain/models/entity.py:12
-   Issue: Importing from infrastructure layer
-   Code: from infrastructure.neo4j import Neo4jDriver
-   Fix: Remove direct infrastructure dependency. Use repository interface instead.
-
-2. Application Layer Violation
-   File: src/project_watch_mcp/application/services/search.py:8
-   Issue: Importing from interfaces layer
-   Code: from interfaces.mcp.tools import search_code
-   Fix: Application should not know about interfaces. Use application-level handler instead.
-
-Total Violations: 2
-Exit Code: 1
-```
+See [examples/examples.md](./examples/examples.md#example-2-domain-layer-violation) for detailed violation output examples.
 
 ## Detection Patterns
 
-Use these Grep patterns to detect violations:
+The skill uses Grep patterns to detect violations across layers:
 
-**Domain layer violations:**
-```bash
-# Domain importing from application/infrastructure/interfaces
-grep -rn "from.*\.\(application\|infrastructure\|interfaces\)" src/project_watch_mcp/domain/
-grep -rn "from project_watch_mcp\.\(application\|infrastructure\|interfaces\)" src/project_watch_mcp/domain/
-```
+- **Domain layer violations:** Detects imports from application/infrastructure/interfaces
+- **Application layer violations:** Detects imports from interfaces
+- **Interface layer violations:** Detects direct imports from domain or infrastructure
 
-**Application layer violations:**
-```bash
-# Application importing from interfaces
-grep -rn "from.*\.interfaces" src/project_watch_mcp/application/
-grep -rn "from project_watch_mcp\.interfaces" src/project_watch_mcp/application/
-```
-
-**Interface layer violations:**
-```bash
-# Interfaces importing from domain directly (should use application)
-grep -rn "from.*\.domain\.models" src/project_watch_mcp/interfaces/
-grep -rn "from project_watch_mcp\.infrastructure" src/project_watch_mcp/interfaces/
-```
+See [scripts/validate.sh](./scripts/validate.sh) for the exact grep patterns and validation logic used.
 
 ## Integration Points
 

@@ -6,6 +6,7 @@ description: |
   parameterizable mocks, or implementing test data builders. Works with pytest
   fixtures, mock objects, and test utilities. Enables DRY test setup while
   maintaining flexibility for edge cases.
+version: 1.0.0
 allowed-tools:
   - Read
   - Grep

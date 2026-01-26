@@ -6,6 +6,8 @@ description: |
   "too many dependencies", before commits, during refactoring, or as quality gate.
   Analyzes Python, JavaScript, TypeScript files with AST-based detection, metrics (TCC, ATFD, WMC),
   and project-specific patterns. Provides actionable fix guidance with refactoring estimates.
+version: 1.0.0
+tags: [architecture, srp, quality-gates, code-review, refactoring, python, javascript, typescript]
 allowed-tools:
   - Read
   - Grep
@@ -88,29 +90,7 @@ Detect Single Responsibility Principle violations using multi-dimensional analys
 - **NOT** "do one thing" (task-driven) - a class can have multiple methods
 - **IS** "have one reason to change" (actor-driven)
 
-**Example:**
-```python
-# ❌ VIOLATION: Two actors (HR + Accounting)
-class Employee:
-    def calculate_pay(self):       # Actor: Accounting
-        pass
-
-    def report_hours(self):        # Actor: HR
-        pass
-
-    def save(self):                # Actor: DBA
-        pass
-
-# ✅ CORRECT: One actor per class
-class PayCalculator:               # Actor: Accounting
-    def calculate(self, employee): pass
-
-class HourReporter:                # Actor: HR
-    def report(self, employee): pass
-
-class EmployeeRepository:          # Actor: DBA
-    def save(self, employee): pass
-```
+**Example:** See [examples/violation-naming-patterns.py](./examples/violation-naming-patterns.py) for violation and correct implementation showing Employee class serving 3 actors (Accounting, HR, DBA) and the correct split into PayCalculator, HourReporter, and EmployeeRepository.
 
 ### Detection Methods (Multi-Dimensional)
 
@@ -158,67 +138,38 @@ This skill uses **4 validation levels**:
 
 **Pattern 1: Methods with "and" in name (40% confidence)**
 
+Use the validation script to detect naming violations:
+
+**Using validation script:**
 ```bash
-# Using ast-grep (preferred - zero false positives)
+./scripts/validate-srp.sh <path> --level=fast
+```
+
+**Or manually with MCP tools:**
+```bash
 mcp__ast-grep__find_code(
     pattern="def $NAME_and_$REST",
-    project_folder="/Users/dawiddutoit/projects/play/project-watch-mcp",
+    project_folder="/path/to/project",
     language="python"
 )
-
-# Alternative: grep (faster but less accurate)
-grep -rn "def .*_and_.*\|function.*And.*" src/
 ```
 
-**Example violation:**
-```python
-# ❌ VIOLATION (40% confidence)
-def validate_and_save_user(data):
-    # Validation logic (Actor 1: Validation team)
-    if not data.get("email"):
-        raise ValueError("Invalid email")
-
-    # Persistence logic (Actor 2: DBA team)
-    db.save(data)
-
-# ✅ FIX: Split by actor
-def validate_user(data):  # Actor: Validation team
-    if not data.get("email"):
-        raise ValueError("Invalid email")
-
-def save_user(data):      # Actor: DBA team
-    return db.save(data)
-```
+**Example violations and fixes:** See [examples/violation-naming-patterns.py](./examples/violation-naming-patterns.py) showing validate_and_save_user() violation and the correct split into validate_user() and save_user().
 
 ### Step 3: Analyze Size Metrics (Thorough+)
 
 **Pattern 2: Class size (300+ lines → review)**
 
-```bash
-# Count lines per class using ast-grep
-mcp__ast-grep__find_code(
-    pattern="class $NAME: $$$BODY",
-    project_folder="/Users/dawiddutoit/projects/play/project-watch-mcp",
-    language="python",
-    output_format="json"
-)
+Use the validation script for size analysis:
 
-# Count methods per class (>15 → review)
-mcp__ast-grep__find_code(
-    pattern="def $METHOD",
-    # Within each class block
-)
+```bash
+./scripts/validate-srp.sh <path> --level=thorough
 ```
 
-**Pattern 3: Method length (>50 lines → 60% confidence)**
+**Or use God Class detection script:**
 
 ```bash
-# Find long methods
-mcp__ast-grep__find_code(
-    pattern="def $NAME($$$ARGS): $$$BODY",
-    output_format="json"
-)
-# Count lines in BODY
+./scripts/check-god-class.sh <file.py>
 ```
 
 **Thresholds:**
@@ -235,42 +186,24 @@ mcp__ast-grep__find_code(
 
 **Formula:** `ATFD >5 AND WMC >47 AND TCC <0.33 → God Class`
 
-```python
-# Calculate metrics using radon (if available)
-# Otherwise use simplified heuristics:
+**Calculate metrics using radon:**
 
-# ATFD: Count external attribute accesses
-# Pattern: self.other_obj.attr or obj.attr (not self.attr)
-
-# WMC: Sum of cyclomatic complexity of all methods
-# Approximation: Count if/while/for/try/except per method
-
-# TCC: Ratio of method pairs sharing instance variables
-# Formula: connected_pairs / total_possible_pairs
-```
-
-**Detection script:**
 ```bash
 # If radon available
 uv run radon cc src/ -a -nb  # Cyclomatic complexity (WMC proxy)
 uv run radon raw src/        # Raw metrics
-
-# Otherwise manual analysis via AST
 ```
+
+**See:** [references/srp-principles.md](./references/srp-principles.md) for detailed metric calculations and formulas.
 
 ### Step 5: Detect Constructor Dependencies (Thorough+)
 
 **Pattern 4: Constructor parameters (>4 warning, >8 critical)**
 
+Use the God Class detection script:
+
 ```bash
-# Using ast-grep
-mcp__ast-grep__find_code(
-    pattern="def __init__(self, $$$PARAMS):",
-    project_folder="/Users/dawiddutoit/projects/play/project-watch-mcp",
-    language="python",
-    output_format="json"
-)
-# Count PARAMS
+./scripts/check-god-class.sh <file.py>
 ```
 
 **Thresholds (75% confidence):**
@@ -278,63 +211,35 @@ mcp__ast-grep__find_code(
 - 5-8 params: ⚠️ Warning (consider parameter object)
 - 9+ params: ❌ Critical (God Class indicator)
 
-**Example:**
-```python
-# ❌ VIOLATION (8+ params = God Class)
-class UserService:
-    def __init__(
-        self,
-        db_conn,
-        cache,
-        logger,
-        email_service,
-        auth_service,
-        notification_service,
-        analytics,
-        config,
-        metrics
-    ):
-        # Too many dependencies → doing too much
-
-# ✅ FIX: Split by responsibility
-class UserAuthService:
-    def __init__(self, auth_service, logger):
-        pass
-
-class UserNotificationService:
-    def __init__(self, email_service, notification_service):
-        pass
-
-class UserAnalytics:
-    def __init__(self, analytics, metrics):
-        pass
-```
+**Example violations and fixes:** See [examples/violation-god-class.py](./examples/violation-god-class.py) showing UserService with 9 constructor parameters and the correct split into UserAuthService, UserNotificationService, and UserAnalytics.
 
 ### Step 6: Detect Project-Specific Patterns
 
 **Read CLAUDE.md for project anti-patterns:**
+
+Check for project-specific SRP violations using grep:
 
 ```bash
 # Pattern 1: Optional config parameters (project anti-pattern)
 grep -rn "config.*Optional\|config.*None.*=" src/
 
 # Pattern 2: Domain entities doing I/O (layer violation)
-# Check domain/ for database/HTTP imports
+grep -r "import.*requests\|import.*database" domain/
 
 # Pattern 3: Application services with business logic
-# Check application/ for complex algorithms (should be in domain)
+grep -r "def calculate\|def compute" application/services/
 
 # Pattern 4: Repositories with orchestration
-# Check infrastructure/repositories/ for multiple service calls
+grep -A 10 "class.*Repository" infrastructure/repositories/
 ```
 
-**Project-specific violations:**
+**Common project-specific violations:**
 - Domain entities importing infrastructure
 - Application services implementing business logic (should orchestrate only)
 - Repositories containing orchestration (should be data access only)
 - Optional config parameters (violates fail-fast)
 
-See [project-patterns.md](./references/project-patterns.md) for complete list.
+**See:** [references/srp-principles.md](./references/srp-principles.md) for actor identification guidance.
 
 ### Step 7: Actor Analysis (Full Mode Only)
 
@@ -497,49 +402,32 @@ Recommended approach: Incremental (1 phase per day)
 
 ### With code-review
 
-```python
-# code-review Step 2: Architectural Review
-# Sub-check: Single Responsibility
+The `code-review` skill invokes SRP validation in Step 2 (Architectural Review) as a sub-check. When SRP violations are detected, they are reported as warnings in the overall code review report.
 
-result = invoke_skill("validate-srp", level="fast")
-if result.has_violations:
-    report.add_warning("SRP violations detected")
-```
+**Integration point:** Automatic invocation during code review workflow with `level="fast"` for speed.
 
 ### With validate-architecture
 
-```python
-# validate-architecture checks SRP at layer level
-# validate-srp checks SRP at class/method level
+The `validate-architecture` skill checks SRP compliance at the layer level, while this skill checks at the class/method level. Domain layers should have high cohesion (TCC > 0.5), and this skill can detect low cohesion violations.
 
-# Example: Domain layer should have high cohesion
-domain_classes = scan_layer("domain")
-for cls in domain_classes:
-    result = validate_srp(cls)
-    if result.tcc < 0.33:
-        report.add_violation(f"{cls} has low cohesion")
-```
+**Integration point:** Cross-layer validation to ensure architectural boundaries maintain SRP.
 
 ### With run-quality-gates
 
-```bash
-# Add SRP check as optional quality gate
-# In .claude/quality-gates.json:
+SRP validation can be added as an optional quality gate in `.claude/quality-gates.json`:
+
+```json
 {
   "optional_gates": ["srp_validation"],
-  "srp_threshold": "warning"  # or "critical" to block commits
+  "srp_threshold": "warning"
 }
 ```
 
+Set threshold to `"critical"` to block commits on violations.
+
 ### With multi-file-refactor
 
-```python
-# When refactoring god classes across multiple files
-god_classes = detect_god_classes()
-for cls in god_classes:
-    refactor_plan = generate_refactor_plan(cls)
-    apply_multi_file_refactor(refactor_plan)
-```
+When refactoring God Classes that span multiple files, use `multi-file-refactor` skill to coordinate changes. This skill identifies God Classes and provides refactoring guidance; `multi-file-refactor` executes the split.
 
 ## Parameters
 
@@ -618,7 +506,18 @@ See Step 8 in Instructions for complete example.
 
 ## Supporting Files
 
-- **[references/srp-principles.md](./references/srp-principles.md)** - Core SRP concepts, actor-driven definition, real-world examples
+### References
+- **[references/srp-principles.md](./references/srp-principles.md)** - Core SRP concepts, actor-driven definition, real-world examples, cohesion metrics formulas
+
+### Examples
+- **[examples/examples.md](./examples/examples.md)** - Overview of all examples with expected results
+- **[examples/violation-naming-patterns.py](./examples/violation-naming-patterns.py)** - Methods with "and" in name, multiple actors
+- **[examples/violation-god-class.py](./examples/violation-god-class.py)** - Constructor with too many parameters
+- **[examples/correct-single-actor.py](./examples/correct-single-actor.py)** - Proper SRP implementation with single actor
+
+### Scripts
+- **[scripts/validate-srp.sh](./scripts/validate-srp.sh)** - Main validation script with 3 levels (fast/thorough/full)
+- **[scripts/check-god-class.sh](./scripts/check-god-class.sh)** - God Class detection for individual files
 
 ## Success Metrics
 
@@ -631,12 +530,48 @@ See Step 8 in Instructions for complete example.
 | Actionability | 100% | Every violation has specific fix |
 | Refactoring estimate accuracy | ±30% | Reliable planning |
 
+## Utility Scripts
+
+### validate-srp.sh
+
+Main validation script with multi-level analysis:
+
+```bash
+# Fast check (naming patterns only - 5 seconds)
+./scripts/validate-srp.sh src/ --level=fast
+
+# Thorough check (naming + size + constructors - 30 seconds)
+./scripts/validate-srp.sh src/ --level=thorough
+
+# Full analysis (with actor questions - 5 minutes)
+./scripts/validate-srp.sh src/ --level=full
+
+# JSON output for CI/CD integration
+./scripts/validate-srp.sh src/ --output-format=json
+```
+
+### check-god-class.sh
+
+Focused God Class detection for single files:
+
+```bash
+# Check specific file
+./scripts/check-god-class.sh src/services/user_service.py
+
+# Returns:
+# - Constructor parameter count
+# - Method count
+# - File size
+# - God Class recommendation
+```
+
 ## Requirements
 
 **Minimum:**
 - Python 3.10+ (for AST analysis)
 - Read, Grep, Bash, Glob tools
 - Source code in supported language (Python/JS/TS)
+- Validation scripts in scripts/ directory
 
 **Optional:**
 - `radon` for accurate metrics: `uv pip install radon`
@@ -645,6 +580,9 @@ See Step 8 in Instructions for complete example.
 
 **Installation:**
 ```bash
+# Make scripts executable
+chmod +x scripts/*.sh
+
 # Optional: Install radon for accurate metrics
 uv pip install radon
 

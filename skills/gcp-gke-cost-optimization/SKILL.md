@@ -1,12 +1,13 @@
 ---
 name: gcp-gke-cost-optimization
 description: |
-  Optimize Google Kubernetes Engine costs through right-sizing resources, choosing
-  cost-effective cluster modes, and implementing autoscaling strategies. Use when
-  analyzing GKE spending, comparing Autopilot vs Standard billing models, configuring
-  Spot VMs for batch workloads, right-sizing pod resources, setting up budget alerts,
-  or tracking cost per service. Includes per-pod billing analysis and resource
-  utilization optimization patterns.
+  Analyzes and optimizes Google Kubernetes Engine costs through right-sizing resources,
+  comparing cluster modes, and implementing autoscaling strategies. Use when analyzing
+  GKE spending, comparing Autopilot vs Standard billing models, configuring Spot VMs
+  for batch workloads, right-sizing pod resources, setting up budget alerts, or
+  tracking cost per service. Includes per-pod billing analysis and resource utilization
+  optimization patterns.
+version: 1.0.0
 allowed-tools:
   - Bash
   - Read
@@ -430,6 +431,6 @@ echo "   Create dashboard filtering: resource.type=k8s_cluster AND resource.labe
 
 ## See Also
 
-- [gke-cluster-setup](../gke-cluster-setup/SKILL.md) - Understand cluster modes and their costs
-- [gke-deployment-strategies](../gke-deployment-strategies/SKILL.md) - Optimize deployment replicas
-- [gke-monitoring-observability](../gke-monitoring-observability/SKILL.md) - Monitor resource utilization
+- [gcp-gke-cluster-setup](../gcp-gke-cluster-setup/SKILL.md) - Understand cluster modes and their costs
+- [gcp-gke-deployment-strategies](../gcp-gke-deployment-strategies/SKILL.md) - Optimize deployment replicas
+- [gcp-gke-monitoring-observability](../gcp-gke-monitoring-observability/SKILL.md) - Monitor resource utilization

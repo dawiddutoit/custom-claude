@@ -1,12 +1,14 @@
 ---
 name: data-migration-versioning
 description: |
-  Systematic data format migration and versioning for backward-compatible
-  schema changes. Use when adding version field, migrating data formats (JSON,
-  YAML, SQLite), supporting multiple schema versions, or upgrading file formats.
-  Covers version numbering strategies, backward compatibility patterns, auto-upgrade
-  timing, testing checklists, and common pitfalls like partial data preservation.
-  Works with JSON, YAML, database schemas, and configuration files.
+  Provides systematic data format migration and versioning for backward-compatible schema changes.
+  Use when "add data versioning", "migrate data format", "backward compatible file format",
+  "upgrade v1 to v2", "schema migration", "support old file format", or "migrate JSON structure".
+  Covers version numbering strategies (semantic, dotted, integer, date-based), backward compatibility
+  patterns (auto-convert, explicit migration, dual-format), auto-upgrade timing, field deprecation,
+  testing checklists, and common pitfalls like partial data preservation. Works with JSON, YAML,
+  database schemas, and configuration files in Python, JavaScript, Go, Rust.
+version: 1.0.0
 allowed-tools:
   - Read
   - Write
@@ -161,334 +163,75 @@ for mat_name, result in results.items():
 # RESULT: All materials preserved ✅
 ```
 
-## Version Numbering Strategies
+## Instructions
 
-### Strategy 1: Semantic Versioning (Recommended for Libraries)
+### Step 1: Choose Version Numbering Strategy
 
-**Format:** `MAJOR.MINOR.PATCH`
+**Semantic Versioning (MAJOR.MINOR.PATCH):**
+- Use for: Libraries, APIs, public data formats
+- Example: `{"version": "2.1.0"}`
 
-**Rules:**
-- MAJOR: Breaking changes (incompatible)
-- MINOR: New features (backward compatible)
-- PATCH: Bug fixes
+**Dotted Versioning (MAJOR.MINOR):**
+- Use for: Application data files, configuration files
+- Example: `{"version": "2.0"}`
 
-**Example:**
-```json
-{"version": "2.1.0"}
-```
+**Integer Versioning (1, 2, 3):**
+- Use for: Internal formats, simple migrations
+- Example: `{"version": 2}`
 
-**When to use:** Libraries, APIs, public data formats
+**Date-Based Versioning (YYYY-MM-DD):**
+- Use for: Configuration files, data exports, snapshots
+- Example: `{"version": "2025-12-21"}`
 
-### Strategy 2: Dotted Versioning (Recommended for Applications)
+See [references/detailed-patterns.md](./references/detailed-patterns.md#version-numbering-strategies-detailed) for complete guide.
 
-**Format:** `MAJOR.MINOR`
+### Step 2: Design Backward Compatibility Pattern
 
-**Rules:**
-- MAJOR: Structural changes (may need migration)
-- MINOR: Field additions (backward compatible)
-
-**Example:**
-```json
-{"version": "2.0"}
-```
-
-**When to use:** Application data files, configuration files (used in Stream A work)
-
-### Strategy 3: Integer Versioning
-
-**Format:** `1`, `2`, `3`
-
-**Example:**
-```json
-{"version": 2}
-```
-
-**When to use:** Internal formats, simple migrations
-
-### Strategy 4: Date-Based Versioning
-
-**Format:** `YYYY-MM-DD` or `YYYYMMDD`
-
-**Example:**
-```json
-{"version": "2025-12-21"}
-```
-
-**When to use:** Configuration files, data exports, snapshots
-
-## Backward Compatibility Patterns
-
-### Pattern 1: Auto-Convert on Load (Recommended)
-
-**Advantages:**
-- Transparent to caller
-- No user intervention needed
-- Works with read-only files
-
-**Implementation:**
+**Pattern 1: Auto-Convert on Load (Recommended)**
 ```python
 def load_data(path):
     data = json.loads(path.read_text())
     version = data.get("version", "1.0")
 
     if version == "1.0":
-        # Convert v1.0 to v2.0 structure in memory
-        return convert_v1_to_v2(data)
+        return convert_v1_to_v2(data)  # Auto-convert in memory
     elif version == "2.0":
         return load_v2(data)
     else:
         raise ValueError(f"Unsupported version: {version}")
 ```
 
-**When to use:** Most applications (Stream A used this)
+**When to use:** Most applications (transparent, works with read-only files)
 
-### Pattern 2: Explicit Migration Script
+**Pattern 2: Explicit Migration Script**
+- Use for: Large datasets, breaking changes, user needs notification
 
-**Advantages:**
-- One-time operation
-- Clear migration event
-- User controls timing
+**Pattern 3: Dual-Format Support**
+- Use for: Transitional periods, multiple clients with different versions
 
-**Implementation:**
-```bash
-# migrate_v1_to_v2.py
-for file in *.json:
-    data = load_v1(file)
-    converted = convert_to_v2(data)
-    save_v2(file, converted)
-```
+See [references/detailed-patterns.md](./references/detailed-patterns.md#backward-compatibility-patterns-detailed) for all patterns.
 
-**When to use:** Large datasets, breaking changes, user needs notification
+### Step 3: Choose Auto-Upgrade Timing
 
-### Pattern 3: Dual-Format Support
+**Option 1: On Load (Recommended)**
+- Advantage: Immediate compatibility, works with read-only files
+- Disadvantage: File stays in old format until saved
 
-**Advantages:**
-- Supports both versions simultaneously
-- Gradual migration
-- Rollback possible
+**Option 2: On First Save**
+- Advantage: File updated to new format on disk
+- Disadvantage: File remains old format if never saved
 
-**Implementation:**
-```python
-def save_data(data, path, version="2.0"):
-    if version == "1.0":
-        save_v1_format(data, path)
-    elif version == "2.0":
-        save_v2_format(data, path)
-```
+**Option 3: On First Update (Hybrid)**
+- Advantage: File loads in any format, upgrades only when modified
+- Disadvantage: More complex logic
 
-**When to use:** Transitional periods, multiple clients with different versions
+**Option 4: Manual Migration Tool**
+- Advantage: User controls timing, can handle large batches
+- Disadvantage: Requires user action
 
-## Auto-Upgrade Timing
+See [references/detailed-patterns.md](./references/detailed-patterns.md#auto-upgrade-timing-detailed) for implementation examples.
 
-### Option 1: On Load (Recommended)
-
-**When:** During `load_layout()` / `load_config()`
-
-**Advantages:**
-- Immediate compatibility
-- Works with read-only files
-- No user action needed
-
-**Disadvantages:**
-- File stays in old format until saved
-
-**Example:** Stream A implementation
-
-### Option 2: On First Save
-
-**When:** During first `save()` or `update()` after load
-
-**Advantages:**
-- File updated to new format on disk
-- Clear migration point
-
-**Disadvantages:**
-- File remains old format if never saved
-
-**Example:**
-```python
-def update_layout(path, results):
-    data = json.loads(path.read_text())
-    version = data.get("version", "1.0")
-
-    if version == "1.0":
-        # Auto-upgrade to v2.0 on first save
-        data["version"] = "2.0"
-        data["materials"] = convert_to_v2_materials(results)
-        data.pop("material", None)  # Remove old field
-        data.pop("result", None)
-```
-
-### Option 3: On First Update (Hybrid - Used in Stream A)
-
-**When:** During `update_layout()` (not on load, not on save)
-
-**Advantages:**
-- File loads in any format
-- Upgrades only when modified
-- Preserves original file if read-only
-
-**Disadvantages:**
-- More complex logic
-
-**Example:** See `update_multi_material_layout()` in Stream A
-
-### Option 4: Manual Migration Tool
-
-**When:** User runs `migrate.py` script
-
-**Advantages:**
-- User controls timing
-- Can handle large batches
-- Clear migration event
-
-**Disadvantages:**
-- Requires user action
-
-## Field Deprecation Workflow
-
-### Step 1: Add Version Field (if missing)
-
-```python
-# Before
-data = {"material": "18mm", "result": {...}}
-
-# After
-data = {"version": "1.0", "material": "18mm", "result": {...}}
-```
-
-### Step 2: Add New Fields (v1.1)
-
-```python
-# Backward compatible - keep old fields
-data = {
-    "version": "1.1",
-    "material": "18mm",  # Old field - deprecated
-    "materials": {"18mm": {...}},  # New field
-    "result": {...}  # Old field - deprecated
-}
-```
-
-### Step 3: Mark Fields as Deprecated (Documentation)
-
-```python
-# In code comments or docs
-"""
-version 1.1: 'material' and 'result' fields deprecated, use 'materials' instead
-"""
-```
-
-### Step 4: Remove Old Fields (v2.0)
-
-```python
-# Breaking change - new major version
-data = {
-    "version": "2.0",
-    "materials": {"18mm": {...}}
-}
-# 'material' and 'result' fields removed
-```
-
-### Step 5: Update Load Function
-
-```python
-def load(path):
-    version = data.get("version", "1.0")
-
-    if version in ["1.0", "1.1"]:
-        # Support both old versions
-        return load_legacy(data)
-    elif version == "2.0":
-        return load_v2(data)
-```
-
-## Testing Checklist
-
-### Essential Tests
-
-- [ ] **Load v1.0 file** - Verify old format loads without errors
-- [ ] **Load v2.0 file** - Verify new format loads correctly
-- [ ] **Round-trip v2.0** (save → load) - Data preserved
-- [ ] **Upgrade v1.0 → v2.0** (load v1 → save → load) - Verify upgrade works
-- [ ] **Data preservation** - ALL entities/materials preserved during upgrade ← CRITICAL
-- [ ] **Field cleanup** - Old fields removed after upgrade
-- [ ] **Version detection** - Correct version identified
-- [ ] **Error handling** - Unsupported versions rejected with clear error
-
-### Additional Tests
-
-- [ ] **Multiple entity preservation** - When upgrading, all items preserved (not just first)
-- [ ] **Metadata preservation** - Created dates, user info, etc. preserved
-- [ ] **Concurrent loads** - Multiple files loaded simultaneously
-- [ ] **Large files** - Performance with 1000+ entities
-- [ ] **Edge cases** - Empty files, missing fields, corrupted data
-
-### Test Template
-
-```python
-def test_v1_to_v2_upgrade():
-    """Test v1.0 file auto-upgrades to v2.0 with all data preserved."""
-    # Create v1.0 file
-    v1_data = {
-        "version": "1.0",
-        "material": "18mm Plywood",
-        "result": {"sheets_used": 2}
-    }
-
-    # Load v1.0 (auto-converts)
-    results, config = load_layout(v1_path)
-    assert len(results) == 1
-    assert "18mm Plywood" in results
-
-    # Add new material
-    results["6mm MDF"] = create_result(sheets_used=1)
-
-    # Update (triggers v1→v2 upgrade)
-    update_layout(v1_path, results)
-
-    # Verify upgrade
-    with open(v1_path) as f:
-        upgraded = json.load(f)
-
-    assert upgraded["version"] == "2.0"
-    assert "materials" in upgraded
-    assert len(upgraded["materials"]) == 2  # Both materials!
-    assert "18mm Plywood" in upgraded["materials"]
-    assert "6mm MDF" in upgraded["materials"]
-    assert "material" not in upgraded  # Old field removed
-    assert "result" not in upgraded  # Old field removed
-```
-
-## Migration Workflow
-
-### Step 1: Assess Current Format
-
-```bash
-# Identify all data files
-find . -name "*.json" -o -name "*.yaml"
-
-# Check current structure
-cat example.json
-```
-
-### Step 2: Design New Format
-
-```python
-# Document changes
-"""
-v1.0 → v2.0 Migration Plan
-
-Changes:
-- Add "version" field (if missing)
-- Convert "material" (string) → "materials" (dict)
-- Convert "result" (object) → materials[name]["result"]
-
-Backward compatibility: Yes (auto-convert on load)
-Upgrade timing: On first update
-"""
-```
-
-### Step 3: Implement Load Function
+### Step 4: Implement Load Function
 
 ```python
 def load_multi_version(path):
@@ -503,32 +246,22 @@ def load_multi_version(path):
         raise ValueError(f"Unsupported version: {version}")
 ```
 
-### Step 4: Implement Save/Update Functions
+### Step 5: Implement Save/Update Functions with Field Cleanup
 
 ```python
-def save_v2(path, results):
-    """Save in v2.0 format only."""
-    data = {
-        "version": "2.0",
-        "materials": {
-            mat_name: {"result": result.to_dict()}
-            for mat_name, result in results.items()
-        }
-    }
-    path.write_text(json.dumps(data, indent=2))
-
 def update_layout(path, results):
     """Update existing file, auto-upgrade if v1.0."""
     data = json.loads(path.read_text())
     version = data.get("version", "1.0")
 
     if version == "1.0":
-        # Upgrade to v2.0 - save ALL materials
+        # Upgrade to v2.0 - save ALL materials (not just original!)
         data["version"] = "2.0"
         data["materials"] = {
             mat_name: {"result": result.to_dict()}
-            for mat_name, result in results.items()
+            for mat_name, result in results.items()  # ALL materials
         }
+        # Clean up old fields
         data.pop("material", None)
         data.pop("result", None)
 
@@ -540,54 +273,70 @@ def update_layout(path, results):
     path.write_text(json.dumps(data, indent=2))
 ```
 
-### Step 5: Write Tests
+### Step 6: Write Comprehensive Tests
 
-See [Testing Checklist](#testing-checklist)
+**Essential test checklist:**
+- [ ] Load v1.0 file - Verify old format loads without errors
+- [ ] Load v2.0 file - Verify new format loads correctly
+- [ ] Round-trip v2.0 (save → load) - Data preserved
+- [ ] Upgrade v1.0 → v2.0 (load v1 → save → load) - Verify upgrade works
+- [ ] **Data preservation** - ALL entities/materials preserved during upgrade ← CRITICAL
+- [ ] Field cleanup - Old fields removed after upgrade
+- [ ] Version detection - Correct version identified
+- [ ] Error handling - Unsupported versions rejected with clear error
 
-### Step 6: Update Documentation
+**Critical test pattern:**
+```python
+def test_v1_to_v2_upgrade_preserves_all_data():
+    """Test v1.0 file auto-upgrades to v2.0 with all data preserved."""
+    # Create v1.0 file
+    v1_data = {
+        "version": "1.0",
+        "material": "18mm Plywood",
+        "result": {"sheets_used": 2}
+    }
+
+    # Load v1.0 (auto-converts)
+    results, config = load_layout(v1_path)
+    assert len(results) == 1
+
+    # Add new material
+    results["6mm MDF"] = create_result(sheets_used=1)
+
+    # Update (triggers v1→v2 upgrade)
+    update_layout(v1_path, results)
+
+    # Verify upgrade
+    upgraded = json.loads(v1_path.read_text())
+    assert upgraded["version"] == "2.0"
+    assert len(upgraded["materials"]) == 2  # Both materials!
+    assert "18mm Plywood" in upgraded["materials"]
+    assert "6mm MDF" in upgraded["materials"]
+    assert "material" not in upgraded  # Old field removed
+```
+
+See [references/detailed-patterns.md](./references/detailed-patterns.md#testing-strategies-detailed) for complete test suite template.
+
+### Step 7: Update Documentation
 
 ```markdown
 # File Format
 
 ## Version 2.0 (Current)
-
-```json
-{
-  "version": "2.0",
-  "materials": {
-    "18mm": { "result": {...} }
-  }
-}
-```
+- Multi-material support
+- Structure: `{"version": "2.0", "materials": {...}}`
 
 ## Version 1.0 (Deprecated, still supported)
-
-```json
-{
-  "version": "1.0",
-  "material": "18mm",
-  "result": {...}
-}
-```
+- Single material only
+- Structure: `{"version": "1.0", "material": "...", "result": {...}}`
 
 ## Migration
-
 v1.0 files auto-convert on load. On first update, files upgrade to v2.0 format.
 ```
 
-### Step 7: Deploy and Monitor
+## Red Flags to Avoid
 
-```bash
-# Test with real files
-python test_migration.py
-
-# Monitor for issues
-tail -f logs/migrations.log
-```
-
-## Common Pitfalls
-
-### ❌ Pitfall 1: Partial Data Preservation (CRITICAL)
+### ❌ Critical: Partial Data Preservation Bug
 
 **Problem:** Only saving original entity during migration
 
@@ -610,268 +359,77 @@ for mat_name, result in results.items():
 
 **Real-world impact:** This exact bug was found during Stream A testing. Would have caused DATA LOSS.
 
-### ❌ Pitfall 2: Missing Version Field
+### ❌ Other Red Flags
 
-**Problem:** No version field in original format
+- [ ] Missing version field in original format (use `data.get("version", "1.0")`)
+- [ ] Breaking changes without backward compatibility
+- [ ] Orphaned fields after migration (use `data.pop()` to clean up)
+- [ ] Untested migration paths (always test v1→v2 upgrade)
+- [ ] Unclear version errors (provide expected versions in error message)
+- [ ] Not handling missing optional fields during migration
+- [ ] Hardcoding version strings instead of using constants
 
+## Integration Points
+
+### With Project Patterns
+
+**ServiceResult Pattern:**
 ```python
-# ❌ BAD: No version field
-data = {"material": "18mm", "result": {...}}
+from domain.value_objects import ServiceResult
+
+def migrate_file(path: str, target_version: str) -> ServiceResult[dict]:
+    try:
+        data = load_data(path)
+        migrated = upgrade_to_version(data, target_version)
+        save_data(path, migrated)
+        return ServiceResult.success(migrated)
+    except ValueError as e:
+        return ServiceResult.failure(f"Migration failed: {e}")
 ```
 
-**Fix:**
+**Fail-Fast Version Detection:**
 ```python
-# ✅ GOOD: Always include version, default to "1.0" if missing
-version = data.get("version", "1.0")
-```
-
-### ❌ Pitfall 3: Breaking Changes Without Backward Compatibility
-
-**Problem:** New code can't load old files
-
-```python
-# ❌ BAD: Only supports new format
-def load_layout(path):
-    data = json.loads(path.read_text())
-    # Assumes v2.0 format, crashes on v1.0
-    return data["materials"]
-```
-
-**Fix:**
-```python
-# ✅ GOOD: Support both versions
-def load_layout(path):
-    data = json.loads(path.read_text())
+# ✅ CORRECT - Fail fast on unsupported version
+def load_data(path):
     version = data.get("version", "1.0")
+    if version not in ["1.0", "2.0"]:
+        raise ValueError(f"Unsupported version: {version}")
+    # Continue with version-specific loading
 
-    if version == "1.0":
-        # Convert to v2.0 structure
-        material = data["material"]
-        return {material: data["result"]}
-    elif version == "2.0":
-        return data["materials"]
-```
-
-### ❌ Pitfall 4: Orphaned Fields After Migration
-
-**Problem:** Old fields remain in upgraded files
-
-```python
-# ❌ BAD: Old fields remain
-data["version"] = "2.0"
-data["materials"] = {...}
-# "material" and "result" still present! (orphaned)
-```
-
-**Fix:**
-```python
-# ✅ GOOD: Remove old fields
-data["version"] = "2.0"
-data["materials"] = {...}
-data.pop("material", None)
-data.pop("result", None)
-```
-
-### ❌ Pitfall 5: Untested Migration Paths
-
-**Problem:** No tests for v1→v2 upgrade
-
-**Fix:** See [Testing Checklist](#testing-checklist)
-
-### ❌ Pitfall 6: Unclear Version Errors
-
-**Problem:** Generic error for unsupported versions
-
-```python
-# ❌ BAD
-raise ValueError("Bad version")
-```
-
-**Fix:**
-```python
-# ✅ GOOD
-raise ValueError(
-    f"Unsupported layout version: {version} "
-    f"(expected 1.0 or 2.0)"
-)
-```
-
-## Language-Specific Patterns
-
-### Python
-
-**Using dataclasses:**
-```python
-from dataclasses import dataclass, asdict
-
-@dataclass
-class LayoutV2:
-    version: str = "2.0"
-    materials: dict[str, Any]
-
-    def to_dict(self):
-        return asdict(self)
-```
-
-**Using Pydantic:**
-```python
-from pydantic import BaseModel
-
-class LayoutV2(BaseModel):
-    version: str = "2.0"
-    materials: dict[str, Any]
-
-    def to_dict(self):
-        return self.model_dump()
-```
-
-### JavaScript/TypeScript
-
-```typescript
-interface LayoutV1 {
-  version: "1.0";
-  material: string;
-  result: Result;
-}
-
-interface LayoutV2 {
-  version: "2.0";
-  materials: Record<string, { result: Result }>;
-}
-
-function loadLayout(path: string): LayoutV2 {
-  const data = JSON.parse(fs.readFileSync(path, 'utf8'));
-
-  if (data.version === "1.0") {
-    // Auto-convert
-    return {
-      version: "2.0",
-      materials: {
-        [data.material]: { result: data.result }
-      }
-    };
-  }
-
-  return data as LayoutV2;
-}
-```
-
-### Go
-
-```go
-type LayoutV1 struct {
-    Version  string `json:"version"`
-    Material string `json:"material"`
-    Result   Result `json:"result"`
-}
-
-type LayoutV2 struct {
-    Version   string              `json:"version"`
-    Materials map[string]Material `json:"materials"`
-}
-
-func LoadLayout(path string) (*LayoutV2, error) {
-    data, err := os.ReadFile(path)
-    if err != nil {
-        return nil, err
-    }
-
-    // Try v2 first
-    var v2 LayoutV2
-    if err := json.Unmarshal(data, &v2); err == nil && v2.Version == "2.0" {
-        return &v2, nil
-    }
-
-    // Fall back to v1
-    var v1 LayoutV1
-    if err := json.Unmarshal(data, &v1); err != nil {
-        return nil, err
-    }
-
-    // Convert v1 → v2
-    return &LayoutV2{
-        Version: "2.0",
-        Materials: map[string]Material{
-            v1.Material: {Result: v1.Result},
-        },
-    }, nil
-}
+# ❌ WRONG - Silently default to v1.0
+def load_data(path):
+    version = data.get("version", "1.0")  # Always treats unknown as v1.0
 ```
 
 ## Supporting Files
 
-- [references/migration-patterns.md](references/migration-patterns.md) - Design patterns catalog
-- [references/version-strategies.md](references/version-strategies.md) - Detailed versioning guide
-- [examples/json-v1-to-v2.md](examples/json-v1-to-v2.md) - Real-world JSON migration (Stream A)
-- [examples/yaml-migration.md](examples/yaml-migration.md) - YAML configuration migration
-- [templates/migration-test-suite.py](templates/migration-test-suite.py) - Complete test template
-- [templates/load-save-template.py](templates/load-save-template.py) - Load/save function templates
-- [scripts/detect-version.sh](scripts/detect-version.sh) - Version detection utility
+### References
+- **[detailed-patterns.md](./references/detailed-patterns.md)** - Comprehensive guide with all version numbering strategies, backward compatibility patterns, auto-upgrade timing options, field deprecation workflow, language-specific patterns (Python, JavaScript, Go, Rust), advanced migration scenarios, and detailed testing strategies
 
-## Examples
+### Examples
+- **[json-v1-to-v2.md](./examples/json-v1-to-v2.md)** - Real-world JSON migration (Stream A layout optimizer)
+- **[yaml-migration.md](./examples/yaml-migration.md)** - YAML configuration migration example
 
-### Example 1: JSON Layout Migration (Real Stream A Work)
+### Templates
+- **[migration-test-suite.py](./templates/migration-test-suite.py)** - Complete test template with all essential tests
 
-See [examples/json-v1-to-v2.md](examples/json-v1-to-v2.md) for complete implementation
+## Expected Outcomes
 
-### Example 2: Configuration File Migration
-
-```yaml
-# Before (no version)
-database:
-  host: localhost
-  port: 5432
-
-# After (versioned)
-version: "1.0"
-database:
-  host: localhost
-  port: 5432
-  pool_size: 10  # New field
+**Successful Migration:**
+```
+✅ Old v1.0 files load seamlessly
+✅ New v2.0 files load correctly
+✅ Auto-upgrade preserves ALL data (no partial preservation bugs)
+✅ Deprecated fields removed after upgrade
+✅ Clear errors for unsupported versions
+✅ All tests pass (especially data preservation test)
 ```
 
-### Example 3: Database Schema Migration
-
-```sql
--- Migration: v1 → v2
-ALTER TABLE users ADD COLUMN created_at TIMESTAMP;
-UPDATE metadata SET version = '2.0';
-```
-
-## Troubleshooting
-
-### Issue: "Old files won't load after migration"
-
-**Solution:** Ensure backward compatibility in load function
-
-```python
-# Always support old versions
-if version == "1.0":
-    return load_v1(data)
-```
-
-### Issue: "Data lost during migration"
-
-**Solution:** Check for partial preservation bug
-
-```python
-# Iterate through ALL items, not just original
-for item in all_items:
-    migrated_data[item.name] = convert(item)
-```
-
-### Issue: "Don't know which version strategy to use"
-
-**Solution:**
-- Application data files: Dotted versioning (2.0, 2.1)
-- Library formats: Semantic versioning (2.1.0)
-- Simple cases: Integer versioning (1, 2, 3)
-
-### Issue: "When to remove old fields?"
-
-**Solution:**
-- v1.1: Keep both (deprecated + new)
-- v2.0: Remove old fields (major version change)
+**Common Issues:**
+- **Partial data preservation bug** - See [Red Flags](#red-flags-to-avoid)
+- **Orphaned fields** - Old fields remain after upgrade (see Step 5)
+- **Version detection fails** - Use `data.get("version", "1.0")` with explicit default
+- **Old files won't load** - Ensure backward compatibility in load function
 
 ## Requirements
 

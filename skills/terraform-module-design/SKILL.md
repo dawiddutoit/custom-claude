@@ -1,10 +1,9 @@
 ---
 name: terraform-module-design
 description: |
-  Design and build reusable Terraform modules. Use when creating reusable infrastructure patterns, encapsulating
-  complex resource groups, standardizing configurations across projects, or organizing code for maintainability.
-  Covers module structure, versioning, composition, and best practices for production modules.
----
+  Designs and builds reusable Terraform modules. Use when creating reusable infrastructure patterns, encapsulating complex resource groups, standardizing configurations across projects, or organizing code for maintainability. Covers module structure, versioning, composition, and best practices for production modules.
+
+version: 1.0.0---
 
 # Terraform Module Design Skill
 
@@ -623,6 +622,6 @@ output "topic_names" {
 
 ## See Also
 
-- [terraform skill](../terraform/SKILL.md) - General Terraform
+- [terraform skill](../terraform-basics/SKILL.md) - General Terraform
 - [terraform-gcp-integration](../terraform-gcp-integration/SKILL.md) - GCP patterns
 - [terraform-state-management](../terraform-state-management/SKILL.md) - State handling

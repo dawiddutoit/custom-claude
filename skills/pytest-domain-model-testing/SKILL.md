@@ -4,6 +4,7 @@ description: |
   How to test domain models effectively: value object testing (immutability, validation), entity testing (identity, business logic), domain exception testing, aggregate testing, high coverage patterns (95%+), and testing invariants and constraints.
 
   Use when: Testing domain layer code, validating value objects, testing entities with business logic, ensuring domain invariants, or achieving 95%+ coverage on domain models.
+version: 1.0.0
 allowed-tools: Read, Bash, Write
 ---
 
@@ -13,6 +14,12 @@ allowed-tools: Read, Bash, Write
 
 The domain layer contains business logic and should have near-perfect coverage (95-100%). Domain models have zero external dependencies, making them easy to test thoroughly. This skill focuses on testing pure domain logic effectively.
 
+
+## When to Use This Skill
+
+Use when testing domain models with "test value objects", "test entities", "test domain logic", or "achieve 95% domain coverage".
+
+Do NOT use for application layer (use `pytest-application-layer-testing`), adapters (use `pytest-adapter-integration-testing`), or mocking (domain tests should use real objects).
 ## Quick Start
 
 Test domain models directly without mocks:

@@ -6,6 +6,7 @@ description: |
   behavior across many inputs. Triggers on "property test", "hypothesis test", "generate test
   cases", "invariant testing", "edge case testing", "stateful testing", "roundtrip test".
   Works with Python (.py) test files, pytest, pytest-asyncio, and Pydantic models.
+version: 1.0.0
 allowed-tools:
   - Bash
   - Read

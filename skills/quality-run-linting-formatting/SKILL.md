@@ -1,10 +1,8 @@
 ---
 name: quality-run-linting-formatting
 description: |
-  Run ruff linting and formatting with configuration details and common fixes. Use when
-  checking code style, formatting files, fixing lint violations, or before commits.
-  Explains ruff check vs ruff format, --fix flag, configuration in pyproject.toml, and
-  common violation patterns. Works with Python .py files, targets Python 3.12.
+  Runs ruff linting and formatting with configuration details and common fixes. Use when checking code style, formatting files, fixing lint violations, or before commits. Explains ruff check vs ruff format, --fix flag, configuration in pyproject.toml, and common violation patterns. Works with Python .py files, targets Python 3.12.
+version: 1.0.0
 allowed-tools:
   - Bash
   - Read

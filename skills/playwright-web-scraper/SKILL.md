@@ -7,11 +7,18 @@ description: |
   from site", "crawl multiple pages", or when gathering structured data from websites.
   Supports pagination, multi-page extraction, data aggregation, and export to CSV/JSON/Markdown.
   Works with browser_navigate, browser_evaluate, browser_wait_for, and browser_snapshot tools.
----
+
+version: 1.0.0---
 
 # Playwright Web Scraper
 
 Extract structured data from multiple web pages with respectful, ethical crawling practices.
+
+## When to Use This Skill
+
+Use when extracting structured data from websites with "scrape data from", "extract information from pages", "collect data from site", or "crawl multiple pages".
+
+Do NOT use for testing workflows (use `playwright-e2e-testing`), monitoring errors (use `playwright-console-monitor`), or analyzing network (use `playwright-network-analyzer`). Always respect robots.txt and rate limits.
 
 ## Quick Start
 

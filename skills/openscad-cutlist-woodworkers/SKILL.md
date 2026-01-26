@@ -9,7 +9,8 @@ description: |
   "furniture cut list", "woodworking ECHO output", or when working with planeLeft/planeRight/
   planeTop/planeBottom/planeFront/planeBack modules. Works with .scad files using
   woodworkers-lib library.
----
+
+version: 1.0.0---
 
 # OpenSCAD Cut List Generation (woodworkers-lib)
 

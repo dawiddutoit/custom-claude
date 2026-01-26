@@ -8,6 +8,7 @@ description: |
   "can't resolve domain", "domain not found", "Pi-hole DNS issue", "fix DNS", or
   "troubleshoot DNS resolution". Works with Pi-hole DNS, docker-compose.yml FTLCONF
   variables, and local network DNS resolution.
+version: 1.0.0
 allowed-tools:
   - Read
   - Bash
@@ -50,7 +51,7 @@ docker exec pihole nslookup pihole.temet.ai 127.0.0.1
 6. [Requirements](#6-requirements)
 7. [Red Flags to Avoid](#7-red-flags-to-avoid)
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 **Explicit Triggers:**
 - "DNS not working"
@@ -70,7 +71,7 @@ docker exec pihole nslookup pihole.temet.ai 127.0.0.1
 - "Why can't I access local services?"
 - "Is Pi-hole working?"
 
-## 2. What This Skill Does
+## What This Skill Does
 
 1. **Verifies Pi-hole** - Checks Pi-hole container is running
 2. **Checks DNS Config** - Verifies FTLCONF DNS records in docker-compose.yml
@@ -80,7 +81,7 @@ docker exec pihole nslookup pihole.temet.ai 127.0.0.1
 6. **Identifies Issue** - Determines root cause of DNS failure
 7. **Provides Fix** - Gives specific commands to resolve the issue
 
-## 3. Instructions
+## Instructions
 
 ### 3.1 Verify Pi-hole is Running
 
@@ -265,14 +266,14 @@ docker exec pihole pihole reloaddns
 docker compose -f /home/dawiddutoit/projects/network/docker-compose.yml restart pihole
 ```
 
-## 4. Supporting Files
+## Supporting Files
 
 | File | Purpose |
 |------|---------|
 | `references/reference.md` | Complete DNS configuration reference, Pi-hole v6 FTL details |
 | `examples/examples.md` | Example DNS configurations, common scenarios |
 
-## 5. Expected Outcomes
+## Expected Outcomes
 
 **Success:**
 - Pi-hole container running and healthy
@@ -290,14 +291,14 @@ docker compose -f /home/dawiddutoit/projects/network/docker-compose.yml restart 
 - Router not configured to use Pi-hole
 - DNS resolution returns NXDOMAIN
 
-## 6. Requirements
+## Requirements
 
 - Docker running with Pi-hole container
 - Pi-hole v6+ using FTL DNS server
 - Network access to Pi-hole (192.168.68.136)
 - Router admin access to configure DHCP/DNS
 
-## 7. Red Flags to Avoid
+## Red Flags to Avoid
 
 - [ ] Do not use dnsmasq configuration files (Pi-hole v6 uses FTL with FTLCONF variables)
 - [ ] Do not add DNS records via Pi-hole web UI (use FTLCONF_dns_hosts instead)

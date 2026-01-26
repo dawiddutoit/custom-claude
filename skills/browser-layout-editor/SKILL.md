@@ -1,16 +1,28 @@
 ---
 name: browser-layout-editor
 description: |
-  Build browser-based 2D layout editors with FastAPI backend and vanilla JS + SVG frontend.
-  Use when creating: (1) Visual editors for 2D arrangements (cut lists, floor plans, diagrams),
-  (2) Drag-and-drop interfaces with multiple containers/sheets, (3) Single-file browser UIs
-  served from Python, (4) Real-time position editing with validation. Triggers: "layout editor",
-  "drag between", "visual editor", "browser UI for editing", "SVG editor".
+  Builds browser-based 2D layout editors with FastAPI backend and vanilla JS + SVG frontend. Use when creating: (1) Visual editors for 2D arrangements (cut lists, floor plans, diagrams), (2) Drag-and-drop interfaces with multiple containers/sheets, (3) Single-file browser UIs served from Python, (4) Real-time position editing with validation. Triggers: "layout editor", "drag between", "visual editor", "browser UI for editing", "SVG editor".
+
+version: 1.0.0
 ---
 
 # Browser Layout Editor
 
 Build browser-based 2D layout editors with FastAPI + vanilla JS + SVG.
+
+## When to Use This Skill
+
+Use when asked to:
+- Create visual editors for 2D layouts (cut lists, floor plans, room arrangements)
+- Build drag-and-drop interfaces with multiple containers or sheets
+- Develop interactive browser UIs for editing positions and sizes
+- Create single-file browser applications served from Python
+- Implement real-time position editing with validation and collision detection
+
+Do NOT use when:
+- Simple form inputs are sufficient (don't over-engineer)
+- 3D visualization is needed (this is 2D only)
+- User needs desktop application (this is browser-based)
 
 ## Architecture
 

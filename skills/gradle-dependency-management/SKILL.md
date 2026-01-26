@@ -1,12 +1,14 @@
 ---
 name: gradle-dependency-management
 description: |
-  Manage Gradle dependencies using version catalogs, BOMs, and dependency constraints.
+  Manages Gradle dependencies using version catalogs, BOMs, and dependency constraints.
   Use when setting up dependency management, centralizing versions, resolving conflicts,
-  or configuring multi-module dependency sharing.
-  Includes version catalogs (TOML), Bill of Materials, dependency constraints,
+  or configuring multi-module dependency sharing. Triggers on "setup version catalog",
+  "centralize dependencies", "resolve version conflict", or "configure Gradle BOM".
+  Works with gradle/libs.versions.toml and includes Bill of Materials, dependency constraints,
   and Spring Boot/GCP BOM integration.
----
+
+version: 1.0.0---
 
 # Gradle Dependency Management
 

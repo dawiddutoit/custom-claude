@@ -1,8 +1,15 @@
 ---
 name: ha-mqtt-autodiscovery
-description: "Publish MQTT auto-discovery configurations to automatically register IoT devices and sensors with Home Assistant. Use when integrating custom IoT devices, creating MQTT sensors, or building ESP32/ESP8266/Pi-based devices that should auto-register with Home Assistant. Covers discovery payloads, device classes, state classes, and resilient MQTT patterns."
+description: |
+  Configures and publishes MQTT auto-discovery messages to automatically register IoT devices and
+  sensors with Home Assistant, defining discovery payloads with device classes, state classes, units,
+  and device grouping for multi-sensor devices. Use when integrating custom IoT devices, creating
+  MQTT sensors, building ESP32/ESP8266/Pi-based devices that auto-register with HA, or implementing
+  resilient MQTT patterns with offline queuing and auto-reconnect.
+version: 1.0.0
 ---
 
+Works with MQTT brokers (Mosquitto), paho-mqtt Python library, and Home Assistant MQTT integration.
 # Home Assistant MQTT Auto-Discovery
 
 Automatically register IoT devices and sensors with Home Assistant by publishing MQTT discovery configurations.
@@ -20,6 +27,31 @@ homeassistant/{component}/{node_id}/{object_id}/config
 ```
 {node_id}/{sensor_type}/state
 ```
+
+## When to Use This Skill
+
+Use this skill when you need to:
+- Automatically register custom IoT devices with Home Assistant via MQTT
+- Build ESP32/ESP8266/Raspberry Pi-based sensors that self-register
+- Create multi-sensor devices grouped under a single device entry
+- Implement resilient MQTT patterns with offline queuing and auto-reconnect
+- Configure proper device classes and state classes for long-term statistics
+- Avoid manual YAML configuration for frequently changing device deployments
+
+Do NOT use when:
+- You can use existing Home Assistant integrations (prefer official integrations)
+- Building devices without MQTT broker infrastructure
+- You need real-time control with minimal latency (consider direct API instead)
+
+## Usage
+
+Follow these steps to set up MQTT auto-discovery:
+
+1. **Define sensor configurations** with device classes and units
+2. **Publish discovery payloads** to discovery topics with retain=True
+3. **Verify entities appear** in Home Assistant
+4. **Publish sensor values** to state topics
+5. **Implement resilient patterns** with auto-reconnect and offline queuing
 
 ## Quick Start
 
@@ -304,48 +336,7 @@ class ResilientMQTT:
         pass
 ```
 
-## Workflow
-
-1. **Define sensors** - Create sensor configurations with device classes and units
-2. **Publish discovery** - Send discovery payloads to `homeassistant/sensor/{unique_id}/config`
-3. **Verify in HA** - Check that entities appear in Home Assistant
-4. **Publish values** - Send sensor readings to state topics
-5. **Monitor** - Ensure reliable delivery with QoS 1 and retained messages
-
-## Best Practices
-
-- **Use retain=True** for discovery messages so HA gets them after restart
-- **Use QoS 1** for reliable delivery
-- **Re-publish discovery on reconnect** in case HA restarted
-- **Group related sensors** under a single device using `device.identifiers`
-- **Choose appropriate state_class** to enable statistics and history
-- **Use standard device classes** when possible for proper icons and units
-
-## Testing
-
-```bash
-# Subscribe to all discovery messages
-mosquitto_sub -h 192.168.68.123 -t "homeassistant/#" -v
-
-# Publish test discovery
-mosquitto_pub -h 192.168.68.123 \
-  -t "homeassistant/sensor/test_temp/config" \
-  -m '{"name":"Test Temp","unique_id":"test_temp","state_topic":"test/temp/state","device_class":"temperature","unit_of_measurement":"°C","state_class":"measurement"}' \
-  -r
-
-# Publish test value
-mosquitto_pub -h 192.168.68.123 -t "test/temp/state" -m "25.5"
-```
-
-## Removing Entities
-
-To remove auto-discovered entities, publish an empty payload with retain:
-
-```bash
-mosquitto_pub -h 192.168.68.123 \
-  -t "homeassistant/sensor/test_temp/config" \
-  -n -r
-```
+See `references/sensor_configs.md` for complete sensor configuration templates, best practices, testing commands, and entity removal procedures.
 
 ## Resources
 

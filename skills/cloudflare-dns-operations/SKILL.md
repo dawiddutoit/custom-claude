@@ -8,6 +8,7 @@ description: |
   "delete DNS record", "dynamic DNS", "Cloudflare API", or "manual DNS management". Works
   with Cloudflare API v4, cf-dns.sh and cf-settings.sh helper scripts, and direct curl
   API calls.
+version: 1.0.0
 allowed-tools:
   - Read
   - Bash
@@ -60,7 +61,7 @@ source /home/dawiddutoit/projects/network/.env
 6. [Requirements](#6-requirements)
 7. [Red Flags to Avoid](#7-red-flags-to-avoid)
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 **Explicit Triggers:**
 - "Add DNS record"
@@ -82,7 +83,7 @@ source /home/dawiddutoit/projects/network/.env
 - "How to update my home IP?"
 - "What DNS records exist?"
 
-## 2. What This Skill Does
+## What This Skill Does
 
 1. **Setup Auth** - Configures Cloudflare API credentials
 2. **Lists Records** - Shows all DNS records in zone
@@ -92,7 +93,7 @@ source /home/dawiddutoit/projects/network/.env
 6. **Manages Settings** - Configures SSL, caching, security settings
 7. **Dynamic DNS** - Automates home IP updates
 
-## 3. Instructions
+## Instructions
 
 ### 3.1 Setup API Authentication
 
@@ -465,7 +466,7 @@ if [ "$current_ip" != "$dns_ip" ]; then
 fi
 ```
 
-## 4. Supporting Files
+## Supporting Files
 
 | File | Purpose |
 |------|---------|
@@ -474,7 +475,7 @@ fi
 | `scripts/cf-settings.sh` | Zone settings management helper script |
 | `examples/examples.md` | Example API calls, automation scripts, common patterns |
 
-## 5. Expected Outcomes
+## Expected Outcomes
 
 **Success:**
 - DNS records listed successfully
@@ -494,7 +495,7 @@ fi
 - Record already exists (can't add duplicate)
 - Record not found (can't update/delete non-existent)
 
-## 6. Requirements
+## Requirements
 
 - Cloudflare account with temet.ai domain
 - Cloudflare API token or Global API Key
@@ -503,7 +504,7 @@ fi
 - .env file with credentials
 - Network access to Cloudflare API
 
-## 7. Red Flags to Avoid
+## Red Flags to Avoid
 
 - [ ] Do not use Global API Key if API Token suffices (security best practice)
 - [ ] Do not commit API credentials to git (use .env)

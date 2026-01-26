@@ -2,12 +2,13 @@
 name: infrastructure-monitoring-setup
 description: |
   Configures automated infrastructure monitoring with mobile alerts (ntfy.sh and Home
-  Assistant) and auto-recovery for common failures. Use when setting up monitoring,
+  Assistant) and implements auto-recovery for common failures. Use when setting up monitoring,
   configuring mobile notifications, enabling auto-recovery, or troubleshooting alert
   delivery. Triggers on "setup monitoring", "configure alerts", "mobile notifications",
   "enable auto-recovery", "monitoring not working", or "not getting alerts". Works with
-  infrastructure-monitor.sh script, systemd timer, ntfy.sh push notifications, and
-  optional Home Assistant integration.
+  ntfy.sh push notifications, Docker container health checks, Bash monitoring scripts,
+  and optional Home Assistant automation integration.
+version: 1.0.0
 allowed-tools:
   - Read
   - Bash
@@ -15,6 +16,7 @@ allowed-tools:
   - Edit
 ---
 
+Works with infrastructure-monitor.sh script, systemd timer, ntfy.sh push notifications,
 # Infrastructure Monitoring Setup Skill
 
 Complete setup and configuration of automated infrastructure monitoring with mobile push notifications and auto-recovery capabilities.
@@ -62,7 +64,7 @@ Then install ntfy app on phone and subscribe to your topic.
 6. [Requirements](#6-requirements)
 7. [Red Flags to Avoid](#7-red-flags-to-avoid)
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 **Explicit Triggers:**
 - "Setup monitoring"
@@ -82,7 +84,7 @@ Then install ntfy app on phone and subscribe to your topic.
 - "Is monitoring working?"
 - "How to test notifications?"
 
-## 2. What This Skill Does
+## What This Skill Does
 
 1. **Mobile Alerts** - Configures ntfy.sh push notifications to phone
 2. **Auto-Recovery** - Enables automatic fixes for common failures
@@ -92,7 +94,7 @@ Then install ntfy app on phone and subscribe to your topic.
 6. **Logs Access** - Shows how to view monitoring logs
 7. **Troubleshooting** - Diagnoses alert delivery issues
 
-## 3. Instructions
+## Instructions
 
 ### 3.1 Install ntfy Mobile App
 
@@ -399,7 +401,7 @@ sudo systemctl disable infrastructure-monitor.timer
 sudo systemctl enable infrastructure-monitor.timer
 ```
 
-## 4. Supporting Files
+## Supporting Files
 
 | File | Purpose |
 |------|---------|
@@ -407,7 +409,7 @@ sudo systemctl enable infrastructure-monitor.timer
 | `examples/examples.md` | Example configurations, alert formats, log outputs |
 | `scripts/test-notifications.sh` | Test script for alert delivery |
 
-## 5. Expected Outcomes
+## Expected Outcomes
 
 **Success:**
 - ntfy app receives push notifications
@@ -426,7 +428,7 @@ sudo systemctl enable infrastructure-monitor.timer
 - Script fails with errors (check logs)
 - HA notifications not working (check token/service name)
 
-## 6. Requirements
+## Requirements
 
 - Infrastructure server running Linux with systemd
 - Mobile device with ntfy app installed
@@ -434,7 +436,7 @@ sudo systemctl enable infrastructure-monitor.timer
 - .env file with monitoring configuration
 - Home Assistant (optional, for HA integration)
 
-## 7. Red Flags to Avoid
+## Red Flags to Avoid
 
 - [ ] Do not use public/guessable ntfy topic (security risk)
 - [ ] Do not share ntfy topic publicly (anyone can subscribe)

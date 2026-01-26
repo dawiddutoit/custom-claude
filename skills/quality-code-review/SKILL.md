@@ -1,6 +1,7 @@
 ---
 name: quality-code-review
 description: Perform systematic self-review of code changes before commits using structured
+version: 1.0.0
   checklist. Validates architecture boundaries, code quality, test coverage, documentation,
   and project-specific anti-patterns. Use before committing, creating PRs, or when
   user says "review my changes", "self-review", "check my code". Adapts to Python,
@@ -385,7 +386,7 @@ DO NOT COMMIT - Fix issues first
   - Performance optimization checklist
   - Accessibility checklist (for UI code)
 
-- **[scripts/run-review.sh](scripts/run-review.sh)** - Automated review script:
+- **[scripts/detect_project_type.sh](scripts/detect_project_type.sh)** - Project detection script:
   - Runs all quality gates
   - Generates coverage report
   - Checks git diff

@@ -1,12 +1,13 @@
 ---
 name: implement-value-object
 description: |
-  Create immutable domain value objects with frozen dataclass pattern and validation.
+  Creates immutable domain value objects using frozen dataclass pattern with validation.
   Use when implementing domain value objects, creating immutable data structures, or
   adding validation to values. Covers @dataclass(frozen=True), object.__setattr__()
   pattern in __post_init__, factory methods (from_string, from_dict, from_content),
-  and validation in frozen context. Works with Python dataclasses in domain/value_objects/
-  and domain/values/ directories.
+  and validation in frozen context. Triggers on "create value object for X", "implement
+  immutable Y value", "add validation to Z value", or "build value object".
+version: 1.0.0
 allowed-tools:
   - Read
   - Grep
@@ -15,6 +16,7 @@ allowed-tools:
   - Edit
 ---
 
+Works with Python dataclasses in domain/value_objects/ and domain/values/ directories.
 # implement-value-object
 
 ## Purpose
@@ -297,155 +299,13 @@ class ComplexValueObject:
 
 ## Examples
 
-### Example 1: Simple String Value Object
 
-```python
-from dataclasses import dataclass
+See [examples/detailed-examples.md](./examples/detailed-examples.md) for comprehensive examples including:
+- Simple string value objects with validation
+- Path value objects with normalization and type coercion
+- Hash value objects with factory methods
+- Multi-field value objects with complex validation
 
-@dataclass(frozen=True)
-class ProjectName:
-    """Immutable project name value object."""
-
-    value: str
-
-    def __post_init__(self) -> None:
-        """Validate project name."""
-        if not self.value:
-            raise ValueError("Project name cannot be empty")
-        if not self.value.isidentifier():
-            raise ValueError(f"Invalid project name: {self.value}")
-
-    def __str__(self) -> str:
-        return self.value
-```
-
-### Example 2: Path Value Object with Normalization
-
-```python
-from dataclasses import dataclass
-from pathlib import Path
-
-@dataclass(frozen=True)
-class FilePath:
-    """Immutable file path value object."""
-
-    value: Path
-
-    def __post_init__(self) -> None:
-        """Validate and normalize path."""
-        # Type coercion in frozen context
-        if not isinstance(self.value, Path):
-            object.__setattr__(self, "value", Path(self.value))
-
-        # Normalization in frozen context
-        object.__setattr__(self, "value", self.value.resolve())
-
-    @classmethod
-    def from_string(cls, path_str: str) -> "FilePath":
-        """Create FilePath from string."""
-        return cls(value=Path(path_str))
-
-    @property
-    def name(self) -> str:
-        """Get file name."""
-        return self.value.name
-```
-
-### Example 3: Hash Value Object with Factory
-
-```python
-from dataclasses import dataclass
-
-@dataclass(frozen=True)
-class FileHash:
-    """Immutable file hash value object."""
-
-    value: str
-
-    def __post_init__(self) -> None:
-        """Validate hash format."""
-        if not self.value:
-            raise ValueError("File hash cannot be empty")
-
-        # Validate hexadecimal format
-        try:
-            int(self.value, 16)
-        except ValueError:
-            raise ValueError(f"Invalid hash format: {self.value}") from None
-
-    @classmethod
-    def from_content(cls, content: str) -> "FileHash":
-        """Compute hash from content."""
-        import xxhash
-        hash_value = xxhash.xxh64(content.encode("utf-8")).hexdigest()
-        return cls(value=hash_value)
-
-    def short_hash(self, length: int = 8) -> str:
-        """Get shortened hash for display."""
-        return self.value[:length]
-```
-
-### Example 4: Multi-Field Value Object with Validation
-
-```python
-from dataclasses import dataclass
-from pathlib import Path
-import re
-
-@dataclass(frozen=True)
-class Identity:
-    """Immutable identity value object."""
-
-    value: str
-    entity_type: str
-    project_name: str
-    file_path: Path | None = None
-
-    def __post_init__(self):
-        """Validate identity constraints."""
-        if not self.value:
-            raise ValueError("Identity value cannot be empty")
-        if not self.entity_type:
-            raise ValueError("Entity type cannot be empty")
-        if not self.project_name:
-            raise ValueError("Project name cannot be empty")
-
-        # Validate format
-        if not re.match(r"^[\w\-.:\/]+$", self.value):
-            raise ValueError(f"Invalid identity format: {self.value}")
-
-    @classmethod
-    def from_components(
-        cls,
-        entity_type: str,
-        name: str,
-        project_name: str,
-        file_path: Path | None = None,
-    ) -> "Identity":
-        """Create Identity from components."""
-        components = [project_name, entity_type, name]
-        if file_path:
-            components.append(str(file_path))
-
-        identity_value = ":".join(components)
-        return cls(
-            value=identity_value,
-            entity_type=entity_type,
-            project_name=project_name,
-            file_path=file_path,
-        )
-
-    def to_dict(self) -> dict:
-        """Convert to dictionary."""
-        result = {
-            "value": self.value,
-            "entity_type": self.entity_type,
-            "project_name": self.project_name,
-        }
-        if self.file_path:
-            result["file_path"] = str(self.file_path)
-        return result
-```
 
 ## Requirements
 

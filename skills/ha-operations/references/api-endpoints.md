@@ -2,6 +2,13 @@
 
 Complete reference for Home Assistant REST API endpoints commonly used in network infrastructure operations.
 
+## Table of Contents
+
+1. [Authentication](#authentication)
+2. [Architecture Details](#architecture-details)
+3. [Core API Endpoints](#core-api-endpoints)
+4. [Response Codes](#response-codes)
+
 ## Authentication
 
 All API requests require authentication via long-lived access token:

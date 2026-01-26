@@ -1,6 +1,9 @@
 ---
 name: architecture-validate-architecture
-description: Automates architecture validation for Clean Architecture, Hexagonal, Layered, and MVC patterns. Detects layer boundary violations, dependency rule breaches, and architectural anti-patterns. Use when asked to "validate architecture", "check layer boundaries", "architectural review", before major refactoring, or as pre-commit quality gate. Adapts to project's architectural style by reading ARCHITECTURE.md.
+description: |
+  Automates architecture validation for Clean Architecture, Hexagonal, Layered, and MVC patterns. Detects layer boundary violations, dependency rule breaches, and architectural anti-patterns. Use when asked to "validate architecture", "check layer boundaries", "architectural review", before major refactoring, or as pre-commit quality gate. Adapts to project's architectural style by reading ARCHITECTURE.md.
+version: 1.0.0
+tags: [architecture, validation, clean-architecture, hexagonal, layered, mvc, quality-gate]
 allowed-tools:
   - Read
   - Grep
@@ -49,6 +52,19 @@ Invoke this skill when:
 - After adding new dependencies to any layer
 - Reviewing code for architecture compliance
 - User mentions "Clean Architecture", "Hexagonal", "Layered", or "MVC"
+
+## Triggers
+
+Trigger with phrases like:
+- "validate architecture"
+- "check layer boundaries"
+- "architectural review"
+- "validate my Clean Architecture"
+- "check if this follows Hexagonal Architecture"
+- "run architecture validation"
+- "check for layer violations"
+- "validate dependencies"
+- "architectural compliance check"
 
 ## What This Skill Does
 
@@ -105,352 +121,82 @@ See detailed steps in [Validation Process](#validation-process) section below.
 
 ## Validation Process
 
-### Step 1: Identify Architecture
+The validation process follows 5 steps:
 
-```bash
-# Read project documentation
-Read ARCHITECTURE.md or README.md
+1. **Identify Architecture** - Read ARCHITECTURE.md and detect pattern (Clean, Hexagonal, Layered, MVC)
+2. **Extract Layer Definitions** - Map directory structure to architectural layers
+3. **Scan Imports** - Analyze all import statements in source files
+4. **Validate Rules** - Check dependency direction and layer boundaries
+5. **Report Violations** - Generate actionable report with specific fixes
 
-# Identify pattern from keywords:
-# - "Clean Architecture" → Clean
-# - "Hexagonal" or "Ports and Adapters" → Hexagonal
-# - "Layered" → Layered
-# - "MVC" → MVC
-```
-
-### Step 2: Extract Layer Definitions
-
-For Clean Architecture:
-```
-Domain Layer: domain/ (innermost)
-Application Layer: application/
-Infrastructure Layer: infrastructure/
-Interface Layer: interfaces/ (outermost)
-```
-
-For Hexagonal:
-```
-Core/Domain: domain/
-Ports: ports/ (interfaces)
-Adapters: adapters/ (implementations)
-```
-
-### Step 3: Scan Imports
-
-```bash
-# Find all Python files
-Glob: **/*.py (or **/*.js, **/*.ts for other languages)
-
-# Extract imports from each file
-Grep pattern: "^from .* import|^import "
-
-# Categorize by layer based on file path
-```
-
-### Step 4: Validate Rules
-
-**Clean Architecture Rules:**
-```
-Domain:
-  ✅ Can import: domain only
-  ❌ Cannot import: application, infrastructure, interfaces
-
-Application:
-  ✅ Can import: domain, application
-  ❌ Cannot import: interfaces, infrastructure (concrete)
-
-Infrastructure:
-  ✅ Can import: domain, application (interfaces)
-  ❌ Cannot import: interfaces (API/MCP layers)
-
-Interface:
-  ✅ Can import: application, domain
-  ❌ Cannot import: infrastructure directly
-```
-
-### Step 5: Report Violations
-
-```
-❌ Architecture Validation: FAILED
-
-Violations found:
-
-1. [CRITICAL] Domain Layer Violation
-   File: src/domain/models/entity.py:12
-   Issue: Importing from infrastructure layer
-   Code: from infrastructure.neo4j import Neo4jDriver
-   Fix: Remove direct infrastructure dependency. Use repository interface instead.
-
-2. [HIGH] Application Layer Violation
-   File: src/application/services/search.py:8
-   Issue: Importing from interfaces layer
-   Code: from interfaces.mcp.tools import search_code
-   Fix: Application should not know about interfaces. Move logic to application handler.
-
-Total Violations: 2 (2 critical, 0 high, 0 medium)
-```
+See [Code Examples](./references/code-examples.md) for detailed examples of each step, including bash commands, layer definitions, validation rules, and sample output formats.
 
 ## Usage Examples
 
 ### Example 1: Validate Entire Codebase
-
-```
 User: "Validate architecture before I commit"
-
-Claude:
-1. Reads ARCHITECTURE.md → Identifies Clean Architecture
-2. Scans all .py files for imports
-3. Validates each layer's imports
-4. Reports violations or confirms compliance
-```
+- Reads ARCHITECTURE.md and identifies pattern
+- Scans all source files for imports
+- Validates each layer's imports against rules
+- Reports violations or confirms compliance
 
 ### Example 2: Validate Specific Changes
-
-```
 User: "Check if my refactoring follows Clean Architecture"
-
-Claude:
-1. Runs: git diff --name-only
-2. Filters Python files
-3. Validates only modified files
-4. Reports violations in changed code
-```
+- Runs git diff to find changed files
+- Filters to source files only
+- Validates only modified files
+- Reports violations in changed code
 
 ### Example 3: Pre-Commit Hook Integration
-
-```
-Automatically invoked by pre-commit hook:
-1. Gets staged files
-2. Validates architectural boundaries
-3. Blocks commit if critical violations found
-4. Provides actionable fix recommendations
-```
+Automatically invoked by pre-commit hook to validate architectural boundaries, block commits if critical violations found, and provide actionable fix recommendations.
 
 ## Architecture-Specific Rules
 
+This skill supports four architectural patterns with specific dependency rules:
+
 ### Clean Architecture
-
-**Dependency Rule**: Dependencies flow inward only
-
-```
-Interface → Application → Domain ← Infrastructure
-   (UI)      (Use Cases)   (Core)    (External)
-```
-
-**Layer Rules:**
-- **Domain**: Pure business logic, no framework/external dependencies
-- **Application**: Orchestrates domain, defines interfaces for infrastructure
-- **Infrastructure**: Implements application interfaces, depends on external systems
-- **Interface**: Entry points, depends on application use cases only
-
-**Detection Patterns:**
-```bash
-# Domain violations
-grep -rn "from.*\.\(application\|infrastructure\|interfaces\)" domain/
-
-# Application violations
-grep -rn "from.*\.interfaces" application/
-
-# Interface violations
-grep -rn "from.*\.infrastructure" interfaces/
-```
+- **Dependency Rule**: Dependencies flow inward only (Interface → Application → Domain ← Infrastructure)
+- **Layer Rules**: Domain is pure, Application orchestrates, Infrastructure implements, Interface is entry points
 
 ### Hexagonal Architecture
-
-**Dependency Rule**: Core has no dependencies, adapters depend on ports
-
-```
-   Adapters (Outside)
-        ↓
-   Ports (Interfaces)
-        ↓
-   Domain (Core)
-```
-
-**Layer Rules:**
-- **Domain/Core**: Pure business logic, no external dependencies
-- **Ports**: Interfaces defined by core
-- **Adapters**: Implement ports, connect to external systems
-
-**Detection Patterns:**
-```bash
-# Core violations
-grep -rn "from.*\.\(adapters\|ports\)" domain/
-
-# Adapter bypassing ports
-grep -rn "from.*\.domain" adapters/ | grep -v "from.*\.ports"
-```
+- **Dependency Rule**: Core has no dependencies, adapters depend on ports
+- **Layer Rules**: Domain/Core is pure, Ports are interfaces, Adapters connect to external systems
 
 ### Layered Architecture
-
-**Dependency Rule**: Each layer depends only on layer below
-
-```
-Presentation Layer
-       ↓
-Business Logic Layer
-       ↓
-Data Access Layer
-```
-
-**Layer Rules:**
-- **Presentation**: Depends on business logic only
-- **Business Logic**: Depends on data access only
-- **Data Access**: No dependencies on upper layers
-
-**Detection Patterns:**
-```bash
-# Presentation bypassing business logic
-grep -rn "from.*\.data" presentation/
-
-# Data access depending on business
-grep -rn "from.*\.business" data/
-```
+- **Dependency Rule**: Each layer depends only on layer below
+- **Layer Rules**: Presentation → Business Logic → Data Access
 
 ### MVC Architecture
+- **Dependency Rule**: Model is independent, View/Controller depend on Model
+- **Layer Rules**: Model is independent, View depends on Model, Controller orchestrates
 
-**Dependency Rule**: Model is independent, View/Controller depend on Model
-
-```
-View → Controller → Model
-  ↓         ↓
-  ←─────────
-```
-
-**Layer Rules:**
-- **Model**: Independent, no View/Controller dependencies
-- **View**: Depends on Model, not Controller
-- **Controller**: Orchestrates Model and View
-
-**Detection Patterns:**
-```bash
-# Model violations
-grep -rn "from.*\.\(views\|controllers\)" models/
-
-# View importing Controller
-grep -rn "from.*\.controllers" views/
-```
+See [Code Examples](./references/code-examples.md) for detailed dependency diagrams, layer rules, and detection patterns for each architectural pattern.
 
 ## Common Anti-Patterns Detected
 
-### 1. Domain Importing Infrastructure
-```python
-# ❌ VIOLATION
-# domain/entities/user.py
-from infrastructure.database import DatabaseConnection
+This skill detects and provides fixes for common architectural violations:
 
-# ✅ FIX
-# domain/repositories/user_repository.py (interface)
-class UserRepository(Protocol):
-    def save(self, user: User) -> None: ...
+1. **Domain Importing Infrastructure** - Domain layer importing database/framework code
+2. **Application Importing Interfaces** - Application layer importing from API/UI layers
+3. **Circular Dependencies** - Two or more modules importing each other
+4. **Business Logic in Interface Layer** - Business rules and validation in API/UI code
 
-# infrastructure/repositories/user_repository_impl.py
-class UserRepositoryImpl:
-    def __init__(self, db: DatabaseConnection):
-        self.db = db
-```
-
-### 2. Application Importing Interfaces
-```python
-# ❌ VIOLATION
-# application/services/search.py
-from interfaces.api.routes import SearchEndpoint
-
-# ✅ FIX
-# application/handlers/search_handler.py
-class SearchHandler:
-    def handle(self, query: SearchQuery) -> SearchResult:
-        # Application logic here
-        pass
-
-# interfaces/api/routes.py
-@app.post("/search")
-def search(query: str):
-    handler = SearchHandler()
-    return handler.handle(SearchQuery(query))
-```
-
-### 3. Circular Dependencies
-```python
-# ❌ VIOLATION
-# service_a.py
-from service_b import ServiceB
-
-# service_b.py
-from service_a import ServiceA
-
-# ✅ FIX
-# Extract shared interface/base class
-# interfaces.py
-class ServiceInterface(Protocol):
-    def execute(self) -> Result: ...
-
-# service_a.py
-from interfaces import ServiceInterface
-
-# service_b.py
-from interfaces import ServiceInterface
-```
-
-### 4. Business Logic in Interface Layer
-```python
-# ❌ VIOLATION
-# interfaces/api/routes.py
-@app.post("/users")
-def create_user(data: dict):
-    # Validation, business rules, database save all here
-    user = User(**data)
-    if not user.email:
-        raise ValueError("Email required")
-    db.save(user)
-
-# ✅ FIX
-# application/commands/create_user.py
-class CreateUserHandler:
-    def handle(self, cmd: CreateUserCommand) -> ServiceResult[User]:
-        # Business logic here
-        pass
-
-# interfaces/api/routes.py
-@app.post("/users")
-def create_user(data: dict):
-    handler = CreateUserHandler()
-    return handler.handle(CreateUserCommand(**data))
-```
+See [Code Examples](./references/code-examples.md) for detailed violation examples with complete before/after code showing how to fix each anti-pattern using dependency inversion, repository patterns, and proper layering.
 
 ## Integration Points
 
-### With Pre-Commit Hooks
+This skill integrates with:
 
-Add to `.git/hooks/pre-commit`:
-```bash
-#!/bin/bash
-python .claude/skills/validate-architecture/scripts/validate.py
-if [ $? -ne 0 ]; then
-    echo "❌ Architecture validation failed. Commit blocked."
-    exit 1
-fi
-```
+- **Pre-Commit Hooks** - Block commits with architecture violations
+- **CI/CD Pipeline** - Automated validation in GitHub Actions, GitLab CI
+- **Quality Gates** - Part of comprehensive quality checks
 
-### With CI/CD Pipeline
-
-Add to `.github/workflows/ci.yml`:
-```yaml
-- name: Validate Architecture
-  run: python .claude/skills/validate-architecture/scripts/validate.py
-```
-
-### With Quality Gates
-
-Add to `scripts/check_all.sh`:
-```bash
-echo "Validating architecture..."
-python .claude/skills/validate-architecture/scripts/validate.py
-```
+See [Code Examples](./references/code-examples.md) for complete integration scripts for pre-commit hooks, CI/CD workflows, and quality gate configurations.
 
 ## Supporting Files
 
 - **[references/reference.md](./references/reference.md)** - Complete layer dependency matrices for all patterns
+- **[references/code-examples.md](./references/code-examples.md)** - All code examples, detection patterns, and integration scripts
 - **[references/diff-aware-validation.md](./references/diff-aware-validation.md)** - Diff-aware validation comprehensive guide
 - **[references/diff-aware-validation-summary.md](./references/diff-aware-validation-summary.md)** - Diff-aware validation summary
 - **[references/diff-aware-validation-checklist.md](./references/diff-aware-validation-checklist.md)** - Pre-commit validation checklist
@@ -462,54 +208,17 @@ python .claude/skills/validate-architecture/scripts/validate.py
 ## Expected Outcomes
 
 ### Success (No Violations)
-
-```
-✅ Architecture Validation: PASSED
-
-Pattern: Clean Architecture
-Files checked: 127
-Violations: 0
-
-All layer boundaries respected.
-Dependencies flow correctly (inward only).
-No architectural anti-patterns detected.
-```
+When validation passes, you'll see confirmation that all layer boundaries are respected and dependencies flow correctly.
 
 ### Failure (Violations Found)
+When violations are detected, you'll receive a detailed report including:
+- Violation severity (CRITICAL, HIGH, MEDIUM, LOW)
+- File path and line number
+- Specific import statement causing the violation
+- Recommended fix with explanation
+- Impact assessment
 
-```
-❌ Architecture Validation: FAILED
-
-Pattern: Clean Architecture
-Files checked: 127
-Violations: 5 (3 critical, 2 high, 0 medium)
-
-Critical Violations:
-
-1. Domain Layer Importing Infrastructure
-   File: src/domain/models/entity.py:12
-   Code: from infrastructure.neo4j import Neo4jDriver
-   Fix: Use repository interface instead. Move Neo4jDriver to infrastructure layer.
-   Impact: Breaks dependency inversion, couples domain to database
-
-2. Application Layer Importing Interface
-   File: src/application/services/search.py:8
-   Code: from interfaces.mcp.tools import search_code
-   Fix: Move business logic from interface to application handler
-   Impact: Creates circular dependency risk
-
-High Violations:
-
-3. Circular Dependency Detected
-   Files: service_a.py:5 ↔ service_b.py:8
-   Fix: Extract shared interface or base class
-   Impact: Difficult to test, fragile architecture
-
-Summary:
-- Fix critical violations before committing
-- See Common Anti-Patterns Detected section above for detailed fix patterns
-- Run validation again after fixes
-```
+See [Code Examples](./references/code-examples.md) for complete example output showing success and failure reports with detailed violation listings.
 
 ## Success Metrics
 
@@ -523,63 +232,25 @@ After invoking this skill, measure:
 ## Customization
 
 ### Define Custom Rules
-
-Create `arch-rules.yaml` in project root:
-```yaml
-architecture: clean
-layers:
-  domain:
-    path: src/core
-    can_import: []
-    cannot_import: [infrastructure, interfaces, application]
-
-  application:
-    path: src/usecases
-    can_import: [domain]
-    cannot_import: [interfaces]
-
-severity:
-  domain_violation: CRITICAL
-  application_violation: HIGH
-```
+Create `arch-rules.yaml` in project root to customize layer paths, import rules, severity levels, and exceptions for your project's specific architectural needs.
 
 ### Language Support
+Currently supports Python (`.py`), JavaScript (`.js`), and TypeScript (`.ts`). Extend by adding patterns in `scripts/validate.py`.
 
-Currently supports:
-- Python (`.py`)
-- JavaScript (`.js`)
-- TypeScript (`.ts`)
-
-Extend by adding patterns in `scripts/validate.py`.
+See [templates/arch-rules.yaml](./templates/arch-rules.yaml) for a complete example configuration with all available options and [Code Examples](./references/code-examples.md) for YAML configuration samples.
 
 ## Troubleshooting
 
 ### Issue: False Positives
-
-**Symptom**: Valid imports flagged as violations
-
-**Fix**: Add exceptions to `arch-rules.yaml`:
-```yaml
-exceptions:
-  - pattern: "from typing import"
-    reason: "Standard library, not architectural violation"
-```
+Valid imports flagged as violations. Add exceptions to `arch-rules.yaml`.
 
 ### Issue: Pattern Not Detected
-
-**Symptom**: Skill doesn't recognize architectural pattern
-
-**Fix**: Ensure `ARCHITECTURE.md` contains pattern keywords:
-- "Clean Architecture"
-- "Hexagonal Architecture" or "Ports and Adapters"
-- "Layered Architecture"
-- "MVC"
+Skill doesn't recognize architectural pattern. Ensure `ARCHITECTURE.md` contains pattern keywords: "Clean Architecture", "Hexagonal Architecture", "Layered Architecture", or "MVC".
 
 ### Issue: Missing Violations
+Known violations not reported. Check file paths match layer definitions. Update layer patterns if needed.
 
-**Symptom**: Known violations not reported
-
-**Fix**: Check file paths match layer definitions. Update layer patterns if needed.
+See [Code Examples](./references/code-examples.md) for complete troubleshooting examples with exception configurations and pattern detection fixes.
 
 ## Expected Benefits
 

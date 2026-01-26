@@ -1,10 +1,12 @@
 ---
 name: implement-retry-logic
 description: |
-  Add retry logic with exponential backoff to async operations. Use when implementing
+  Implements retry logic with exponential backoff and jitter for async operations. Use when implementing
   external service calls, database operations, network requests, or any operation that
   may fail transiently. Follows project patterns for ServiceResult wrapping, configuration
-  injection, and resilience patterns. Works with async/await operations in Python.
+  injection, and resilience patterns. Triggers on "add retry logic for X", "implement exponential
+  backoff", "make Z resilient", or "handle transient errors".
+version: 1.0.0
 allowed-tools:
   - Read
   - Grep
@@ -12,6 +14,7 @@ allowed-tools:
   - MultiEdit
 ---
 
+Works with async/await operations in Python.
 # Implement Retry Logic
 
 ## Purpose

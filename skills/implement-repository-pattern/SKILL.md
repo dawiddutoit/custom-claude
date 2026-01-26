@@ -1,11 +1,13 @@
 ---
 name: implement-repository-pattern
 description: |
-  Create repository following Clean Architecture (Protocol in domain + Implementation in infrastructure).
-  Use when adding new data access layer, creating database interaction, implementing persistence,
-  or need to store/retrieve domain models. Enforces Protocol/ABC pattern with ServiceResult,
-  ManagedResource lifecycle, and proper layer separation. Works with Python files in domain/repositories/
-  and infrastructure/ directories.
+  Creates repository following Clean Architecture with Protocol in domain layer and Implementation
+  in infrastructure layer. Use when adding new data access layer, creating database interaction,
+  implementing persistence, or need to store/retrieve domain models. Enforces Protocol/ABC pattern
+  with ServiceResult, ManagedResource lifecycle, and proper layer separation. Triggers on "create
+  repository for X", "implement data access for Y", "add persistence layer", or "store/retrieve
+  domain model".
+version: 1.0.0
 allowed-tools:
   - Read
   - Write
@@ -15,6 +17,7 @@ allowed-tools:
   - Bash
 ---
 
+Works with Python files in domain/repositories/ and infrastructure/ directories.
 # Implement Repository Pattern
 
 ## Table of Contents

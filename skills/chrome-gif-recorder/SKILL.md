@@ -1,6 +1,7 @@
 ---
 name: chrome-gif-recorder
-description: "Record browser workflows as annotated GIFs for documentation and tutorials. Use when creating visual documentation of browser interactions, recording step-by-step tutorials, or capturing workflows for support tickets. Triggers on phrases like 'record this workflow', 'create a GIF tutorial', 'document this process as GIF', 'show me how to do X as a GIF', or when user needs visual step-by-step documentation. Works with Chrome browser automation via MCP tools (tabs_context_mcp, gif_creator, computer)."
+description: "Records browser workflows as annotated GIFs for documentation and tutorials. Use when creating visual documentation of browser interactions, recording step-by-step tutorials, or capturing workflows for support tickets. Triggers on phrases like 'record this workflow', 'create a GIF tutorial', 'document this process as GIF', 'show me how to do X as a GIF', or when user needs visual step-by-step documentation. Works with Chrome browser automation via MCP tools (tabs_context_mcp, gif_creator, computer)."
+version: 1.0.0
 ---
 
 # Chrome GIF Recorder
@@ -8,6 +9,20 @@ description: "Record browser workflows as annotated GIFs for documentation and t
 ## Overview
 
 Record browser workflows as annotated GIFs with visual indicators for clicks, drags, and actions. Produces professional documentation-ready GIFs with automatic frame capture, action annotations, and quality optimization.
+
+## When to Use This Skill
+
+Use when asked to:
+- Create visual documentation of browser workflows ("record this as a GIF tutorial")
+- Generate step-by-step tutorials for web applications
+- Capture user flows for support tickets or bug reports
+- Document repetitive processes for training materials
+- Create annotated screen recordings with click indicators
+
+Do NOT use when:
+- User needs static screenshots (use screenshot tool instead)
+- Recording requires audio narration (this is visual-only)
+- User needs long-form video (GIFs are best under 60 seconds)
 
 ## Workflow
 

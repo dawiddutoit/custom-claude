@@ -1,11 +1,41 @@
 ---
 name: ha-dashboard-layouts
-description: "Design Home Assistant Lovelace dashboard layouts using vertical-stack, horizontal-stack, grid layouts (2/3/4 columns, square cards), panel views, and nested layouts. Use when user asks to arrange HA dashboard cards, wants specific layout patterns (\"side by side\", \"3 columns\", \"stacked vertically\"), needs responsive layouts, or mentions layout types explicitly. Triggers: \"layout\", \"grid\", \"columns\", \"side by side\", \"stack\", \"arrange cards\", \"panel view\"."
+description: |
+  Provides Home Assistant dashboard layout patterns using vertical-stack (top-to-bottom),
+  horizontal-stack (side-by-side), grid (responsive multi-column), panel (full-screen), and
+  nested layouts for complex designs. Use when asked to "arrange cards side by side", "create
+  3 column grid", "stack cards vertically", "full-screen panel view", or "responsive layout".
+
+version: 1.0.0
 ---
 
+Works with Lovelace YAML configurations, native layout cards, and mobile-first responsive patterns.
 # Home Assistant Dashboard Layouts
 
 Create responsive Home Assistant Lovelace dashboards using native layout types.
+
+## When to Use This Skill
+
+Use this skill when you need to:
+- Arrange cards vertically (top-to-bottom stacking) for sequential information
+- Place cards side-by-side horizontally for comparisons or related controls
+- Create multi-column grid layouts that automatically reflow on mobile
+- Build full-screen panel views for maps, cameras, or single-focus displays
+- Nest layouts for complex dashboard designs with sections
+- Make dashboards responsive with automatic mobile stacking
+
+Do NOT use when:
+- You need conditional card visibility (use ha-conditional-cards instead)
+- Building forms or input interfaces (use entities card or custom forms)
+- You need advanced CSS Grid features (consider layout-card from HACS)
+
+## Usage
+
+1. **Identify user intent**: Map natural language ("side by side", "3 columns") to layout type
+2. **Choose layout**: vertical-stack (top to bottom), horizontal-stack (side by side), grid (multi-column), panel (full-screen)
+3. **Apply configuration**: Add YAML with appropriate type and options
+4. **Test responsiveness**: Verify mobile behavior (grid auto-stacks, horizontal stays side-by-side)
+5. **Refine**: Adjust columns, square property, or nest layouts for complex designs
 
 ## How to Request Layouts
 

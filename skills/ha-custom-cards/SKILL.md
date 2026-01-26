@@ -1,8 +1,15 @@
 ---
 name: ha-custom-cards
-description: "Configure HACS custom cards for beautiful Home Assistant dashboards including ApexCharts, modern-circular-gauge, bubble-card, mini-graph-card, and mushroom. Use when creating visually rich dashboards with graphs, gauges, separators, or time-series visualizations. Covers card configurations, color schemes, layouts, and HACS installation."
+description: |
+  Configures HACS custom cards (ApexCharts, modern-circular-gauge, bubble-card, mini-graph-card,
+  mushroom) for Home Assistant dashboards with validated configurations, color schemes, and error
+  patterns. Use when asked to "add custom card", "install HACS card", "create gauge/graph",
+  "ApexCharts dashboard", "mushroom cards", or "bubble separator".
+
+version: 1.0.0
 ---
 
+Works with HACS installation (UI and API), Lovelace YAML dashboards, and custom card configurations.
 # Home Assistant Custom Cards
 
 Configure HACS (Home Assistant Community Store) custom cards for enhanced dashboard visualizations.
@@ -17,7 +24,32 @@ Configure HACS (Home Assistant Community Store) custom cards for enhanced dashbo
 | `lovelace-mushroom` | Modern entity cards | 444350375 |
 | `apexcharts-card` | Advanced graphs with time axis | 331701152 |
 
+## When to Use This Skill
+
+Use this skill when you need to:
+- Create circular gauge visualizations with color segments for temperature, humidity, or other metrics
+- Build advanced time-series graphs with ApexCharts for multi-sensor comparisons
+- Add section separators with icons using bubble-card for dashboard organization
+- Install HACS custom cards programmatically via WebSocket API
+- Troubleshoot ApexCharts span.end errors with validated configurations
+- Build modern Mushroom-style entity cards
+
+Do NOT use when:
+- Native Home Assistant cards meet your needs (prefer built-in cards for simplicity)
+- You haven't verified entity IDs exist before using them in custom cards
+- Building dashboards without checking browser console for errors
+
 ## Quick Start
+
+All configurations in this skill are validated and tested. Critical errors (like ApexCharts `span.end`) are documented with solutions.
+
+## Usage
+
+1. **Install via HACS**: Use UI (HACS → Frontend → Search) or API (WebSocket `hacs/repository/download`)
+2. **Choose card type**: Gauge (circular), graph (ApexCharts/mini-graph), separator (bubble-card), entity (mushroom)
+3. **Apply configuration**: Copy validated YAML from examples below
+4. **Verify**: Check browser console (F12) for errors, restart HA if card doesn't load
+5. **Customize**: Adjust colors, min/max values, time spans based on sensor type
 
 ### Modern Circular Gauge (VALIDATED)
 

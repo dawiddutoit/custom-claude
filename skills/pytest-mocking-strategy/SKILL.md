@@ -4,6 +4,7 @@ description: |
   Master mocking strategy for pytest: when to use autospec=True vs manual mocks, AsyncMock patterns for async code, mock builders and factories, and what should NEVER be mocked. Includes type-safe mock creation patterns and decision matrix for mocking vs real objects.
 
   Use when: Creating unit tests with mocked dependencies, deciding whether to mock or use real objects, setting up test isolation, testing use cases with external service boundaries, or building reusable mock factories.
+version: 1.0.0
 allowed-tools: Read, Bash, Write
 ---
 
@@ -13,6 +14,12 @@ allowed-tools: Read, Bash, Write
 
 Mocking is essential for unit testing, but over-mocking creates brittle tests that fail on refactoring. This skill provides a comprehensive framework for deciding what to mock, how to mock it safely, and when to use real objects instead.
 
+
+## When to Use This Skill
+
+Use when deciding what to mock in tests with "create mock", "mock external service", "AsyncMock pattern", or "what should I mock".
+
+Do NOT use for domain testing (never mock domain objects), pytest configuration (use `pytest-configuration`), or test factories (use `pytest-test-data-factories`).
 ## Quick Start
 
 The golden rule: **Mock external boundaries, test the unit in isolation.**

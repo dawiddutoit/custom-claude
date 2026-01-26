@@ -4,6 +4,7 @@ description: |
   Measure and track test coverage: coverage thresholds by layer, coverage reporting (HTML/terminal), identifying coverage gaps, branch coverage vs line coverage, coverage-driven testing. Includes layer-specific targets (domain 95%, application 85%, adapters 75%).
 
   Use when: Measuring test coverage, setting coverage thresholds, identifying untested code paths, tracking coverage improvements, ensuring code quality gates.
+version: 1.0.0
 allowed-tools: Read, Bash, Write
 ---
 
@@ -13,6 +14,12 @@ allowed-tools: Read, Bash, Write
 
 Code coverage measures how much of your code is tested. This skill provides strategies for meaningful coverage measurement and improving test quality.
 
+
+## When to Use This Skill
+
+Use when measuring test coverage with "measure coverage", "track coverage", "identify untested code", or "set coverage thresholds".
+
+Do NOT use for writing tests (use layer-specific testing skills), pytest configuration (use `pytest-configuration`), or fixing low coverage (identify gaps first, then use appropriate testing skill).
 ## Quick Start
 
 Generate coverage report:

@@ -1,10 +1,8 @@
 ---
 name: python-test-micrometer-testing-metrics
 description: |
-  Test custom Micrometer metrics in unit and integration tests using SimpleMeterRegistry.
-  Use when writing tests for services that record metrics, validating metric values after operations,
-  testing percentiles and histograms, or asserting metric behavior without full Spring context.
-  Essential for ensuring metrics are accurately recorded in business logic.
+  Tests custom Micrometer metrics in unit and integration tests using SimpleMeterRegistry. Use when writing tests for services that record metrics, validating metric values after operations, testing percentiles and histograms, or asserting metric behavior without full Spring context. Essential for ensuring metrics are accurately recorded in business logic.
+version: 1.0.0
 allowed-tools:
   - Read
   - Edit
@@ -668,6 +666,6 @@ class ServiceTest {
 
 ## See Also
 
-- [micrometer-business-metrics](../micrometer-business-metrics/SKILL.md) - Creating business metrics
-- [micrometer-cardinality-control](../micrometer-cardinality-control/SKILL.md) - Managing metric cardinality
-- [micrometer-metrics-setup](../micrometer-metrics-setup/SKILL.md) - Initial configuration
+- [python-micrometer-business-metrics](../python-micrometer-business-metrics/SKILL.md) - Creating business metrics
+- [python-micrometer-cardinality-control](../python-micrometer-cardinality-control/SKILL.md) - Managing metric cardinality
+- [python-micrometer-metrics-setup](../python-micrometer-metrics-setup/SKILL.md) - Initial configuration

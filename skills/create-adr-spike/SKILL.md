@@ -1,6 +1,20 @@
 ---
 name: create-adr-spike
-description: Create Architecture Decision Records (ADRs) and research spikes for technical decisions. Use when asked to "create an ADR", "architectural decision for", "research spike on", "evaluate options for", "document technical decision", "should we use X or Y", or when analyzing architecture alternatives. Provides structured research, analysis, and documentation workflow with memory storage. Creates .md files in docs/adr/ with proper numbering and status tracking.
+description: |
+  Creates Architecture Decision Records (ADRs) and conducts research spikes for technical decisions
+  using a structured 5-phase workflow: Research, Analysis, Decision, Documentation, and Memory Storage.
+
+  Use when asked to "create an ADR", "architectural decision for", "research spike on", "evaluate
+  options for", "document technical decision", "should we use X or Y", or when comparing technical
+  alternatives.
+
+  Provides systematic evaluation (minimum 2-3 alternatives), trade-off analysis, consequence
+  documentation, and memory graph persistence. Manages ADR lifecycle across not_started, in_progress,
+  and implemented directories with proper numbering and status tracking.
+
+  Works with docs/adr/ directories, ADR templates, memory MCP tools, and external research tools
+  (WebSearch, WebFetch, context7 library docs).
+version: 1.0.0
 allowed-tools:
   - Read
   - Grep
@@ -22,6 +36,34 @@ allowed-tools:
 
 Standardized workflow for creating Architecture Decision Records (ADRs) and conducting research spikes for technical decisions.
 
+## When to Use This Skill
+
+**Explicit Triggers:**
+- "Create an ADR for [decision]"
+- "Architecture decision for [problem]"
+- "Research spike on [topic]"
+- "Evaluate options for [choice]"
+- "Document technical decision about [subject]"
+- "Should we use X or Y?"
+
+**Implicit Triggers:**
+- Comparing multiple technical alternatives
+- Making architectural choices that affect system design
+- Evaluating libraries, frameworks, or patterns
+- Deciding on refactoring approaches
+- Documenting important technical trade-offs
+
+**Debugging/Analysis Triggers:**
+- "What decisions led to this architecture?"
+- "Why did we choose [technology/pattern]?"
+- "Search existing ADRs for [topic]"
+
+**When NOT to Use:**
+- Simple code refactoring (no architectural impact)
+- Bug fixes without design implications
+- Minor configuration changes
+- Routine maintenance tasks
+
 ## Table of Contents
 
 ### Core Sections
@@ -42,11 +84,9 @@ Standardized workflow for creating Architecture Decision Records (ADRs) and cond
 - [Success Criteria](#success-criteria) - When an ADR spike is complete
 
 ### Supporting Resources
-- [examples.md](references/examples.md) - Comprehensive examples: simple decisions, complex refactors, research spikes, superseding ADRs
-- [reference.md](references/reference.md) - Technical documentation and ADR template deep-dive
+- [reference.md](references/reference.md) - Technical documentation, ADR template deep-dive, and comprehensive examples
 - [Scripts](scripts/) - Utility scripts for ADR number finding and validation
-- [ADR Directory Guide](../../../docs/ADR-DIRECTORY-GUIDE.md) - Complete ADR organization and lifecycle
-- [ADR Template](../../../docs/adr/TEMPLATE-refactor-migration.md) - Copy-paste template for new ADRs
+- [Templates](templates/) - ADR and migration templates for structured decision records
 
 ### Additional Information
 - [Requirements](#requirements) - Skills, tools, project setup, and knowledge needed
@@ -193,7 +233,7 @@ This skill includes comprehensive ADR and migration templates:
    **Default:** Use `not_started/` for new decisions unless implementation begins immediately.
 
 3. **Create ADR from Template:**
-   - Copy template: `../../../docs/adr/TEMPLATE-refactor-migration.md`
+   - Copy template: `templates/adr-template.md` or `templates/migration-template.md`
    - Fill all required sections (no placeholders)
    - Use next sequential number (e.g., ADR-028)
    - Use kebab-case for filename: `028-descriptive-title.md`
@@ -386,7 +426,7 @@ If ADR is in `in_progress/`, add file-level markers in affected code:
 # =============================================================================
 ```
 
-See: [Refactor Marker Guide](../detect-refactor-markers/references/refactor-marker-guide.md)
+See: [Refactor Marker Guide](../quality-detect-refactor-markers/references/refactor-marker-guide.md)
 
 ### Integration with todo.md
 For ADRs requiring implementation:
@@ -403,7 +443,7 @@ For ADRs requiring implementation:
 
 ### Complete Walkthroughs
 
-See [references/examples.md](references/examples.md) for complete walkthroughs of:
+See [references/reference.md](references/reference.md) for detailed examples of:
 - Simple architectural decision (library choice)
 - Complex refactor/migration ADR
 - Research spike with external investigation
@@ -411,8 +451,9 @@ See [references/examples.md](references/examples.md) for complete walkthroughs o
 
 ## Supporting Files
 
-- **[references/reference.md](references/reference.md):** Detailed technical documentation, ADR template deep-dive
-- **[references/examples.md](references/examples.md):** Comprehensive examples and edge cases
+- **[references/reference.md](references/reference.md):** Detailed technical documentation, ADR template deep-dive, and comprehensive examples
+- **[templates/adr-template.md](templates/adr-template.md):** Complete ADR structure with all required sections
+- **[templates/migration-template.md](templates/migration-template.md):** Detailed migration/refactor planning template
 - **[scripts/validate_adr.py](scripts/validate_adr.py):** Validation script for ADR completeness
 - **[scripts/find_next_adr_number.sh](scripts/find_next_adr_number.sh):** Utility to find next ADR number
 
@@ -424,8 +465,8 @@ See [references/examples.md](references/examples.md) for complete walkthroughs o
 - Web tools: WebSearch, WebFetch (for external research)
 
 **Project Setup:**
-- `docs/adr/` directory structure exists with status subdirectories
-- ADR template available at `../../../docs/adr/TEMPLATE-refactor-migration.md`
+- `docs/adr/` directory structure exists with status subdirectories (in projects using this skill)
+- ADR templates available at `templates/adr-template.md` and `templates/migration-template.md`
 - Memory system configured for entity storage
 
 **Knowledge:**
@@ -508,10 +549,10 @@ When completing an ADR spike, provide:
 
 ## References
 
-- [ADR Directory Guide](../../../docs/ADR-DIRECTORY-GUIDE.md)
-- [Refactor Marker Guide](../detect-refactor-markers/references/refactor-marker-guide.md)
-- [ARCHITECTURE.md](../../../ARCHITECTURE.md) - Implemented patterns
-- [ADR Template](../../../docs/adr/TEMPLATE-refactor-migration.md)
+- [Refactor Marker Guide](../quality-detect-refactor-markers/references/refactor-marker-guide.md)
+- [ADR Template](templates/adr-template.md)
+- [Migration Template](templates/migration-template.md)
+- [Reference Documentation](references/reference.md) - Detailed examples and walkthroughs
 
 ---
 

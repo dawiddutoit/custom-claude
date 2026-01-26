@@ -1,10 +1,10 @@
 # Claude Code Skills Collection
 
-A comprehensive collection of 190+ production-ready skills for Claude Code, organized by domain and use case.
+A comprehensive collection of 205+ production-ready skills for Claude Code, organized by domain and use case.
 
 ## 📦 What's Inside
 
-- **190+ Skills** - Reusable workflows for architecture, testing, quality gates, Home Assistant, web development, cloud infrastructure, data engineering, and more
+- **205+ Skills** - Reusable workflows for architecture, testing, quality gates, Home Assistant, web development, cloud infrastructure, data engineering, document creation, and more
 - **Agents** - Specialized autonomous agents for complex tasks
 - **Plugins** - Extended functionality via Claude Code plugins
 - **Commands** - Custom command-line tools
@@ -109,7 +109,7 @@ Skills are invoked automatically by Claude Code when relevant, or you can explic
 - `ha-sunsynk-integration` - Sunsynk/Deye solar inverter integration
 - `ha-validate-dashboards` - 3-tier dashboard validation
 
-### Browser Automation (10 skills)
+### Browser Automation (12 skills)
 - `browser-layout-editor` - 2D layout editors with FastAPI + SVG
 - `chrome-auth-recorder` - Record authenticated workflows as GIFs
 - `chrome-browser-automation` - Chrome automation via MCP
@@ -122,6 +122,8 @@ Skills are invoked automatically by Claude Code when relevant, or you can explic
 - `playwright-responsive-screenshots` - Responsive screenshot capture
 - `playwright-tab-comparison` - Multi-tab comparison testing
 - `playwright-web-scraper` - Web scraping patterns
+- `slack-gif-creator` - Create animated GIFs for Slack communications
+- `webapp-testing` - Web application testing with Playwright
 
 ### Svelte/SvelteKit (13 skills)
 - `svelte-add-accessibility` - Accessibility best practices
@@ -154,23 +156,40 @@ Skills are invoked automatically by Claude Code when relevant, or you can explic
 - `textual-widget-development` - Custom widget development
 - `temet-run-tui-patterns` - Temet-specific TUI patterns
 
-### Utilities & Workflow (6 skills)
+### Utilities & Workflow (7 skills)
+- `data-migration-versioning` - Data format migration and versioning
 - `util-manage-todo` - Todo list management
 - `util-multi-file-refactor` - Multi-file refactoring
 - `util-research-library` - Library research and evaluation
 - `util-resolve-serviceresult-errors` - ServiceResult error resolution
+- `web-artifacts-builder` - Build web artifacts with shadcn components
 - `write-atomic-tasks` - Atomic task decomposition
-- `data-migration-versioning` - Data format migration and versioning
 
-### Agent & SDK (3 skills)
-- `claude-agent-sdk` - Claude Agent SDK patterns
+### Agent & SDK (4 skills)
+- `agent-sdk-python` - Python Claude Agent SDK patterns and examples
 - `manage-agents` - Agent lifecycle management
+- `mcp-builder` - Create high-quality MCP (Model Context Protocol) servers
 - `skill-creator` - Create and manage skills
 
 ### Domain-Specific (3 skills)
 - `jira-builders` - JIRA integration builders
 - `minimal-abstractions` - Minimal abstraction patterns
 - `infra-manage-ssh-services` - SSH service management
+
+### Document & Content Creation (7 skills)
+- `algorithmic-art` - Generate algorithmic art and visualizations
+- `doc-coauthoring` - Collaborative document authoring workflows
+- `docx` - Create and edit Word documents (.docx) with formatting and styles
+- `internal-comms` - Internal communications and company newsletters
+- `pdf` - Comprehensive PDF manipulation (extract, create, merge, split, forms)
+- `pptx` - Create and edit PowerPoint presentations (.pptx)
+- `xlsx` - Spreadsheet creation, editing, formulas, and data analysis
+
+### Design & Branding (4 skills)
+- `brand-guidelines` - Brand identity and guidelines development
+- `canvas-design` - Canvas-based design and graphics
+- `frontend-design` - Frontend design patterns and components
+- `theme-factory` - Design system and theme generation
 
 ### JIRA & Atlassian (5 skills)
 - `build-jira-document-format` - Advanced ADF (Atlassian Document Format) document building
@@ -285,7 +304,7 @@ Skills are invoked automatically by Claude Code when relevant, or you can explic
 
 ```
 .
-├── skills/              # 190+ skill definitions
+├── skills/              # 205+ skill definitions
 │   ├── architecture-*/  # Architecture & design skills
 │   ├── quality-*/       # Quality gates & code review
 │   ├── test-*/          # Testing skills
@@ -300,6 +319,8 @@ Skills are invoked automatically by Claude Code when relevant, or you can explic
 │   ├── terraform-*/     # Infrastructure as Code
 │   ├── java-*/          # Java development
 │   ├── lotus-*/         # Lotus Notes migration
+│   ├── docx, xlsx, pptx, pdf  # Document creation skills
+│   ├── brand-*, canvas-*, theme-*  # Design & branding
 │   └── ...
 ├── agents/              # Custom agent definitions
 ├── plugins/             # Claude Code plugins
@@ -364,9 +385,11 @@ Skills span multiple domains:
 - **Observability:** OpenTelemetry, Micrometer metrics, logging
 - **Migration:** Lotus Notes to modern platforms
 - **JIRA & Atlassian:** Advanced ADF, workflows, automation
+- **Document Creation:** Word, Excel, PowerPoint, PDF manipulation
+- **Design & Branding:** Brand guidelines, themes, canvas design
 
 ---
 
-**Last Updated:** 2026-01-20
-**Total Skills:** 190+
+**Last Updated:** 2026-01-22
+**Total Skills:** 205+
 **Maintained by:** [@dawiddutoit](https://github.com/dawiddutoit)

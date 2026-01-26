@@ -1,11 +1,8 @@
 ---
 name: uv-troubleshooting
 description: |
-  Debug and resolve common uv issues. Learn to diagnose dependency resolution
-  failures, handle version conflicts, fix cache problems, troubleshoot Python
-  environment issues, optimize performance, and solve platform-specific problems.
-  Use when uv commands fail, dependencies won't resolve, cache is corrupted,
-  Python installation issues occur, or performance is slow.
+  Debugs and resolves common uv issues. Learn to diagnose dependency resolution failures, handle version conflicts, fix cache problems, troubleshoot Python environment issues, optimize performance, and solve platform-specific problems. Use when uv commands fail, dependencies won't resolve, cache is corrupted, Python installation issues occur, or performance is slow.
+version: 1.0.0
 allowed-tools: Bash, Read, Write, Edit
 ---
 

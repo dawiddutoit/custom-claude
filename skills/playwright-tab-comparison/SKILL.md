@@ -1,6 +1,7 @@
 ---
 name: playwright-tab-comparison
 description: Open multiple browser tabs and compare content, behavior, or visual appearance across pages. Use when comparing staging vs production, A/B testing page variants, testing cross-browser consistency, verifying content parity, or analyzing differences between multiple URLs. Trigger phrases include "compare these pages", "open multiple tabs and compare", "test consistency across", "A/B test", "staging vs production", or "compare versions". Works with Playwright MCP browser automation tools for multi-tab workflows.
+version: 1.0.0
 ---
 
 # Playwright Tab Comparison

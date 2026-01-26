@@ -1,19 +1,49 @@
 ---
 name: design-jira-state-analyzer
 description: |
-  Design and implement state transition analysis systems for tracking time spent in different states.
-  Use when analyzing workflows with state changes (Jira, GitHub PRs, deployments, support tickets, etc.).
-  Covers state machine fundamentals, temporal calculations, bottleneck detection, and business metrics.
-  Trigger keywords: "state analysis", "duration tracking", "workflow metrics", "bottleneck", "cycle time",
-  "state transitions", "time in status", "how long", "state duration", "workflow performance",
-  "state machine", "changelog analysis", "SLA tracking", "process metrics".
----
+  Designs and implements state transition analysis systems for tracking time spent in different states. Use when analyzing workflows with state changes (Jira, GitHub PRs, deployments, support tickets, etc.). Covers state machine fundamentals, temporal calculations, bottleneck detection, and business metrics. Trigger keywords: "state analysis", "duration tracking", "workflow metrics", "bottleneck", "cycle time", "state transitions", "time in status", "how long", "state duration", "workflow performance", "state machine", "changelog analysis", "SLA tracking", "process metrics".
+
+version: 1.0.0---
 
 # Design Jira State Analyzer
 
-## Purpose
+## When to Use This Skill
 
-Learn how to design and implement systems that analyze state transitions and calculate time spent in each state. These patterns apply to any system with state changes: Jira tickets, GitHub PRs in code review, deployment pipelines, support tickets, insurance claims, or manufacturing processes. Master the temporal analysis, bottleneck detection, and workflow metrics that drive process optimization.
+**Explicit Triggers:**
+- "Analyze state transitions in Jira"
+- "Calculate time spent in each status"
+- "Find workflow bottlenecks"
+- "Track cycle time for tickets"
+- "Measure how long tickets stay in review"
+- "Analyze workflow performance"
+- "Design a state analyzer"
+- "Calculate business hours in status"
+
+**Implicit Triggers:**
+- Questions about "how long does it take" for workflow stages
+- Requests for SLA tracking or compliance analysis
+- Need to optimize process flow or reduce delays
+- Questions about which states slow down delivery
+- Requests to measure team velocity or throughput
+- Need to analyze deployment pipeline duration
+
+**Use This Skill When:**
+- Building systems to track state changes over time
+- Analyzing workflows with discrete states (Jira, GitHub PRs, deployments, support tickets)
+- Calculating temporal metrics (cycle time, lead time, flow efficiency)
+- Detecting bottlenecks in multi-stage processes
+- Implementing SLA monitoring and compliance tracking
+- Extracting insights from audit logs or changelogs
+
+**Do NOT Use This Skill When:**
+- You need real-time event processing (use stream processing instead)
+- Data lacks complete state history (partial data leads to invalid metrics)
+- States are not well-defined or change frequently (fix data model first)
+- You need predictive analytics (this skill covers historical analysis only)
+
+## What This Skill Does
+
+Provides comprehensive guidance on designing and implementing state transition analysis systems. Covers state machine fundamentals, extracting transitions from audit logs, calculating temporal durations (calendar days and business hours), detecting bottlenecks, analyzing workflow metrics (cycle time, lead time, flow efficiency), and exporting results for stakeholders. Includes practical examples for Jira, GitHub PRs, and custom systems.
 
 ## Quick Start
 
@@ -516,14 +546,31 @@ for t in transitions:
 - **datetime library** for temporal calculations
 - **Optional**: pandas for advanced statistical analysis
 
-### Key Files Reference
-- **State Transition Model**: `.claude/skills/design-jira-state-analyzer/references/state_models.md`
-- **Implementation Examples**: `.claude/skills/design-jira-state-analyzer/examples/analysis_examples.md`
-- **Business Hours Calculation**: See Step 3 code example
+## Related Skills
 
-## See Also
+- **jira-api** - Fetch issue data with changelog using Jira REST API v3
+- **export-and-analyze-jira-data** - Data export patterns and bulk analysis workflows
+- **build-jira-document-format** - Create analysis reports in Atlassian Document Format
+- **kafka-consumer-implementation** - For real-time state tracking with event streams
+- **observability-analyze-logs** - Extract state transitions from application logs
 
-- [Jira REST API](/skills/jira-api) - For fetching issue data with changelog
-- [Work with ADF](/skills/work-with-adf) - For creating analysis report documents
-- [Export and Analyze Jira Data](/skills/export-and-analyze-jira-data) - For data pipeline patterns
-- CLAUDE.md - Jira tool configuration and patterns
+## Notes
+
+**Key Implementation Points:**
+- Always use UTC internally for timestamp calculations
+- Handle open issues where end_time is None (still in current state)
+- Business hours are configurable per organization (default: Mon-Fri, 9 AM - 5 PM)
+- Complete state history is required for accurate analysis
+- Partial days must be handled correctly (transitions happen at any time)
+
+**Common Pitfalls:**
+- Missing changelog expansion in API queries (`--expand changelog` flag required)
+- Ignoring timezone conversions (leads to incorrect duration calculations)
+- Not filtering out non-status changes from changelog (focus on status field only)
+- Treating weekends as business days (skews business hours metric)
+- Calculating averages including incomplete items (exclude items still in progress)
+
+**Business Hours Calculation:**
+- See Step 3 for complete implementation
+- Handles partial days, weekends, and configurable work hours
+- Returns floating-point hours for precise metrics

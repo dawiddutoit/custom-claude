@@ -1,19 +1,20 @@
 ---
 name: infrastructure-health-check
 description: |
-  Performs comprehensive health checks on all network infrastructure services including
-  Docker containers, Caddy reverse proxy, Pi-hole DNS, Cloudflare Tunnel, SSL certificates,
-  and Cloudflare Access authentication. Use when you need to verify infrastructure status,
-  diagnose connectivity issues, check service health, or troubleshoot network problems.
-  Triggers on "check health", "infrastructure status", "is everything running", "diagnose
-  network", "service health", "check containers", "verify SSL", "tunnel status", or
-  "why can't I access". Works with docker-compose, Caddy, Pi-hole, and Cloudflare services.
+  Executes comprehensive health checks and generates status reports for network infrastructure
+  services. Verifies Docker containers, validates Caddy reverse proxy, checks Pi-hole DNS,
+  confirms Cloudflare Tunnel connectivity, and validates SSL certificates. Use when verifying
+  infrastructure status, diagnosing connectivity issues, checking service health, or
+  troubleshooting network problems. Triggers on "check health", "infrastructure status",
+  "is everything running", "diagnose network", "service health", or "verify SSL".
+version: 1.0.0
 allowed-tools:
   - Bash
   - Read
   - Grep
 ---
 
+Works with docker-compose, Caddy, Pi-hole, and Cloudflare services.
 # Infrastructure Health Check
 
 Comprehensive health verification for all network infrastructure services.
@@ -46,7 +47,7 @@ Or invoke this skill with: "Check infrastructure health" or "Is everything runni
 6. [Requirements](#6-requirements)
 7. [Red Flags to Avoid](#7-red-flags-to-avoid)
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 **Explicit Triggers:**
 - "Check infrastructure health"
@@ -68,7 +69,7 @@ Or invoke this skill with: "Check infrastructure health" or "Is everything runni
 - "SSL certificate errors"
 - "Authentication not working"
 
-## 2. What This Skill Does
+## What This Skill Does
 
 Performs 8 health checks and generates a comprehensive status report:
 
@@ -81,7 +82,7 @@ Performs 8 health checks and generates a comprehensive status report:
 7. **Cloudflare Access** - Verifies authentication is configured
 8. **Overall Status** - Aggregates results into pass/fail summary
 
-## 3. Instructions
+## Instructions
 
 ### 3.1 Docker Container Status
 
@@ -291,7 +292,7 @@ CLOUDFLARE ACCESS
 ========================================
 ```
 
-## 4. Supporting Files
+## Supporting Files
 
 | File | Purpose |
 |------|---------|
@@ -299,7 +300,7 @@ CLOUDFLARE ACCESS
 | `references/troubleshooting.md` | Common issues and solutions |
 | `examples/examples.md` | Example health check outputs |
 
-## 5. Expected Outcomes
+## Expected Outcomes
 
 **Success (All Checks Pass):**
 - All 4 containers running
@@ -321,7 +322,7 @@ CLOUDFLARE ACCESS
 - DNS not resolving -> Check Pi-hole container, router DNS settings
 - All certificates invalid -> Check Cloudflare API token
 
-## 6. Requirements
+## Requirements
 
 **Environment:**
 - Docker and Docker Compose running
@@ -335,7 +336,7 @@ CLOUDFLARE ACCESS
 - cloudflared container
 - webhook container
 
-## 7. Red Flags to Avoid
+## Red Flags to Avoid
 
 - [ ] Do not ignore certificate expiration warnings
 - [ ] Do not skip DNS checks when troubleshooting access issues

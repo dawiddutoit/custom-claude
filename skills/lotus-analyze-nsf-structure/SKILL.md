@@ -1,16 +1,17 @@
 ---
 name: lotus-analyze-nsf-structure
 description: |
-  Analyze Lotus Notes NSF database file structure, data models, views, forms, and relationships.
+  Analyzes Lotus Notes NSF database file structure, data models, views, forms, and relationships.
   Use when understanding NSF database composition, mapping field structures, identifying data dependencies,
-  extracting schema information, or assessing data migration scope. Works with NSF file metadata analysis,
-  view/form specifications, field type mappings, and database relationship documentation.
+  extracting schema information, or assessing data migration scope.
+version: 1.0.0
 allowed-tools:
   - Read
   - Bash
   - Grep
 ---
 
+Works with NSF file metadata analysis, view/form specifications, field type mappings, and database relationship documentation.
 # Analyze Lotus Notes NSF Structure
 
 ## Table of Contents
@@ -245,6 +246,6 @@ Migration:
 
 ## See Also
 
-- [lotus-notes-migration](../lotus-notes-migration/SKILL.md) - Comprehensive Lotus Notes to new system migration overview
-- [replace-lotus-odbc-direct-writes](../replace-lotus-odbc-direct-writes/SKILL.md) - Replacing ODBC direct database access with API patterns
-- [convert-lotus-rich-text-fields](../convert-lotus-rich-text-fields/SKILL.md) - Converting rich text formatting to standard formats
+- [lotus-migration](../lotus-migration/SKILL.md) - Comprehensive Lotus Notes to new system migration overview
+- [lotus-replace-odbc-direct-writes](../lotus-replace-odbc-direct-writes/SKILL.md) - Replacing ODBC direct database access with API patterns
+- [lotus-convert-rich-text-fields](../lotus-convert-rich-text-fields/SKILL.md) - Converting rich text formatting to standard formats

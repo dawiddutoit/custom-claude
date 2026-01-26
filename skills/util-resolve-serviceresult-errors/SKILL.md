@@ -6,6 +6,7 @@ description: |
   mock assertions failing, or type errors with ServiceResult. Analyzes .py test files
   and service implementations. Covers async/await patterns, monad operations (map, bind, flatmap),
   and proper mock configuration.
+version: 1.0.0
 allowed-tools:
   - Read
   - Grep
@@ -324,147 +325,38 @@ async def test_get_files(mock_repository):
     assert result.data == {"files": []}
 ```
 
-### Example 2: Fix ServiceResult Chaining
-
-**Scenario:** Complex service operation with multiple steps
-
-**Before (Manual Chaining):**
-```python
-async def index_file(file_path: Path) -> ServiceResult[dict]:
-    # Step 1: Read file
-    read_result = await self.reader.read_file(file_path)
-    if not read_result.success:
-        return ServiceResult.fail(read_result.error)
-
-    # Step 2: Parse content
-    parse_result = await self.parser.parse(read_result.data)
-    if not parse_result.success:
-        return ServiceResult.fail(parse_result.error)
-
-    # Step 3: Store data
-    store_result = await self.repo.store(parse_result.data)
-    if not store_result.success:
-        return ServiceResult.fail(store_result.error)
-
-    return store_result
-```
-
-**After (Using Composition Utilities):**
-```python
-from project_watch_mcp.domain.common.service_result_utils import compose_results
-
-async def index_file(file_path: Path) -> ServiceResult[dict]:
-    # Read file
-    result = await self.reader.read_file(file_path)
-
-    # Chain: parse -> store
-    if result.success:
-        result = await compose_results(
-            lambda content: self.parser.parse(content),
-            result
-        )
-
-    if result.success:
-        result = await compose_results(
-            lambda parsed: self.repo.store(parsed),
-            result
-        )
-
-    return result
-```
-
-### Example 3: Fix Async ServiceResult Pattern
+### Example 2: Fix Async ServiceResult Pattern
 
 **Scenario:** Async mock returning coroutine instead of ServiceResult
 
-**Before (Failing):**
-```python
-@pytest.fixture
-def mock_service():
-    service = MagicMock(spec=EmbeddingService)
-    # ❌ WRONG - AsyncMock without proper return_value
-    service.embed_text = AsyncMock()
-    return service
-
-async def test_embedding(mock_service):
-    # Fails: coroutine object has no attribute 'success'
-    result = await mock_service.embed_text("test")
-    assert result.success is True
-```
-
-**After (Fixed):**
+**Fix:**
 ```python
 from project_watch_mcp.domain.common import ServiceResult
 
-@pytest.fixture
-def mock_service():
-    service = MagicMock(spec=EmbeddingService)
-    # ✅ CORRECT - AsyncMock with ServiceResult return_value
-    service.embed_text = AsyncMock(
-        return_value=ServiceResult.ok([0.1, 0.2, 0.3])
-    )
-    return service
+# ❌ WRONG - AsyncMock without proper return_value
+service.embed_text = AsyncMock()
 
-async def test_embedding(mock_service):
-    result = await mock_service.embed_text("test")
-    assert result.success is True
-    assert len(result.data) == 3
+# ✅ CORRECT - AsyncMock with ServiceResult return_value
+service.embed_text = AsyncMock(
+    return_value=ServiceResult.ok([0.1, 0.2, 0.3])
+)
 ```
+
+For more examples, see **[references/troubleshooting.md](./references/troubleshooting.md)** and **[templates/serviceresult-patterns.md](./templates/serviceresult-patterns.md)**.
 
 ## Expected Outcomes
 
-### Successful Fix - Test Now Passing
+**Successful Fix:**
+- Test passes after mock returns ServiceResult
+- AsyncMock configured with proper return_value
+- Type annotations match ServiceResult[T]
+- No pyright errors
+- Unwrap safety checks in place
 
-```
-✅ ServiceResult Errors Resolved
-
-Test: test_get_files
-Status: PASSING (was FAILING)
-
-Fixes Applied:
-  ✅ Mock configured to return ServiceResult.ok(data)
-  ✅ AsyncMock used for async methods
-  ✅ Type annotations corrected (ServiceResult[list])
-  ✅ Unwrap safety checks added
-
-Before:
-  ❌ 'dict' object has no attribute 'success'
-  ❌ TypeError: Incompatible types
-
-After:
-  ✅ All assertions passing
-  ✅ No type errors
-  ✅ ServiceResult pattern enforced
-
-Quality Check:
-  ✅ pyright: 0 errors
-  ✅ pytest: all tests pass
-```
-
-### Identified Pattern - Needs Refactoring
-
-```
-⚠️  ServiceResult Chaining Opportunity
-
-File: src/services/file_service.py
-Lines: 42-58
-
-Current Pattern (Manual Chaining):
-  result1 = await service1.operation()
-  if not result1.success:
-      return ServiceResult.fail(result1.error)
-  result2 = await service2.operation(result1.data)
-  if not result2.success:
-      return ServiceResult.fail(result2.error)
-  # ... repeated 3 more times
-
-Recommendation:
-  Use compose_results() from service_result_utils
-  Reduces 17 lines to 8 lines
-  Improves readability and maintainability
-
-See: Step 4 in Instructions for composition utilities
-```
+**Refactoring Opportunity Identified:**
+- Sequential `if result.success:` checks detected
+- Recommendation: Use compose_results() utilities
+- See Step 4 in Instructions for composition utilities
 
 ---
 
@@ -495,129 +387,13 @@ See: Step 4 in Instructions for composition utilities
 
 ## Troubleshooting
 
-### Issue: Test fails with "'dict' object has no attribute 'success'"
+For detailed troubleshooting steps and validation workflows, see **[references/troubleshooting.md](./references/troubleshooting.md)**.
 
-**Symptom:** Mock returns dict instead of ServiceResult
-
-**Diagnosis:**
-```bash
-# Run test to see exact error
-uv run pytest tests/path/to/test.py::test_name -v
-```
-
-**Fix:**
-```python
-# ❌ WRONG - Returns dict
-mock_service.get_data = AsyncMock(return_value={"items": []})
-
-# ✅ CORRECT - Returns ServiceResult
-from project_watch_mcp.domain.common import ServiceResult
-mock_service.get_data = AsyncMock(return_value=ServiceResult.ok({"items": []}))
-```
-
-**Validation:**
-```bash
-# Re-run test
-uv run pytest tests/path/to/test.py::test_name -v
-# Should now pass
-```
-
----
-
-### Issue: "coroutine object has no attribute 'success'"
-
-**Symptom:** AsyncMock not configured correctly
-
-**Root Cause:** Missing `return_value` on AsyncMock
-
-**Fix:**
-```python
-# ❌ WRONG - AsyncMock without return_value
-mock_service.fetch = AsyncMock()
-
-# ✅ CORRECT - AsyncMock with ServiceResult return_value
-mock_service.fetch = AsyncMock(
-    return_value=ServiceResult.ok(data)
-)
-```
-
----
-
-### Issue: Type error "Incompatible types in assignment"
-
-**Symptom:** `ServiceResult[T]` type mismatch
-
-**Diagnosis:**
-```bash
-uv run pyright src/project_watch_mcp/
-```
-
-**Common causes:**
-1. **Wrong generic type:**
-   ```python
-   # ❌ WRONG
-   def process() -> ServiceResult[list[str]]:
-       result: ServiceResult[dict] = get_data()
-       return result  # Type error!
-
-   # ✅ CORRECT
-   def process() -> ServiceResult[list[str]]:
-       result: ServiceResult[dict] = get_data()
-       if result.is_failure:
-           return ServiceResult.fail(result.error)
-       return ServiceResult.ok(list(result.data.keys()))
-   ```
-
-2. **Missing type annotation:**
-   ```python
-   # ❌ WRONG
-   result = await service.fetch()  # Type unknown
-
-   # ✅ CORRECT
-   result: ServiceResult[dict] = await service.fetch()
-   ```
-
----
-
-### Issue: "Cannot unwrap None data from successful result"
-
-**Symptom:** Calling `.unwrap()` on ServiceResult with None data
-
-**Root Cause:** ServiceResult.ok(None) cannot be unwrapped
-
-**Fix:**
-```python
-# ❌ WRONG
-result = ServiceResult.ok(None)
-value = result.unwrap()  # Raises ValueError!
-
-# ✅ CORRECT - Use unwrap_or
-result = ServiceResult.ok(None)
-value = result.unwrap_or([])  # Returns default
-
-# ✅ BETTER - Check data before unwrapping
-if result.data is not None:
-    value = result.unwrap()
-else:
-    value = default_value
-```
-
----
-
-### Issue: Many sequential ServiceResult checks
-
-**Symptom:** Code has 5+ sequential `if result.success:` checks
-
-**Diagnosis:**
-```bash
-# Find files with chaining opportunities
-grep -r "if.*result.*success" src/ | wc -l
-```
-
-**Refactoring opportunity:**
-Use composition utilities instead of manual chaining
-
-**See:** Step 4 in Instructions section for `compose_results()` examples
+**Quick fixes:**
+- `'dict' object has no attribute 'success'` → Use `ServiceResult.ok(data)` instead of `data`
+- `coroutine object has no attribute 'success'` → Add `return_value` to AsyncMock
+- Type errors → Check ServiceResult[T] generic type matches
+- Unwrap errors → Use `unwrap_or(default)` for optional data
 
 ---
 
@@ -645,146 +421,41 @@ Use composition utilities instead of manual chaining
 
 ## Automation Scripts
 
-**NEW:** Powerful automation utilities to detect and fix ServiceResult issues automatically!
+Powerful automation utilities to detect and fix ServiceResult issues automatically.
 
 ### Available Scripts
 
-1. **fix_serviceresult_mocks.py** - Auto-fix test mock errors
-   ```bash
-   # Fix all test mocks automatically
-   python .claude/skills/util-resolve-serviceresult-errors/scripts/fix_serviceresult_mocks.py --all tests/
-   ```
+1. **[fix_serviceresult_mocks.py](./scripts/fix_serviceresult_mocks.py)** - Auto-fix test mock errors
+2. **[validate_serviceresult_usage.py](./scripts/validate_serviceresult_usage.py)** - Validate ServiceResult patterns
+3. **[find_serviceresult_chains.py](./scripts/find_serviceresult_chains.py)** - Identify refactoring opportunities
 
-2. **validate_serviceresult_usage.py** - Validate ServiceResult patterns
-   ```bash
-   # Find all violations in codebase
-   python .claude/skills/util-resolve-serviceresult-errors/scripts/validate_serviceresult_usage.py src/
-   ```
+**Usage:**
+```bash
+# Fix all test mocks automatically
+python scripts/fix_serviceresult_mocks.py --all tests/
 
-3. **find_serviceresult_chains.py** - Identify refactoring opportunities
-   ```bash
-   # Get refactoring suggestions
-   python .claude/skills/util-resolve-serviceresult-errors/scripts/find_serviceresult_chains.py --suggest-refactor src/
-   ```
+# Find all violations in codebase
+python scripts/validate_serviceresult_usage.py src/
 
-**See:** [scripts/README.md](./scripts/README.md) for complete documentation and examples.
+# Get refactoring suggestions
+python scripts/find_serviceresult_chains.py --suggest-refactor src/
+```
 
-### Python Scripts
-
-- [find_serviceresult_chains.py](./scripts/find_serviceresult_chains.py) - Analyze ServiceResult chaining opportunities and identify refactoring opportunities
-- [fix_serviceresult_mocks.py](./scripts/fix_serviceresult_mocks.py) - Auto-fix ServiceResult mock errors in test files
-- [validate_serviceresult_usage.py](./scripts/validate_serviceresult_usage.py) - Validate ServiceResult usage patterns across the codebase
+---
 
 ## See Also
 
-- [scripts/README.md](./scripts/README.md) - Automation scripts documentation
-- [scripts/EXAMPLES.md](./scripts/EXAMPLES.md) - Real-world usage examples
-- [scripts/SCRIPT_SUMMARY.md](./scripts/SCRIPT_SUMMARY.md) - Technical details and test results
-- [templates/serviceresult-patterns.md](./templates/serviceresult-patterns.md) - Quick reference templates
-- [references/monad-pattern.md](./references/monad-pattern.md) - Understanding the monad pattern
-- [scripts/examples.md](./scripts/examples.md) - Comprehensive examples gallery
+### Supporting Files
 
-## Integration Points
+- **[references/troubleshooting.md](./references/troubleshooting.md)** - Detailed troubleshooting guide with validation workflows
+- **[references/advanced-patterns.md](./references/advanced-patterns.md)** - Integration points, benefits analysis, and success metrics
+- **[templates/serviceresult-patterns.md](./templates/serviceresult-patterns.md)** - Quick reference templates
+- **[references/monad-pattern.md](./references/monad-pattern.md)** - Understanding the monad pattern
 
-### With Other Skills
+### Related Skills
 
-**resolve-serviceresult-errors integrates with:**
-- **debug-test-failures** - Fix ServiceResult-specific test failures
-- **debug-type-errors** - Resolve ServiceResult[T] type mismatches
-- **setup-async-testing** - Configure AsyncMock with ServiceResult
+- **test-debug-failures** - Fix ServiceResult-specific test failures
+- **python-best-practices-type-safety** - Resolve ServiceResult[T] type mismatches
+- **test-setup-async** - Configure AsyncMock with ServiceResult
 - **implement-cqrs-handler** - Ensure handlers return ServiceResult
 - **implement-repository-pattern** - Validate repository ServiceResult returns
-
-### With Testing Workflows
-
-**Use in combination with:**
-- AsyncMock configuration (return ServiceResult, not dict)
-- Type checking (pyright validates ServiceResult[T])
-- Integration tests (real ServiceResult wrapping)
-- E2E tests (ServiceResult → dict conversion)
-
-### With Agent Workflows
-
-**Agents should invoke this skill:**
-- @unit-tester - When tests fail with ServiceResult errors
-- @debugging-expert - For "dict object has no attribute" errors
-- @implementer - During service implementation
-
-## Expected Benefits
-
-| Metric | Without Skill | With Skill | Improvement |
-|--------|--------------|------------|-------------|
-| **Fix Time** | 30 min (trial/error) | 5 min (systematic) | 83% faster |
-| **Mock Configuration Errors** | 50% (dict instead of ServiceResult) | 5% (correct patterns) | 90% reduction |
-| **Type Error Resolution** | 20 min (pyright confusion) | 5 min (clear templates) | 75% faster |
-| **ServiceResult Chaining Complexity** | 17 lines (manual) | 8 lines (composition utils) | 53% reduction |
-| **Unwrap Safety Issues** | 20% (None crashes) | 0% (validation checks) | 100% elimination |
-| **Knowledge Transfer** | 1 hour (learning pattern) | 10 min (examples) | 83% faster |
-
-## Success Metrics
-
-| Metric | Target | Measurement |
-|--------|--------|-------------|
-| **Mock Configuration Accuracy** | 100% | Test pass rate |
-| **Type Error Resolution** | 100% | pyright clean |
-| **Unwrap Safety** | Zero crashes | Runtime validation |
-| **ServiceResult Pattern Adoption** | 100% of services | Code coverage |
-| **Composition Utility Usage** | 80% of complex chains | Code review |
-
-## Validation Process
-
-### Step 1: Error Classification
-```bash
-# Run test to identify error type
-uv run pytest tests/path/to/test.py::test_name -v
-
-# Classify error:
-# - 'dict' object has no attribute 'success'
-# - coroutine object has no attribute 'success'
-# - Incompatible types in assignment
-# - Cannot unwrap None data
-```
-
-### Step 2: Mock Configuration Fix
-```python
-# Verify mock returns ServiceResult
-from project_watch_mcp.domain.common import ServiceResult
-
-mock_service.method = AsyncMock(
-    return_value=ServiceResult.ok(data)
-)
-```
-
-### Step 3: Type Validation
-```bash
-# Run pyright to check ServiceResult[T] types
-uv run pyright src/
-
-# Fix type mismatches
-```
-
-### Step 4: Test Execution
-```bash
-# Re-run test
-uv run pytest tests/path/to/test.py::test_name -v
-
-# Verify:
-# ✓ Test passes
-# ✓ No type errors
-# ✓ ServiceResult pattern enforced
-```
-
-### Step 5: Pattern Validation
-```bash
-# Check for refactoring opportunities
-python scripts/find_serviceresult_chains.py --suggest-refactor src/
-
-# Apply composition utilities where beneficial
-```
-
-## Related Files
-
-- `src/project_watch_mcp/domain/common/service_result.py` - ServiceResult implementation
-- `src/project_watch_mcp/domain/common/service_result_utils.py` - Composition utilities
-- `tests/unit/core/test_service_result_type_safety.py` - Type safety test patterns
-- `tests/unit/core/test_service_utils.py` - ServiceResult utility tests

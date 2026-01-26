@@ -8,6 +8,7 @@ description: |
   past 200 lines, user says "optimize CLAUDE.md", "check contradictions", "validate documentation",
   or during quarterly reviews. Works with project and global CLAUDE.md files (.md extension).
   Based on Anthropic 2025 context engineering best practices.
+version: 1.0.0
 allowed-tools:
   - Read
   - Write
@@ -57,7 +58,7 @@ This skill validates CLAUDE.md files against Anthropic's best practices, detects
 
 ### Supporting Resources
 - [Reference](references/reference.md) - Anthropic best practices, algorithms, validation checklist
-- [Examples](scripts/examples.md) - Quarterly review, redundancy fixes, extraction strategy
+- [Examples](examples/examples.md) - Quarterly review, redundancy fixes, extraction strategy
 
 ## Quick Start
 
@@ -363,7 +364,7 @@ The following fixes can be applied automatically (with --apply flag):
 
 ### Complete Walkthroughs
 
-See [scripts/examples.md](./scripts/examples.md) for:
+See [examples/examples.md](./examples/examples.md) for:
 - Example 1: Quarterly Review - Full analysis workflow
 - Example 2: Fixing Redundancy - Cross-file duplication
 - Example 3: Extraction Strategy - Skills Catalog extraction
@@ -377,7 +378,7 @@ See [scripts/examples.md](./scripts/examples.md) for:
 - **scripts/analyze_emphasis.py** - Extract MUST/NEVER/ALWAYS, calculate density
 - **scripts/validate_links.py** - Link extraction, existence checking
 - **scripts/generate_report.py** - Compile analyses into comprehensive report
-- **scripts/examples.md** - Comprehensive examples and use cases
+- **examples/examples.md** - Comprehensive examples and use cases
 - **templates/extraction-template.md** - Template for creating specialized docs
 - **templates/report-template.md** - Template for health report
 - **references/reference.md** - Technical depth on algorithms and best practices
@@ -476,7 +477,7 @@ See [scripts/examples.md](./scripts/examples.md) for:
 ## See Also
 
 - [reference.md](./references/reference.md) - Anthropic best practices, algorithms, validation checklist
-- [examples.md](./scripts/examples.md) - Real-world usage scenarios
+- [examples.md](./examples/examples.md) - Real-world usage scenarios
 - [Anthropic Context Engineering Best Practices](https://docs.anthropic.com/) - Official guidance
 - [../manage-session-workspace/references/session-workspace-guidelines.md](../../docs/session-workspace-guidelines.md) - Where to save reports
 - [research artifacts](../../artifacts/2025-10-19/sessions/07-37-claude-md-skill-research/) - Full research findings

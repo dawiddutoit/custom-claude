@@ -6,6 +6,7 @@ description: |
   Use when starting new projects, configuring development environments, or standardizing
   project structure with uv. Covers `uv init`, `uv add`, `uv python pin`, and initial
   project scaffolding with proper dependency organization.
+version: 1.0.0
 allowed-tools: Bash, Read, Write, Edit
 ---
 

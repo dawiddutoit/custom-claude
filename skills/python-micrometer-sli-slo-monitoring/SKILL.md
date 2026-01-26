@@ -5,6 +5,7 @@ description: |
   Use when implementing availability and latency SLOs, creating SLO-aligned histogram buckets,
   monitoring error budgets, or validating compliance with defined service levels.
   Essential for reliability engineering and production SLO monitoring in microservices.
+version: 1.0.0
 allowed-tools:
   - Read
   - Edit
@@ -48,7 +49,7 @@ Use this skill when you need to:
 - Before defining business SLOs (work with product/business teams first)
 - For purely technical metrics without SLO targets (use `python-micrometer-core` instead)
 - When Micrometer isn't set up (use `python-micrometer-metrics-setup` first)
-- For high-cardinality metrics (use `python-micrometer-cardinality-control` to prevent metric explosion)
+- For high-cardinality metrics (use `python-python-micrometer-cardinality-control` to prevent metric explosion)
 
 ---
 
@@ -641,6 +642,6 @@ slo:
 
 ## See Also
 
-- [micrometer-cardinality-control](../micrometer-cardinality-control/SKILL.md) - Manage metric cardinality
-- [micrometer-gcp-cloud-monitoring](../micrometer-gcp-cloud-monitoring/SKILL.md) - Export metrics to GCP
-- [micrometer-business-metrics](../micrometer-business-metrics/SKILL.md) - Create business metrics
+- [python-micrometer-cardinality-control](../python-micrometer-cardinality-control/SKILL.md) - Manage metric cardinality
+- [python-micrometer-gcp-cloud-monitoring](../python-micrometer-gcp-cloud-monitoring/SKILL.md) - Export metrics to GCP
+- [python-micrometer-business-metrics](../python-micrometer-business-metrics/SKILL.md) - Create business metrics

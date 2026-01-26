@@ -1,14 +1,15 @@
 ---
 name: ha-sunsynk-integration
 description: |
-  Integrate Sunsynk/Deye solar inverters with Home Assistant using the SolarSynkV3
-  cloud API add-on. Use when setting up sunsynk integration, configuring deye inverter,
-  troubleshooting "no permissions" errors, accessing solar system data, or monitoring
-  battery/PV/grid/load sensors. Covers add-on configuration, entity naming patterns,
-  inverter vs dongle serial numbers, WiFi dongle limitations, and API authentication.
-  Works with Sunsynk/Deye hybrid inverters, api.sunsynk.net cloud API, and HA add-ons.
+  Provides integration setup and configuration for Sunsynk/Deye solar inverters with Home
+  Assistant using the SolarSynkV3 cloud API add-on including add-on configuration, entity
+  naming patterns, troubleshooting, and dashboard setup. Use when setting up sunsynk
+  integration, configuring deye inverter, troubleshooting "no permissions" errors,
+  accessing solar system data, or monitoring battery/PV/grid/load sensors.
+version: 1.0.0
 ---
 
+Works with Sunsynk/Deye hybrid inverters, api.sunsynk.net cloud API, and HA add-ons.
 # Sunsynk/Deye Solar System Integration for Home Assistant
 
 Integrate Sunsynk and Deye solar inverters with Home Assistant using the cloud-based SolarSynkV3 add-on. This skill covers setup, configuration, entity patterns, and troubleshooting for reliable solar monitoring.
@@ -49,7 +50,7 @@ Configuration:
 11. Requirements
 12. Red Flags to Avoid
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 **Explicit Triggers:**
 - "Set up sunsynk integration"
@@ -71,7 +72,7 @@ Configuration:
 - Incorrect entity naming
 - Cloud API connection problems
 
-## 2. What This Skill Does
+## What This Skill Does
 
 This skill provides:
 
@@ -81,7 +82,11 @@ This skill provides:
 4. **Troubleshooting Guidance** - Resolve common integration issues
 5. **Dashboard Planning** - Identify key sensors for monitoring
 
-## 3. Hardware Overview
+## Usage
+
+Follow the Quick Start section to configure the SolarSynkV3 add-on with correct parameters. Then use sections 4-7 for integration setup, entity discovery, monitoring dashboards, and troubleshooting. Always use the inverter serial number (not dongle serial) to avoid "No Permissions" errors.
+
+## Hardware Overview
 
 **Typical Sunsynk/Deye Setup:**
 
@@ -98,7 +103,7 @@ This skill provides:
 - Location: South Africa (Region 2)
 - Cloud Portal: https://sunsynk.net
 
-## 4. Integration Setup
+## Integration Setup
 
 ### 4.1. Add-on Installation
 
@@ -171,7 +176,7 @@ Inverter Serial:  2305178402        ✓ USE THIS
 Dongle Serial:    E47W23428459      ✗ NOT THIS
 ```
 
-## 5. Entity Naming and Organization
+## Entity Naming and Organization
 
 ### 5.1. Entity ID Pattern
 
@@ -216,115 +221,22 @@ PV → Inverter → [ Battery / Load / Grid ]
 
 ### 5.3. Complete Sensor Reference
 
-**Battery Sensors (9):**
-- `battery_soc` - State of Charge (%)
-- `battery_power` - Power (W, negative = charging)
-- `battery_voltage` - Voltage (V)
-- `battery_current` - Current (A)
-- `battery_temperature` - Temperature (°C)
-- `battery_capacity` - Capacity (Ah)
-- `battery_etoday_charge` - Today charged (kWh)
-- `battery_etoday_discharge` - Today discharged (kWh)
+For a complete list of all 300+ available sensors across Battery, PV/Solar, Grid, Load, Inverter, and Energy categories, see [references/sensor-reference.md](references/sensor-reference.md).
 
-**PV/Solar Sensors (12):**
-- `pv_pac` - Total PV power (W)
-- `pv_etoday` - Today's yield (kWh)
-- `pv_etotal` - Lifetime yield (kWh)
-- `pv_mppt0_power` - MPPT1 power (W)
-- `pv_mppt0_voltage` - MPPT1 voltage (V)
-- `pv_mppt0_current` - MPPT1 current (A)
-- `pv_mppt1_power` - MPPT2 power (W)
-- `pv_mppt1_voltage` - MPPT2 voltage (V)
-- `pv_mppt1_current` - MPPT2 current (A)
-
-**Grid Sensors (8):**
-- `grid_pac` - Grid power (W, positive = import)
-- `grid_etoday_from` - Today imported (kWh)
-- `grid_etoday_to` - Today exported (kWh)
-- `grid_etotal_from` - Total imported (kWh)
-- `grid_etotal_to` - Total exported (kWh)
-- `grid_status` - Grid connection status
-
-**Load Sensors (3):**
-- `load_total_power` - Total load (W)
-- `load_daily_used` - Today's consumption (kWh)
-- `load_total_used` - Total consumption (kWh)
-
-**Inverter Sensors (6):**
-- `inverter_power` - Output power (W)
-- `inverter_frequency` - Frequency (Hz)
-- `inverter_ac_temperature` - AC side temp (°C)
-- `inverter_dc_temperature` - DC side temp (°C)
-- `runstatus` - Status (Normal/Fault)
-
-**Energy Totals (4):**
-- `etoday` - Today's generation (kWh)
-- `etotal` - Lifetime generation (kWh)
-- `emonth` - This month (kWh)
-- `eyear` - This year (kWh)
-
-## 6. Monitoring and Dashboards
+## Monitoring and Dashboards
 
 **Essential Dashboard Components:**
 
-**Real-Time Power Flow:**
-```yaml
-type: custom:apexcharts-card
-header:
-  title: Power Flow
-series:
-  - entity: sensor.solarsynkv3_2305178402_pv_pac
-    name: Solar
-  - entity: sensor.solarsynkv3_2305178402_battery_power
-    name: Battery
-  - entity: sensor.solarsynkv3_2305178402_grid_pac
-    name: Grid
-  - entity: sensor.solarsynkv3_2305178402_load_total_power
-    name: Load
-```
+For complete dashboard examples including power flow charts, battery gauges, and daily energy summaries, see [examples/dashboard-config.yaml](examples/dashboard-config.yaml).
 
-**Battery Status Gauge:**
-```yaml
-type: custom:modern-circular-gauge
-entity: sensor.solarsynkv3_2305178402_battery_soc
-name: Battery
-min: 0
-max: 100
-segments:
-  - from: 0
-    color: "#e74c3c"    # Red (low)
-  - from: 20
-    color: "#f1c40f"    # Yellow
-  - from: 50
-    color: "#2ecc71"    # Green
-```
-
-**Daily Energy Summary:**
-```yaml
-type: entities
-entities:
-  - entity: sensor.solarsynkv3_2305178402_pv_etoday
-    name: Solar Yield
-  - entity: sensor.solarsynkv3_2305178402_load_daily_used
-    name: Consumption
-  - entity: sensor.solarsynkv3_2305178402_grid_etoday_from
-    name: Grid Import
-  - entity: sensor.solarsynkv3_2305178402_grid_etoday_to
-    name: Grid Export
-```
-
-**REST API Access:**
+**Quick REST API Access:**
 ```bash
 # Get battery state of charge
 curl -s "http://<ha_ip>:8123/api/states/sensor.solarsynkv3_2305178402_battery_soc" \
   -H "Authorization: Bearer $HA_LONG_LIVED_TOKEN"
-
-# Get current solar power
-curl -s "http://<ha_ip>:8123/api/states/sensor.solarsynkv3_2305178402_pv_pac" \
-  -H "Authorization: Bearer $HA_LONG_LIVED_TOKEN"
 ```
 
-## 7. Troubleshooting
+## Troubleshooting
 
 ### 7.1. "No Permissions" Error
 
@@ -398,7 +310,7 @@ ha addons logs d4ae3b04_solar_synkv3
 - Check API authentication in logs
 - Verify inverter serial and credentials
 
-## 8. WiFi Dongle Limitations
+## WiFi Dongle Limitations
 
 **Stock Sunsynk WiFi Dongle:**
 
@@ -434,7 +346,7 @@ nmap -p 8899,502,6666 <dongle_ip>
 
 **Recommendation:** Use cloud API (SolarSynkV3) unless you have strong requirement for local-only control.
 
-## 9. Alternative Integration Methods
+## Alternative Integration Methods
 
 **Comparison of Methods:**
 
@@ -451,7 +363,7 @@ nmap -p 8899,502,6666 <dongle_ip>
 - **Local Modbus** - When cloud is unreliable or privacy-sensitive
 - **ESPHome/Direct** - Advanced users, custom automation requirements
 
-## 10. Supporting Files
+## Supporting Files
 
 **References:**
 - `references/sensor-reference.md` - Complete list of 300+ entities with descriptions
@@ -468,7 +380,7 @@ nmap -p 8899,502,6666 <dongle_ip>
 - `scripts/entity-discovery.py` - Discover all Sunsynk entities in HA
 - `scripts/generate-sensor-list.sh` - Export sensor list from add-on logs
 
-## 11. Requirements
+## Requirements
 
 **Hardware:**
 - Sunsynk or Deye hybrid inverter
@@ -490,7 +402,7 @@ nmap -p 8899,502,6666 <dongle_ip>
 - YAML syntax (for dashboards)
 - REST API usage (optional, for scripting)
 
-## 12. Red Flags to Avoid
+## Red Flags to Avoid
 
 **Configuration Mistakes:**
 - [ ] Using WiFi dongle serial instead of inverter serial

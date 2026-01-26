@@ -7,6 +7,7 @@ description: |
   for a service. Triggers on "add subdomain", "new subdomain", "add service to network",
   "expose service", "create domain for", "set up reverse proxy", or "add [name] to
   infrastructure". Works with domains.toml, manage-domains.sh, and Cloudflare Tunnel.
+version: 1.0.0
 allowed-tools:
   - Read
   - Write
@@ -55,7 +56,7 @@ Add a new subdomain:
 8. [Requirements](#8-requirements)
 9. [Red Flags to Avoid](#9-red-flags-to-avoid)
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 **Explicit Triggers:**
 - "Add a subdomain for [service]"
@@ -73,7 +74,7 @@ Add a new subdomain:
 - "Why can't I access [service].temet.ai?"
 - "How do I add HTTPS to my service?"
 
-## 2. What This Skill Does
+## What This Skill Does
 
 1. **Gathers Information** - Asks interactive questions about the service
 2. **Validates Input** - Checks subdomain format, IP addresses, ports
@@ -83,7 +84,7 @@ Add a new subdomain:
 6. **Provides Tunnel Instructions** - Guides user through manual Cloudflare step
 7. **Verifies Setup** - Tests DNS, HTTPS, and authentication
 
-## 3. Instructions
+## Instructions
 
 ### 3.1 Gather Service Information
 
@@ -244,7 +245,7 @@ Expected: HTTP/2 200 or 302 (redirect to login)
 ```
 Expected: New service appears in list
 
-## 4. Supporting Files
+## Supporting Files
 
 | File | Purpose |
 |------|---------|
@@ -257,7 +258,7 @@ Expected: New service appears in list
 python3 .claude/skills/add-subdomain/scripts/validate-subdomain.py grafana 192.168.68.135:3001
 ```
 
-## 5. Expected Outcomes
+## Expected Outcomes
 
 **Success:**
 - Service entry added to domains.toml
@@ -277,7 +278,7 @@ python3 .claude/skills/add-subdomain/scripts/validate-subdomain.py grafana 192.1
 - DNS not resolving -> check Pi-hole logs
 - Certificate error -> check Cloudflare API token
 
-## 6. Integration Points
+## Integration Points
 
 This skill integrates with:
 
@@ -295,7 +296,7 @@ This skill integrates with:
 - `troubleshoot-ssl-certificates` - For certificate issues
 - `diagnose-cloudflare-access` - For authentication problems
 
-## 7. Expected Benefits
+## Expected Benefits
 
 | Metric | Before | After |
 |--------|--------|-------|
@@ -304,7 +305,7 @@ This skill integrates with:
 | Documentation needed | Multiple files | Single skill reference |
 | Consistency | Variable | Standardized |
 
-## 8. Requirements
+## Requirements
 
 **Environment:**
 - Docker running with caddy, pihole containers
@@ -316,7 +317,7 @@ This skill integrates with:
 - Bash (for apply script and verification)
 - Grep (for duplicate checking)
 
-## 9. Red Flags to Avoid
+## Red Flags to Avoid
 
 - [ ] Do not add duplicate subdomains (check first)
 - [ ] Do not use uppercase in subdomain names

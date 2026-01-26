@@ -1,8 +1,15 @@
 ---
 name: ha-conditional-cards
-description: "Configure conditional visibility for Home Assistant dashboard cards based on entity states, numeric values, screen size, users, time, and complex logic (and/or). Use when hiding/showing cards dynamically, creating responsive layouts, implementing user-specific views, or building context-aware dashboards."
+description: |
+  Implements conditional visibility for Home Assistant dashboard cards using state, numeric_state,
+  screen, user, time, and/or conditions via Conditional Card wrapper and per-card visibility
+  property. Use when asked to "hide card when", "show only if", "user-specific dashboard",
+  "mobile vs desktop cards", "conditional visibility", or "show card based on state/time/user".
+
+version: 1.0.0
 ---
 
+Works with Lovelace YAML dashboards and conditional/visibility card configurations.
 # Home Assistant Conditional Cards
 
 Control card visibility dynamically based on states, users, screen size, and complex conditions.
@@ -20,6 +27,20 @@ Both support multiple condition types:
 - **user**: Current user matches list
 - **time**: Current time within range
 - **and/or**: Complex logic combinations
+
+## When to Use This Skill
+
+Use this skill when you need to:
+- Show cards only when specific conditions are met (person home, motion detected, temperature threshold)
+- Create responsive dashboards with mobile vs desktop layouts
+- Build user-specific views with different access levels
+- Display time-based cards (daytime vs nighttime controls)
+- Combine multiple conditions with AND/OR logic for complex visibility rules
+
+Do NOT use when:
+- You need to modify card content based on state (use template cards instead)
+- Building static dashboards where all cards are always visible
+- Checking entity attributes directly (create template sensor first)
 
 ## Quick Start
 
@@ -48,6 +69,16 @@ visibility:
     entity: person.john
     state: home
 ```
+
+## Usage
+
+1. **Choose approach**: Use Conditional Card wrapper for complex logic, per-card visibility for simple conditions
+2. **Select condition type**: state, numeric_state, screen, user, time, and/or
+3. **Apply condition**: Add `conditions` to conditional card or `visibility` to any card
+4. **Test in edit mode**: Exit edit mode to test visibility (cards always show when editing)
+5. **Verify entity states**: Check Developer Tools → States to debug conditions
+
+See Condition Types Reference below for all available conditions and syntax.
 
 ## Condition Types Reference
 
@@ -317,198 +348,7 @@ card:
   entity: camera.living_room
 ```
 
-### Climate Controls When Someone Home
-
-```yaml
-type: vertical-stack
-cards:
-  - type: thermostat
-    entity: climate.living_room
-    visibility:
-      - condition: or
-        conditions:
-          - condition: state
-            entity: person.john
-            state: home
-          - condition: state
-            entity: person.jane
-            state: home
-```
-
-### Low Battery Alert
-
-```yaml
-type: entities
-title: Low Battery Devices
-entities:
-  - sensor.motion_sensor_battery
-  - sensor.door_sensor_battery
-visibility:
-  - condition: or
-    conditions:
-      - condition: numeric_state
-        entity: sensor.motion_sensor_battery
-        below: 20
-      - condition: numeric_state
-        entity: door_sensor_battery
-        below: 20
-```
-
-### Temperature Warning
-
-```yaml
-type: markdown
-content: "⚠️ Temperature outside normal range!"
-visibility:
-  - condition: or
-    conditions:
-      - condition: numeric_state
-        entity: sensor.temperature
-        below: 18
-      - condition: numeric_state
-        entity: sensor.temperature
-        above: 28
-```
-
-### Admin-Only Controls
-
-```yaml
-type: vertical-stack
-cards:
-  - type: markdown
-    content: "## Advanced Settings"
-
-  - type: entities
-    entities:
-      - switch.developer_mode
-      - switch.debug_logging
-      - input_boolean.maintenance_mode
-visibility:
-  - condition: user
-    users:
-      - 1234567890abcdef  # Admin user ID
-```
-
 ### Mobile vs Desktop Layout
-
-```yaml
-# Mobile: Show compact chips
-type: custom:mushroom-chips-card
-chips:
-  - type: entity
-    entity: sensor.temperature
-  - type: weather
-    entity: weather.home
-visibility:
-  - condition: screen
-    media_query: "(max-width: 600px)"
-
----
-
-# Desktop: Show detailed cards
-type: grid
-columns: 3
-cards:
-  - type: sensor
-    entity: sensor.temperature
-  - type: weather-forecast
-    entity: weather.home
-visibility:
-  - condition: screen
-    media_query: "(min-width: 1280px)"
-```
-
-### Occupied Room Indicators
-
-```yaml
-type: entities
-title: Bedroom
-entities:
-  - light.bedroom
-  - climate.bedroom
-  - sensor.temperature_bedroom
-visibility:
-  - condition: state
-    entity: binary_sensor.bedroom_occupied
-    state: "on"
-```
-
-### After-Hours Emergency Button
-
-```yaml
-type: button
-name: Emergency Contact
-icon: mdi:phone-alert
-tap_action:
-  action: perform-action
-  perform_action: notify.mobile_app
-  data:
-    message: "Emergency call requested"
-visibility:
-  - condition: time
-    after: "17:00:00"
-    before: "09:00:00"
-```
-
-## Best Practices
-
-### 1. Combine Conditional with State-Based Visibility
-
-```yaml
-# Use conditional card for complex logic
-type: conditional
-conditions:
-  - condition: and
-    conditions:
-      - condition: state
-        entity: person.john
-        state: home
-      - condition: time
-        after: "18:00:00"
-
-# Use per-card visibility for simple conditions
-visibility:
-  - condition: state
-    entity: light.bedroom
-    state: "on"
-```
-
-### 2. Test Conditions in Edit Mode
-
-Cards with `visibility` always render in edit mode. **Exit edit mode to test visibility behavior.**
-
-### 3. Use Helper Entities for Complex Logic
-
-Create template sensors for complex attribute-based conditions:
-
-```yaml
-# configuration.yaml
-template:
-  - binary_sensor:
-      - name: "AC Cooling"
-        state: "{{ state_attr('climate.living_room', 'hvac_mode') == 'cool' }}"
-
-# Dashboard
-visibility:
-  - condition: state
-    entity: binary_sensor.ac_cooling
-    state: "on"
-```
-
-### 4. Combine with Mushroom Template Cards
-
-```yaml
-type: custom:mushroom-template-card
-primary: "Windows Open"
-secondary: "{{ states('sensor.windows_open') }} windows"
-icon: mdi:window-open
-visibility:
-  - condition: numeric_state
-    entity: sensor.windows_open
-    above: 0
-```
-
-### 5. Use Screen Conditions for Responsive Design
 
 ```yaml
 # Mobile: Compact view
@@ -525,81 +365,54 @@ visibility:
     media_query: "(min-width: 1280px)"
 ```
 
+### User-Specific Controls
+
+```yaml
+type: entities
+entities:
+  - switch.developer_mode
+visibility:
+  - condition: user
+    users:
+      - 1234567890abcdef  # Admin user ID (Settings → People → URL)
+```
+
+For more patterns (low battery alerts, temperature warnings, occupied rooms, time-based controls), see `references/advanced-patterns.md`.
+
+## Best Practices
+
+1. **Combine approaches**: Use conditional card for complex logic, per-card visibility for simple conditions
+2. **Test in edit mode**: Exit edit mode to test visibility (cards always visible when editing)
+3. **Use helper entities**: Create template sensors for attribute-based or complex conditions
+4. **Add buffer zones**: Use hysteresis for numeric conditions to prevent flapping
+5. **Document user IDs**: Keep reference of user IDs for maintenance
+6. **Screen conditions**: Use media queries for responsive mobile/desktop layouts
+
 ## Limitations
 
-### Cannot Directly Check Attributes
+**Cannot check attributes directly** - Create template sensor to expose attribute as entity state.
 
-❌ This doesn't work:
-```yaml
-visibility:
-  - condition: state
-    entity: climate.living_room
-    attribute: hvac_mode
-    state: "cool"
-```
+**No template conditions** - Create template binary sensor instead.
 
-✅ Workaround: Create template sensor
-```yaml
-# configuration.yaml
-template:
-  - sensor:
-      - name: "AC Mode"
-        state: "{{ state_attr('climate.living_room', 'hvac_mode') }}"
+**Always visible in edit mode** - Must exit edit mode to test visibility behavior.
 
-# Dashboard
-visibility:
-  - condition: state
-    entity: sensor.ac_mode
-    state: "cool"
-```
-
-### No Template Support in Conditions
-
-❌ This doesn't work:
-```yaml
-visibility:
-  - condition: template
-    value_template: "{{ states('sensor.temperature') | float > 25 }}"
-```
-
-✅ Workaround: Create template binary sensor
-
-### Always Visible in Edit Mode
-
-Cards with `visibility` always show in edit mode. Must exit edit mode to test visibility.
+For detailed workarounds, see `references/advanced-patterns.md`.
 
 ## Troubleshooting
 
-### Card Not Hiding
+| Issue | Solution |
+|-------|----------|
+| Card not hiding | Exit edit mode, check entity state, verify YAML indentation |
+| User condition fails | Use user ID (not username), find in Settings → People → URL |
+| Time condition fails | Use 24-hour format `"23:00:00"`, check HA timezone |
+| Numeric condition fails | Verify sensor has numeric state (not "unknown") |
+| Screen condition fails | Test on actual device (not browser resize) |
 
-- Exit edit mode (cards always visible when editing)
-- Check entity state (Developer Tools → States)
-- Verify condition syntax (YAML indentation)
-- Check for typos in entity_id
+For detailed troubleshooting, see `references/advanced-patterns.md`.
 
-### User Condition Not Working
+## Supporting Files
 
-- Verify user ID (not username)
-- Find ID in URL: Settings → People → (click user)
-- Use user ID, not email or name
-
-### Time Condition Not Working
-
-- Use 24-hour format (`"23:00:00"` not `"11:00 PM"`)
-- Check Home Assistant timezone (Settings → System → General)
-- Verify `after` is before `before`
-
-### Numeric Condition Not Working
-
-- Check sensor has numeric state (not "unknown" or "unavailable")
-- Use proper comparison (`above`/`below`, not `>` or `<`)
-- Verify sensor unit matches expectation
-
-### Screen Condition Not Working
-
-- Test on actual device (browser resize ≠ responsive behavior)
-- Use correct media query syntax
-- Check for conflicting conditions
+- **references/advanced-patterns.md** - Complex logic patterns, real-world use cases, workarounds, detailed troubleshooting, best practices, common media queries
 
 ## Official Documentation
 

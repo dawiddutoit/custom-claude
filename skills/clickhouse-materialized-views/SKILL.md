@@ -1,9 +1,8 @@
 ---
 name: clickhouse-materialized-views
 description: |
-  Guide for implementing real-time data aggregation and transformation pipelines using ClickHouse materialized views.
-  Use when building real-time dashboards, streaming analytics, metrics aggregation, event processing, or continuous data transformation.
-  Covers incremental aggregation, State/Merge functions, chaining views, schema evolution, and troubleshooting streaming pipelines.
+  Guides for implementing real-time data aggregation and transformation pipelines using ClickHouse materialized views. Use when building real-time dashboards, streaming analytics, metrics aggregation, event processing, or continuous data transformation. Covers incremental aggregation, State/Merge functions, chaining views, schema evolution, and troubleshooting streaming pipelines.
+version: 1.0.0
 allowed-tools: Read, Bash, Glob, Grep
 ---
 
@@ -42,6 +41,20 @@ allowed-tools: Read, Bash, Glob, Grep
 ## Purpose
 
 Materialized views in ClickHouse are incremental triggers that automatically transform and aggregate incoming data in real-time. Unlike traditional databases, ClickHouse views process only new data as it arrives, enabling efficient streaming analytics, real-time dashboards, and continuous aggregation without scheduled batch jobs.
+
+## When to Use This Skill
+
+Use when asked to:
+- Build real-time data aggregation pipelines ("create real-time metrics")
+- Implement streaming analytics or continuous aggregation
+- Create pre-aggregated tables for fast dashboard queries
+- Set up automatic data transformation as events arrive
+- Chain multi-level aggregations (hourly → daily → monthly)
+
+Do NOT use when:
+- Data is batch-processed infrequently (use scheduled jobs instead)
+- Aggregation logic changes often (materialized views are harder to modify)
+- Source data is small and queries are already fast
 
 ## Quick Start
 

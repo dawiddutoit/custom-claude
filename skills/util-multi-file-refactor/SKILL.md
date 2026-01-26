@@ -1,6 +1,7 @@
 ---
 name: util-multi-file-refactor
 description: Optimizes multi-file refactoring workflows by enforcing token-efficient MultiEdit usage (30-50% savings), coordinating changes across files, validating imports/references, and running quality gates. Use when refactoring patterns across codebase, renaming functions/classes/variables, extracting common code, moving functionality, or updating patterns in multiple files. Prevents sequential Edit anti-patterns.
+version: 1.0.0
 allowed-tools:
   - Read
   - Edit
@@ -411,7 +412,7 @@ Status: BLOCKED
 
 ## Supporting Files
 
-- **[references/refactoring-guide.md](references/refactoring-guide.md)** - Comprehensive guidance:
+- **[references/refactoring-patterns.md](references/refactoring-patterns.md)** - Comprehensive guidance:
   - Detailed refactoring patterns (10+ scenarios)
   - Language-specific best practices (Python, JS/TS, Java, Go, Rust)
   - Token optimization calculations and examples

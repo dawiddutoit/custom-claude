@@ -1,8 +1,16 @@
 ---
 name: ha-error-checking
-description: "Debug and validate Home Assistant dashboards, configurations, and entity usage via WebSocket API. Use when troubleshooting dashboard errors, validating entity IDs, checking HACS card installations, or investigating lovelace/frontend issues. Covers system logs, configuration validation, entity verification, and common error patterns."
+description: |
+  Debugs and validates Home Assistant dashboards by checking system logs, verifying entity IDs,
+  validating HACS card installations, and analyzing configuration errors via WebSocket API.
+
+  Use when troubleshooting dashboard errors, validating entity IDs, checking HACS card installations,
+  investigating lovelace/frontend issues, or debugging "ApexCharts span error", "entity not found",
+  "custom card not loading", or "dashboard not appearing in sidebar".
+version: 1.0.0
 ---
 
+Works with Home Assistant WebSocket API, Python websocket library, and YAML configurations.
 # Home Assistant Error Checking and Validation
 
 Debug and validate Home Assistant dashboards, configurations, and entity usage programmatically.
@@ -71,6 +79,16 @@ def check_dashboard_errors(url_path: str):
         "available_entities": [s["entity_id"] for s in states_response.get("result", [])]
     }
 ```
+
+## Usage
+
+Follow these steps to debug Home Assistant dashboard errors:
+
+1. **Check system logs** for lovelace/frontend errors
+2. **Validate dashboard config** exists and is properly formatted
+3. **Verify entity IDs** exist in Home Assistant
+4. **Check HACS cards** are installed before use
+5. **Validate card configurations** for known issues (ApexCharts span, URL paths)
 
 ## System Logs - Check for Errors
 
@@ -314,36 +332,7 @@ if "sensor.temperature" not in all_entities:
     print(f"Did you mean: {similar}")
 ```
 
-See `references/reference.md` for complete error pattern reference.
-
-## Browser Console Debugging
-
-For frontend errors, check browser console (F12):
-
-- **ApexCharts errors**: Look for "Invalid configuration"
-- **Custom card not loading**: Look for "Custom element doesn't exist"
-- **Entity not found**: Look for "Entity not available"
-- **JavaScript errors**: Look for "Uncaught" or "SyntaxError"
-
-## Best Practices
-
-1. **Always validate before saving**: Check entities exist before adding to dashboard
-2. **Check URL path format**: Ensure hyphen in dashboard URL path
-3. **Validate custom cards**: Verify HACS cards installed before use
-4. **Check system logs**: Review logs after dashboard updates
-5. **Use valid values**: ApexCharts span.end must use valid enum values
-6. **Test incrementally**: Add cards one at a time and validate
-
-## Troubleshooting Checklist
-
-- [ ] Dashboard URL path contains hyphen
-- [ ] All entity IDs exist in HA
-- [ ] Custom cards installed via HACS
-- [ ] ApexCharts span.end uses valid value (hour/day/week/month/year)
-- [ ] No system log errors for lovelace/frontend
-- [ ] Browser console shows no errors (F12)
-- [ ] Dashboard config is valid JSON/YAML
-- [ ] Entity `state_class` set correctly for sensors
+See `references/reference.md` for complete error patterns, browser debugging steps, best practices, and troubleshooting checklist.
 
 ## Notes
 

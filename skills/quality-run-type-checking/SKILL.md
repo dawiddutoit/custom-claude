@@ -1,10 +1,8 @@
 ---
 name: quality-run-type-checking
 description: |
-  Run dual type checking with pyright (fast, development) and mypy (thorough, CI/CD).
-  Use when checking types, before commits, debugging type errors, or validating type
-  annotations. Explains why both tools required, configuration differences, and when
-  to use each. Works with Python .py files, pyproject.toml, strict mode enabled.
+  Runs dual type checking with pyright (fast, development) and mypy (thorough, CI/CD). Use when checking types, before commits, debugging type errors, or validating type annotations. Explains why both tools required, configuration differences, and when to use each. Works with Python .py files, pyproject.toml, strict mode enabled.
+version: 1.0.0
 allowed-tools:
   - Bash
   - Read

@@ -8,6 +8,7 @@ description: |
   "access denied", "OAuth not working", "login loop", "CookieMismatch", "can only be used
   within organization", or "fix Cloudflare Access authentication". Works with Cloudflare
   Access, Google OAuth, Pi-hole whitelist, and ACCESS_ALLOWED_EMAIL configuration.
+version: 1.0.0
 allowed-tools:
   - Read
   - Bash
@@ -54,7 +55,7 @@ docker exec pihole pihole -q login.google.com
 6. [Requirements](#6-requirements)
 7. [Red Flags to Avoid](#7-red-flags-to-avoid)
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 **Explicit Triggers:**
 - "Access denied"
@@ -75,7 +76,7 @@ docker exec pihole pihole -q login.google.com
 - "Why is authentication not working?"
 - "How to fix Google OAuth errors?"
 
-## 2. What This Skill Does
+## What This Skill Does
 
 1. **Checks OAuth Config** - Verifies Google OAuth credentials are set
 2. **Validates Emails** - Confirms allowed emails are configured
@@ -85,7 +86,7 @@ docker exec pihole pihole -q login.google.com
 6. **Verifies Redirect** - Confirms redirect URI matches team name
 7. **Provides Fix** - Gives specific commands to resolve the issue
 
-## 3. Instructions
+## Instructions
 
 ### 3.1 Verify Google OAuth Configuration
 
@@ -364,14 +365,14 @@ grep CLOUDFLARE_TEAM_NAME /home/dawiddutoit/projects/network/.env
 /home/dawiddutoit/projects/network/scripts/cf-access-setup.sh setup
 ```
 
-## 4. Supporting Files
+## Supporting Files
 
 | File | Purpose |
 |------|---------|
 | `references/reference.md` | Google OAuth setup details, Access policy configuration |
 | `examples/examples.md` | Example configurations, common error scenarios |
 
-## 5. Expected Outcomes
+## Expected Outcomes
 
 **Success:**
 - Google OAuth login succeeds
@@ -390,7 +391,7 @@ grep CLOUDFLARE_TEAM_NAME /home/dawiddutoit/projects/network/.env
 - "Can only be used within organization" error
 - Redirect to wrong URL
 
-## 6. Requirements
+## Requirements
 
 - Cloudflare Zero Trust account with Access configured
 - Google Cloud Console project with OAuth 2.0 credentials
@@ -398,7 +399,7 @@ grep CLOUDFLARE_TEAM_NAME /home/dawiddutoit/projects/network/.env
 - Pi-hole with Google domains whitelisted
 - Browser with cookies enabled
 
-## 7. Red Flags to Avoid
+## Red Flags to Avoid
 
 - [ ] Do not use "Internal" OAuth consent screen with personal Gmail accounts
 - [ ] Do not block Google domains in Pi-hole (breaks OAuth)

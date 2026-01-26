@@ -1,9 +1,12 @@
 ---
 name: observability-analyze-session-logs
 description: |
-  Analyze Claude Code session transcripts (JSONL files) for context window content, token usage, and decision analysis.
-  NOT for application logs (use analyze-logs instead). Use when debugging Claude behavior, investigating token patterns,
-  tracking agent delegation, or analyzing context exhaustion. Works with ~/.claude/projects/ session files.
+  Analyzes Claude Code session transcripts (JSONL files) to reveal context window content, token usage patterns,
+  and decision-making processes using view_session_context.py tool. Use when debugging Claude behavior,
+  investigating token patterns, tracking agent delegation, or analyzing context exhaustion. Triggers on
+  "why did Claude do X", "analyze session", "check session logs", "context window exhaustion", or
+  "track agent delegation".
+version: 1.0.0
 allowed-tools:
   - Bash
   - Read
@@ -80,6 +83,16 @@ Analyzes Claude Code session transcripts to provide forensic visibility into Cla
 ```bash
 ls -lt ~/.claude/projects/-Users-$(whoami)-*/*.jsonl | head -5
 ```
+
+## Instructions
+
+Follow this workflow to analyze Claude Code session logs:
+
+1. **Locate session file** - Find .jsonl file in ~/.claude/projects/
+2. **Choose analysis mode** - List messages, view context at index, or view at UUID
+3. **Execute analysis** - Run view_session_context.py with appropriate flags
+4. **Interpret results** - Examine context window, token usage, and decision points
+5. **Report findings** - Explain Claude's behavior with evidence from context
 
 ## Analysis Workflow
 

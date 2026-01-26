@@ -1,6 +1,7 @@
 ---
 name: quality-run-quality-gates
 description: Enforce Definition of Done by running quality gates (type checking, linting, dead code detection, tests). Use when task is complete, before commits, when declaring "done", or when user says "check all", "run quality gates", "validate code quality", or "run tests and linting". Adapts to Python (pyright/ruff/vulture/pytest), JavaScript (tsc/eslint/jest), and other ecosystems. MANDATORY before marking tasks complete.
+version: 1.0.0
 allowed-tools:
   - Read
   - Bash

@@ -5,6 +5,7 @@ description: |
   Use when configuring GitHub Actions workflows, GitLab CI/CD, Docker builds, or matrix testing across Python versions.
   Includes patterns for cache optimization, frozen lockfiles, multi-stage builds, and PyPI publishing with trusted publishing.
   Covers GitHub Actions setup-uv action, Docker multi-stage production/development builds, and deployment patterns.
+version: 1.0.0
 allowed-tools: Read, Bash, Write, Edit
 ---
 

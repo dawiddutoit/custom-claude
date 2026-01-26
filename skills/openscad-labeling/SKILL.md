@@ -1,13 +1,9 @@
 ---
 name: openscad-labeling
 description: |
-  Add text labels to OpenSCAD 3D models using BOSL2's face/anchor system and specialized
-  labeling libraries. Use when you need to label model faces, add part numbers, create
-  dimension annotations, or wrap text on curved surfaces. Triggers on "label this model",
-  "add text to face", "how do I label in OpenSCAD", "text on cylinder", "attach text to
-  TOP face", or "install text libraries". Works with .scad files, BOSL2, text_on_OpenSCAD,
-  attachable_text3d, and Write.scad libraries.
----
+  Adds text labels to OpenSCAD 3D models using BOSL2's face/anchor system and specialized labeling libraries. Use when you need to label model faces, add part numbers, create dimension annotations, or wrap text on curved surfaces. Triggers on "label this model", "add text to face", "how do I label in OpenSCAD", "text on cylinder", "attach text to TOP face", or "install text libraries". Works with .scad files, BOSL2, text_on_OpenSCAD, attachable_text3d, and Write.scad libraries.
+
+version: 1.0.0---
 
 # OpenSCAD Labeling
 
@@ -42,7 +38,7 @@ This creates raised text on the top face without calculating positions manually.
 6. Requirements
 7. Red Flags to Avoid
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 **Explicit Triggers:**
 - "Label this model"
@@ -63,7 +59,7 @@ This creates raised text on the top face without calculating positions manually.
 - "Text is backwards/upside down"
 - "How do I center text on a face?"
 
-## 2. What This Skill Does
+## What This Skill Does
 
 This skill helps you:
 
@@ -73,7 +69,7 @@ This skill helps you:
 4. **Install libraries** for advanced text features (curved surfaces, font metrics)
 5. **Create practical patterns** (part labels, dimension annotations, engraved text)
 
-## 3. Instructions
+## Instructions
 
 ### 3.1 Define Faces with BOSL2
 
@@ -290,7 +286,7 @@ Common pre-installed libraries:
 - NopSCADlib
 - MCAD
 
-## 4. Supporting Files
+## Supporting Files
 
 **References:**
 - `references/library-comparison.md` - Detailed comparison of text_on_OpenSCAD, attachable_text3d, Write.scad
@@ -305,7 +301,7 @@ Common pre-installed libraries:
 - `scripts/check-text-libraries.sh` - Verify text library installations
 - `scripts/list-system-fonts.sh` - List available fonts for OpenSCAD
 
-## 5. Expected Outcomes
+## Expected Outcomes
 
 **Success:** Text appears on correct face, properly centered
 
@@ -332,7 +328,7 @@ translate([25, 15, 20])  // Easy to miscalculate
 
 Problem: Manual calculations prone to errors, text may be backwards or misaligned.
 
-## 6. Requirements
+## Requirements
 
 **Required:**
 - OpenSCAD 2021.01+ (text() function)
@@ -348,7 +344,7 @@ Problem: Manual calculations prone to errors, text may be backwards or misaligne
 - Understanding of face normals
 - OpenSCAD text() parameters
 
-## 7. Red Flags to Avoid
+## Red Flags to Avoid
 
 1. **Manual text positioning** - Use attach() instead of translate/rotate calculations
 2. **Forgetting halign/valign** - Text won't center without these parameters

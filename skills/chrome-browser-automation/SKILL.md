@@ -9,7 +9,8 @@ description: |
   "open [authenticated app]", or debugging web application issues. Works with Chrome via Claude in
   Chrome extension (MCP tools: navigate, click, form_input, read_console_messages, read_network_requests,
   tabs_context_mcp, gif_creator).
----
+
+version: 1.0.0---
 
 # Chrome Browser Automation
 
@@ -49,7 +50,7 @@ User: "Open localhost:3000 and check for console errors when I submit the login 
 7. Troubleshooting
 8. Integration with Other Skills
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 **Explicit Triggers:**
 - "Test my web app" / "Check the console"
@@ -70,7 +71,7 @@ User: "Open localhost:3000 and check for console errors when I submit the login 
 - "What console errors appear when I..."
 - "What network requests are failing?"
 
-## 2. What This Skill Does
+## What This Skill Does
 
 Chrome integration enables six core capabilities:
 
@@ -81,7 +82,7 @@ Chrome integration enables six core capabilities:
 5. **Authenticated Apps** - Interact with Google Docs, Gmail, Notion, or any logged-in service
 6. **Session Recording** - Capture browser interactions as annotated GIFs for documentation
 
-## 3. Setup and Prerequisites
+## Setup and Prerequisites
 
 **Required:**
 - Google Chrome browser
@@ -116,7 +117,7 @@ Run `/chrome` and select "Enabled by default" to avoid `--chrome` flag each time
 
 **Note:** Chrome integration requires a visible browser window. You'll see Chrome open and navigate in real time - there's no headless mode.
 
-## 4. Core Workflow Patterns
+## Core Workflow Patterns
 
 ### 4.1 Testing Web Applications
 
@@ -312,7 +313,7 @@ note about what they do."
 - `tabs_create_mcp()` - Create new tab
 - Switch between tabs by using different tabId values
 
-## 5. MCP Tool Reference
+## MCP Tool Reference
 
 **Core Navigation:**
 - `navigate(url, tabId)` - Navigate to URL
@@ -350,7 +351,7 @@ mcp-cli info claude-in-chrome/<tool-name>
 
 See `references/mcp-tool-reference.md` for comprehensive parameter documentation.
 
-## 6. Best Practices
+## Best Practices
 
 **Always start with tab context:**
 ```
@@ -401,7 +402,7 @@ If a tab becomes unresponsive, create a new tab:
 tabs_create_mcp() → New tabId
 ```
 
-## 7. Troubleshooting
+## Troubleshooting
 
 **Extension not detected:**
 1. Verify Claude in Chrome extension v1.0.36+ installed
@@ -430,7 +431,7 @@ First use installs native messaging host. If permission errors occur, restart Ch
 
 See `references/troubleshooting.md` for detailed diagnostic workflows.
 
-## 8. Integration with Other Skills
+## Integration with Other Skills
 
 **With chrome-gif-recorder:**
 Record visual tutorials of web workflows with annotations.

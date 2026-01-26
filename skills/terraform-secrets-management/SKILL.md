@@ -1,10 +1,9 @@
 ---
 name: terraform-secrets-management
 description: |
-  Handle sensitive data securely in Terraform. Use when managing passwords, API keys, database credentials,
-  encryption keys, or other secrets. Covers Google Secret Manager integration, preventing secrets in state,
-  IAM-based secret access, encryption, and security best practices.
----
+  Handles sensitive data securely in Terraform. Use when managing passwords, API keys, database credentials, encryption keys, or other secrets. Covers Google Secret Manager integration, preventing secrets in state, IAM-based secret access, encryption, and security best practices.
+
+version: 1.0.0---
 
 # Terraform Secrets Management Skill
 
@@ -611,6 +610,6 @@ gcloud services enable secretmanager.googleapis.com
 
 ## See Also
 
-- [terraform skill](../terraform/SKILL.md) - General reference
+- [terraform skill](../terraform-basics/SKILL.md) - General reference
 - [terraform-gcp-integration](../terraform-gcp-integration/SKILL.md) - GCP resources
 - [terraform-troubleshooting](../terraform-troubleshooting/SKILL.md) - Debugging secrets

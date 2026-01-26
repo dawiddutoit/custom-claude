@@ -1,11 +1,8 @@
 ---
 name: test-setup-async
 description: |
-  Set up async tests with proper fixtures and mocks using pytest-asyncio patterns.
-  Use when testing async functions, creating async fixtures, mocking async services,
-  or handling async context managers. Covers @pytest_asyncio.fixture, AsyncMock with
-  side_effect, async generator fixtures (yield), and testing async context managers.
-  Works with Python async/await patterns, pytest-asyncio, and unittest.mock.AsyncMock.
+  Sets up async tests with proper fixtures and mocks using pytest-asyncio patterns. Use when testing async functions, creating async fixtures, mocking async services, or handling async context managers. Covers @pytest_asyncio.fixture, AsyncMock with side_effect, async generator fixtures (yield), and testing async context managers. Works with Python async/await patterns, pytest-asyncio, and unittest.mock.AsyncMock.
+version: 1.0.0
 allowed-tools:
   - Read
   - Grep

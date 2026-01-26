@@ -6,6 +6,7 @@ description: |
   validation errors", "test invalid inputs", "verify error messages", or perform comprehensive
   form testing. Triggers on validation testing requests, QA workflows, or form compliance checks.
   Works with web forms, input fields, and validation frameworks across any web application.
+version: 1.0.0
 allowed-tools:
   - mcp__playwright__browser_navigate
   - mcp__playwright__browser_snapshot
@@ -54,7 +55,7 @@ Test a login form's validation:
 10. Red Flags to Avoid
 11. Notes
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 ### Explicit Triggers
 - "Test form validation on [URL]"
@@ -76,7 +77,7 @@ Test a login form's validation:
 - "What validation messages does this form show?"
 - "Check if email validation is working"
 
-## 2. What This Skill Does
+## What This Skill Does
 
 This skill performs systematic form validation testing:
 
@@ -88,7 +89,7 @@ This skill performs systematic form validation testing:
 6. **Error Capture** - Screenshots and catalogs all validation messages
 7. **Report Generation** - Creates comprehensive validation report
 
-## 3. Instructions
+## Instructions
 
 ### Overview
 
@@ -153,14 +154,14 @@ For complete step-by-step instructions with all code examples, see:
 - `references/validation-patterns.md` - Field type testing patterns
 - `examples/examples.md` - Complete form testing examples
 
-## 4. Supporting Files
+## Supporting Files
 
 - **references/validation-patterns.md** - Common validation patterns and test cases for different field types
 - **examples/examples.md** - Complete validation test examples for common forms (login, signup, checkout)
 - **templates/validation-report-template.md** - Markdown template for validation reports
 - **scripts/parse_validation_errors.py** - Helper to extract validation messages from snapshots
 
-## 5. Expected Outcomes
+## Expected Outcomes
 
 ### Successful Validation Test
 
@@ -214,7 +215,7 @@ Recommendations:
 Report: .claude/artifacts/2025-12-20/validation-report-signup-form.md
 ```
 
-## 6. Integration Points
+## Integration Points
 
 ### With Quality Gates
 - Run validation tests as part of QA workflow
@@ -236,7 +237,7 @@ Report: .claude/artifacts/2025-12-20/validation-report-signup-form.md
 - Create field reference guides with validation rules
 - Document error message copy for style guides
 
-## 7. Expected Benefits
+## Expected Benefits
 
 | Metric | Before | After | Improvement |
 |--------|--------|-------|-------------|
@@ -246,7 +247,7 @@ Report: .claude/artifacts/2025-12-20/validation-report-signup-form.md
 | **Documentation** | None → Screenshots + report | Manual notes → Auto-generated | Consistent |
 | **Regression testing** | Rarely done | Automated | Reliable |
 
-## 8. Success Metrics
+## Success Metrics
 
 A validation test is successful when:
 
@@ -261,7 +262,7 @@ A validation test is successful when:
 ✅ Missing validations identified and reported
 ✅ Recommendations provided for improvements
 
-## 9. Requirements
+## Requirements
 
 **Browser Automation:**
 - Playwright MCP server configured
@@ -288,7 +289,7 @@ A validation test is successful when:
 - `.claude/artifacts/{YYYY-MM-DD}/` directory for reports
 - Write permissions for screenshots
 
-## 10. Red Flags to Avoid
+## Red Flags to Avoid
 
 Common mistakes when testing form validation:
 
@@ -303,7 +304,7 @@ Common mistakes when testing form validation:
 - [ ] **Ignoring client-side vs server-side** - Not distinguishing validation types
 - [ ] **Not checking accessibility** - Missing aria-invalid, aria-describedby attributes
 
-## 11. Notes
+## Notes
 
 **Best Practices:**
 

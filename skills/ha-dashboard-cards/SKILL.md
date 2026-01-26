@@ -1,16 +1,16 @@
 ---
 name: ha-dashboard-cards
 description: |
-  Create Home Assistant Lovelace dashboard cards programmatically with static titles,
-  color gradients, and section organization. Use when building HA dashboards with
-  mini-graph-card showing multiple entities, adding color-coded thresholds to graphs,
-  organizing dashboard sections with separators, or creating informational cards. Solves
-  the dynamic title problem where mini-graph-card changes titles on hover. Triggers on
-  "create HA dashboard", "mini-graph-card", "static graph titles", "color gradient graph",
-  "dashboard cards", "bubble separator", "card_mod CSS". Works with Python dashboard
-  builders and YAML Lovelace configurations.
+  Creates Home Assistant dashboard cards programmatically using ha_card_utils.py utilities
+  for static titles (fixes dynamic hover), color gradients (threshold-based), section
+  separators (bubble-card), and info cards (markdown). Use when asked to "fix mini-graph
+  title changing", "add color gradient to graph", "create dashboard section", "static title
+  card_mod", or "organize dashboard with separators".
+
+version: 1.0.0
 ---
 
+Works with Python dashboard builders, ha_card_utils.py module, and Lovelace YAML dashboards.
 # Home Assistant Dashboard Cards
 
 ## Quick Start
@@ -54,7 +54,7 @@ add_static_title_to_mini_graph(card)
 9. Requirements
 10. Red Flags to Avoid
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 ### Explicit Triggers
 - "Create HA dashboard cards"
@@ -76,7 +76,7 @@ add_static_title_to_mini_graph(card)
 - Need consistent section organization across dashboards
 - Multiple graphs showing same data at different time ranges
 
-## 2. What This Skill Does
+## What This Skill Does
 
 This skill provides reusable utilities for creating Home Assistant Lovelace dashboard cards with:
 
@@ -88,7 +88,17 @@ This skill provides reusable utilities for creating Home Assistant Lovelace dash
 
 All utilities are available in `ha_card_utils.py` and work with both Python dashboard builders and YAML configurations.
 
-## 3. The Static Title Problem
+## Usage
+
+1. **Import utilities**: `from ha_card_utils import add_static_title_to_mini_graph, add_color_gradient_to_mini_graph, create_bubble_separator, COLOR_SCHEMES`
+2. **Choose utility**: Static title (hover fix), color gradient (thresholds), separator (sections), info card (context)
+3. **Apply to card**: Pass card dict to utility function, it modifies in place
+4. **Save dashboard**: Use WebSocket API or manual YAML to save configuration
+5. **Verify**: Check dashboard, test hover behavior, validate colors display correctly
+
+See Core Utilities section for detailed function usage.
+
+## The Static Title Problem
 
 ### The Problem
 
@@ -131,7 +141,7 @@ card_mod:
 
 See `references/static_title_technique.md` for complete CSS explanation, DOM structure analysis, and alternative approaches.
 
-## 4. Core Utilities
+## Core Utilities
 
 ### 4.1. Static Title Fix
 
@@ -247,7 +257,7 @@ info = create_info_card(
 - `#3498db` (Blue) - Informational notes
 - `#2ecc71` (Green) - Success, good status
 
-## 5. Common Patterns
+## Common Patterns
 
 ### 5.1. Three-Graph Layout (1hr, 24hr, 1wk)
 
@@ -333,171 +343,53 @@ section = {
 
 ### 5.3. Sensor Sections with History
 
-Complete sensor section combining current values, context, and history:
+Complete sensor section combining current values, context, and history. See `examples/complete-sections.md` for full implementation.
 
-```python
-from ha_card_utils import (
-    create_bubble_separator,
-    create_info_card,
-    add_static_title_to_mini_graph,
-    add_color_gradient_to_mini_graph,
-    COLOR_SCHEMES,
-)
+**Pattern:**
+1. Enhanced separator (section header)
+2. Sub-section separator (current readings)
+3. Sensor cards (Mushroom template cards)
+4. Sub-section separator (history)
+5. Three-graph row with color gradients and static titles
 
-def create_temperature_section(entities: list[dict]):
-    """
-    Create complete temperature section.
+## Color Scheme Presets
 
-    Args:
-        entities: List of dicts with keys:
-            - entity_id: Entity ID (e.g., "sensor.office_temperature")
-            - name: Display name (e.g., "Office")
-            - color: Graph line color (e.g., "#2ecc71")
-    """
-    # Build temperature thresholds
-    temp_thresholds = [
-        COLOR_SCHEMES["temperature"]["cold"],
-        COLOR_SCHEMES["temperature"]["comfortable"],
-        COLOR_SCHEMES["temperature"]["warm"],
-        COLOR_SCHEMES["temperature"]["hot"],
-    ]
+The `COLOR_SCHEMES` dict provides preset thresholds for common sensor types.
 
-    # Build graph entities
-    graph_entities = [
-        {"entity": e["entity_id"], "name": e["name"], "color": e["color"]}
-        for e in entities
-    ]
+**Temperature:** Cold (10°C, blue) → Comfortable (18°C, green) → Warm (26°C, yellow) → Hot (32°C, red)
 
-    return {
-        "type": "vertical-stack",
-        "cards": [
-            # Section header
-            create_bubble_separator("Temperature", "mdi:thermometer", enhanced=True),
+**Humidity:** Dry (0%, red) → Low (30%, green) → Comfortable (60%, yellow) → High (80%, red)
 
-            # Current readings sub-section
-            {
-                "type": "custom:bubble-card",
-                "card_type": "separator",
-                "name": "Current Temperatures",
-                "icon": "mdi:home-thermometer",
-            },
-
-            # Sensor cards (Mushroom template cards)
-            # ... add current value cards here ...
-
-            # History sub-section
-            {
-                "type": "custom:bubble-card",
-                "card_type": "separator",
-                "name": "Temperature History",
-                "icon": "mdi:chart-line",
-            },
-
-            # Three-graph row with color gradients
-            {
-                "type": "horizontal-stack",
-                "cards": [
-                    add_color_gradient_to_mini_graph(
-                        add_static_title_to_mini_graph({
-                            "type": "custom:mini-graph-card",
-                            "name": "Last Hour",
-                            "hours_to_show": 1,
-                            "entities": graph_entities,
-                        }),
-                        temp_thresholds
-                    ),
-                    add_color_gradient_to_mini_graph(
-                        add_static_title_to_mini_graph({
-                            "type": "custom:mini-graph-card",
-                            "name": "Last 24 Hours",
-                            "hours_to_show": 24,
-                            "entities": graph_entities,
-                        }),
-                        temp_thresholds
-                    ),
-                    add_color_gradient_to_mini_graph(
-                        add_static_title_to_mini_graph({
-                            "type": "custom:mini-graph-card",
-                            "name": "Last Week",
-                            "hours_to_show": 168,
-                            "entities": graph_entities,
-                        }),
-                        temp_thresholds
-                    ),
-                ],
-            },
-        ],
-    }
-```
-
-## 6. Color Scheme Presets
-
-The `COLOR_SCHEMES` dict provides preset thresholds for common sensor types:
-
-### Temperature
+**Air Quality:** Poor (low kΩ, red) → Moderate (orange) → Good (green) → Excellent (high kΩ, blue)
 
 ```python
 from ha_card_utils import COLOR_SCHEMES
 
+# Use presets
 temp_thresholds = [
-    COLOR_SCHEMES["temperature"]["cold"],         # 10°C → Blue
-    COLOR_SCHEMES["temperature"]["comfortable"],  # 18°C → Green
-    COLOR_SCHEMES["temperature"]["warm"],         # 26°C → Yellow
-    COLOR_SCHEMES["temperature"]["hot"],          # 32°C → Red
+    COLOR_SCHEMES["temperature"]["cold"],
+    COLOR_SCHEMES["temperature"]["comfortable"],
+    COLOR_SCHEMES["temperature"]["warm"],
+    COLOR_SCHEMES["temperature"]["hot"],
+]
+
+# Or customize
+custom_thresholds = [
+    {"value": 15, "color": "#3498db"},
+    {"value": 22, "color": "#2ecc71"},
+    {"value": 28, "color": "#e74c3c"},
 ]
 ```
 
-### Humidity
+See `references/color_gradients.md` for complete color palette and threshold recommendations.
 
-```python
-humidity_thresholds = [
-    COLOR_SCHEMES["humidity"]["dry"],          # 0% → Red
-    COLOR_SCHEMES["humidity"]["low"],          # 30% → Green
-    COLOR_SCHEMES["humidity"]["comfortable"],  # 60% → Yellow
-    COLOR_SCHEMES["humidity"]["high"],         # 80% → Red
-]
-```
+## Supporting Files
 
-### Air Quality (Oxidising/Reducing Gas)
+- **references/static_title_technique.md** - Complete technical reference for card_mod CSS technique, DOM structure analysis, and alternative approaches
+- **references/color_gradients.md** - Color threshold guide with visual examples and color palette recommendations
+- **examples/complete-sections.md** - Full examples of temperature, humidity, and air quality sections with complete implementations
 
-```python
-# Oxidising gas (lower resistance = more pollution)
-oxidising_thresholds = [
-    COLOR_SCHEMES["air_quality"]["oxidising"]["poor"],       # 0 kΩ → Red
-    COLOR_SCHEMES["air_quality"]["oxidising"]["moderate"],   # 10 kΩ → Orange
-    COLOR_SCHEMES["air_quality"]["oxidising"]["good"],       # 30 kΩ → Green
-    COLOR_SCHEMES["air_quality"]["oxidising"]["excellent"],  # 100 kΩ → Blue
-]
-
-# Reducing gas
-reducing_thresholds = [
-    COLOR_SCHEMES["air_quality"]["reducing"]["poor"],       # 0 kΩ → Red
-    COLOR_SCHEMES["air_quality"]["reducing"]["moderate"],   # 100 kΩ → Orange
-    COLOR_SCHEMES["air_quality"]["reducing"]["good"],       # 200 kΩ → Green
-    COLOR_SCHEMES["air_quality"]["reducing"]["excellent"],  # 500 kΩ → Blue
-]
-```
-
-**Customizing Thresholds:**
-
-```python
-# Override preset values
-custom_temp_thresholds = [
-    {"value": 15, "color": "#3498db"},   # Cold
-    {"value": 22, "color": "#2ecc71"},   # Comfortable
-    {"value": 28, "color": "#e74c3c"},   # Hot
-]
-```
-
-## 7. Supporting Files
-
-- **`references/static_title_technique.md`** - Complete technical reference for card_mod CSS technique, DOM structure analysis, and alternative approaches
-- **`references/color_gradients.md`** - Color threshold guide with visual examples and color palette recommendations
-- **`examples/complete_sections.py`** - Full examples of temperature, humidity, and air quality sections
-- **`examples/yaml_examples.yaml`** - YAML equivalents for manual dashboard editing
-- **`scripts/apply_static_titles.py`** - Batch script to apply static titles to existing dashboards
-
-## 8. Expected Outcomes
+## Expected Outcomes
 
 ### Successful Card Creation
 
@@ -532,7 +424,7 @@ custom_temp_thresholds = [
 - Cause: Using `enhanced=False` or card-mod not applied
 - Fix: Use `create_bubble_separator(name, icon, enhanced=True)`
 
-## 9. Requirements
+## Requirements
 
 ### HACS Custom Cards
 
@@ -560,7 +452,7 @@ custom_temp_thresholds = [
   - Can be imported directly if working in the HA project, or copy to your project directory
 - `CLAUDE.md` - Project configuration with HA instance details (in HA project)
 
-## 10. Red Flags to Avoid
+## Red Flags to Avoid
 
 1. **Not using static titles on multi-entity graphs** - Always apply `add_static_title_to_mini_graph()` when showing multiple entities
 2. **Hardcoding card_mod CSS** - Use utility functions instead of copy-pasting CSS

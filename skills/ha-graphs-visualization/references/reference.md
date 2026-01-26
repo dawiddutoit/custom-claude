@@ -2,6 +2,14 @@
 
 Technical depth, advanced patterns, and performance optimization for Home Assistant graphs.
 
+## Table of Contents
+
+1. [Performance Optimization](#performance-optimization)
+2. [ApexCharts Advanced Configuration](#apexcharts-advanced-configuration)
+3. [Best Practices](#best-practices)
+4. [Common Issues](#common-issues)
+5. [Color Schemes](#color-schemes)
+
 ## Performance Optimization
 
 ### 1. Reduce Data Point Density
@@ -289,3 +297,153 @@ span:
 - [Statistics graph card - Home Assistant](https://www.home-assistant.io/dashboards/statistics-graph)
 - [Mini-Graph-Card GitHub](https://github.com/kalkih/mini-graph-card)
 - [ApexCharts Card GitHub](https://github.com/RomRider/apexcharts-card)
+
+## Best Practices
+
+### 1. Choose the Right Graph Type
+
+- **Line**: Continuous data (temperature, humidity, pressure)
+- **Bar/Column**: Discrete data (daily energy, events, counts)
+- **Area**: Cumulative data (solar production, rainfall, total consumption)
+
+### 2. Use Meaningful Colors
+
+- **Red**: High temperatures, alerts, energy consumption, danger
+- **Blue**: Low temperatures, water, humidity, cold
+- **Green**: Normal values, success, efficiency, plants
+- **Orange**: Warnings, moderate values, transitions
+- **Yellow**: Light, solar, caution
+- **Purple**: Air quality, special metrics
+
+### 3. Show Current State
+
+```yaml
+header:
+  show_states: true  # Shows current value in header
+```
+
+### 4. Use Appropriate Time Ranges
+
+- **Real-time monitoring**: 1-6 hours (HVAC, active processes)
+- **Daily patterns**: 24 hours (temperature cycles, usage patterns)
+- **Weekly trends**: 7 days (weekly usage, patterns)
+- **Monthly analysis**: 30 days (billing cycles, long-term trends)
+- **Long-term**: statistics-graph for weeks/months/years
+
+### 5. Set Appropriate Y-Axis Bounds
+
+```yaml
+yaxis:
+  - min: 0
+    max: 50
+    decimals: 1
+```
+
+## Common Issues
+
+### ApexCharts Span Error
+
+**Error:** `"Invalid value for span.end: now"`
+
+**Cause:** Using invalid value for span.end field
+
+**Solution:**
+```yaml
+# ❌ WRONG
+span:
+  end: now  # Causes parsing error
+
+# ✅ CORRECT
+span:
+  end: hour  # Valid: minute/hour/day/week/month/year/isoWeek
+```
+
+### No Data Showing
+
+**Symptoms:**
+- Graph renders but shows no data points
+- "No data" message displayed
+
+**Checklist:**
+- [ ] Verify entity exists (Developer Tools → States)
+- [ ] Check recorder retention period (default: 10 days)
+- [ ] Ensure sensor has `state_class: measurement`
+- [ ] Check long-term statistics (Developer Tools → Statistics)
+- [ ] Verify time range is within recorder retention
+
+**Solution:**
+```yaml
+# Add state_class to sensor configuration
+sensor:
+  - platform: template
+    sensors:
+      temperature:
+        value_template: "{{ states('sensor.raw_temp') }}"
+        state_class: measurement  # Required for graphs
+```
+
+### Graph Not Loading
+
+**Symptoms:**
+- Card shows error or blank
+- "Custom element doesn't exist"
+
+**Solutions:**
+- Verify HACS installation (Frontend category)
+- Clear browser cache (Ctrl+Shift+R)
+- Check Lovelace resources (Settings → Dashboards → Resources)
+- Restart Home Assistant after HACS installation
+
+### Performance Issues
+
+**Symptoms:**
+- Dashboard slow to load
+- Browser lag when scrolling
+
+**Solutions:**
+- Reduce `points_per_hour` for mini-graph-card
+- Limit graphs per view (3-4 maximum complex graphs)
+- Use statistics-graph for long time ranges
+- Avoid data_generator in ApexCharts
+
+## Color Schemes
+
+### Temperature Gradients
+
+```yaml
+# Cold to hot
+series:
+  - entity: sensor.temperature
+    color: >
+      {% if states('sensor.temperature') | float < 18 %}
+        #3498db  # Blue (cold)
+      {% elif states('sensor.temperature') | float < 22 %}
+        #2ecc71  # Green (comfortable)
+      {% elif states('sensor.temperature') | float < 26 %}
+        #f39c12  # Orange (warm)
+      {% else %}
+        #e74c3c  # Red (hot)
+      {% endif %}
+```
+
+### Energy/Power Colors
+
+```yaml
+# Low to high consumption
+- Low: #2ecc71 (green)
+- Medium: #f39c12 (orange)
+- High: #e74c3c (red)
+- Critical: #c0392b (dark red)
+```
+
+### Air Quality Colors
+
+```yaml
+# Good to hazardous (based on AQI)
+- Good (0-50): #00e400 (green)
+- Moderate (51-100): #ffff00 (yellow)
+- Unhealthy for Sensitive (101-150): #ff7e00 (orange)
+- Unhealthy (151-200): #ff0000 (red)
+- Very Unhealthy (201-300): #8f3f97 (purple)
+- Hazardous (301+): #7e0023 (maroon)
+```

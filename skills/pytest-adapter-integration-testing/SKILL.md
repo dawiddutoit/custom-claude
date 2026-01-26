@@ -4,6 +4,7 @@ description: |
   Testing adapters and gateways: when to use unit test mocks vs testcontainers, mocking HTTP responses (aioresponses, responses), mocking Kafka messages, mocking ClickHouse responses, testing error paths and edge cases.
 
   Use when: Testing gateways and adapters, testing external service integrations, deciding between mocks and real containers, testing error handling in adapters, integration testing with real services.
+version: 1.0.0
 allowed-tools: Read, Bash, Write
 ---
 
@@ -13,6 +14,12 @@ allowed-tools: Read, Bash, Write
 
 Adapters connect your application to external systems. This skill covers testing both unit-level (mocked) and integration-level (real services) scenarios.
 
+
+## When to Use This Skill
+
+Use when testing adapters and gateways with "test Shopify gateway", "mock HTTP responses", "test Kafka adapter", or "decide between mocks and containers".
+
+Do NOT use for domain testing (use `pytest-domain-model-testing`), application layer (use `pytest-application-layer-testing`), or general mocking patterns (use `pytest-mocking-strategy`).
 ## Quick Start
 
 Choose testing strategy based on scope:

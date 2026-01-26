@@ -7,6 +7,7 @@ description: |
   "configure Pi-hole DNS", "add DNS record", "DNS not resolving", "local DNS setup", or
   "why can't I access [service].temet.ai locally". Works with Pi-hole container, domains.toml,
   docker-compose.yml, and manage-domains.sh.
+version: 1.0.0
 allowed-tools:
   - Read
   - Bash
@@ -51,7 +52,7 @@ dig @localhost pihole.temet.ai +short
 6. [Requirements](#6-requirements)
 7. [Red Flags to Avoid](#7-red-flags-to-avoid)
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 **Explicit Triggers:**
 - "Set up Pi-hole DNS"
@@ -72,7 +73,7 @@ dig @localhost pihole.temet.ai +short
 - "dig returns wrong IP"
 - "Works remotely but not locally"
 
-## 2. What This Skill Does
+## What This Skill Does
 
 1. **Detects Pi IP** - Auto-discovers the Raspberry Pi's local IP address
 2. **Reads Configuration** - Gets domain list from domains.toml
@@ -80,7 +81,7 @@ dig @localhost pihole.temet.ai +short
 4. **Verifies Resolution** - Tests DNS resolution works correctly
 5. **Provides Guidance** - Reminds about router DNS configuration
 
-## 3. Instructions
+## Instructions
 
 ### 3.1 Detect Pi IP Address
 
@@ -217,7 +218,7 @@ cat /etc/resolv.conf
 # Should show: nameserver 192.168.68.135
 ```
 
-## 4. Supporting Files
+## Supporting Files
 
 | File | Purpose |
 |------|---------|
@@ -225,7 +226,7 @@ cat /etc/resolv.conf
 | `examples/examples.md` | Common scenarios and configurations |
 | `scripts/verify-dns.sh` | DNS verification script |
 
-## 5. Expected Outcomes
+## Expected Outcomes
 
 **Success:**
 - All domains resolve to correct IPs locally
@@ -241,7 +242,7 @@ cat /etc/resolv.conf
 - `dig` returns wrong IP -> Stale configuration
 - Pi-hole not responding -> Container not running
 
-## 6. Requirements
+## Requirements
 
 **Environment:**
 - Pi-hole container running: `docker ps | grep pihole`
@@ -253,7 +254,7 @@ cat /etc/resolv.conf
 - Bash (dig, docker commands)
 - Grep (parsing domains)
 
-## 7. Red Flags to Avoid
+## Red Flags to Avoid
 
 - [ ] Do not add DNS entries directly to Pi-hole web UI (use domains.toml)
 - [ ] Do not forget to restart Pi-hole after config changes

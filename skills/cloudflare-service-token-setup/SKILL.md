@@ -7,6 +7,7 @@ description: |
   service token", "setup automation access", "verify without OAuth", "automated monitoring",
   or "service token for testing". Works with Cloudflare Access Service Auth, .env credential
   storage, and cf-service-token.sh script for testing and management.
+version: 1.0.0
 allowed-tools:
   - Read
   - Bash
@@ -59,7 +60,7 @@ curl -H "CF-Access-Client-Id: ${CF_SERVICE_TOKEN_CLIENT_ID}" \
 6. [Requirements](#6-requirements)
 7. [Red Flags to Avoid](#7-red-flags-to-avoid)
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 **Explicit Triggers:**
 - "Create service token"
@@ -80,7 +81,7 @@ curl -H "CF-Access-Client-Id: ${CF_SERVICE_TOKEN_CLIENT_ID}" \
 - "How to automate verification?"
 - "What's the difference between service tokens and OAuth?"
 
-## 2. What This Skill Does
+## What This Skill Does
 
 1. **Explains Tokens** - Clarifies service tokens vs Google OAuth use cases
 2. **Creates Token** - Guides through Cloudflare dashboard token creation
@@ -90,7 +91,7 @@ curl -H "CF-Access-Client-Id: ${CF_SERVICE_TOKEN_CLIENT_ID}" \
 6. **Revokes Token** - Shows how to revoke/rotate compromised tokens
 7. **Monitors Usage** - Shows how to view token usage in Access logs
 
-## 3. Instructions
+## Instructions
 
 ### 3.1 Understanding Service Tokens vs OAuth
 
@@ -348,7 +349,7 @@ Set up Cloudflare Notifications:
 2. Create alert for: Access events
 3. Trigger: Service token authentication failures
 
-## 4. Supporting Files
+## Supporting Files
 
 | File | Purpose |
 |------|---------|
@@ -356,7 +357,7 @@ Set up Cloudflare Notifications:
 | `scripts/test-service-token.sh` | Automated testing script for all services |
 | `examples/examples.md` | Example use cases, monitoring scripts, CI/CD integration |
 
-## 5. Expected Outcomes
+## Expected Outcomes
 
 **Success:**
 - Service token created in Cloudflare dashboard
@@ -376,7 +377,7 @@ Set up Cloudflare Notifications:
 - Credentials not in .env
 - Helper script fails with "missing credentials"
 
-## 6. Requirements
+## Requirements
 
 - Cloudflare Zero Trust account with Access configured
 - Admin access to Cloudflare dashboard
@@ -384,7 +385,7 @@ Set up Cloudflare Notifications:
 - curl installed for testing
 - Existing Cloudflare Access applications configured
 
-## 7. Red Flags to Avoid
+## Red Flags to Avoid
 
 - [ ] Do not treat service tokens like passwords (they are powerful credentials)
 - [ ] Do not share service tokens publicly or commit to git

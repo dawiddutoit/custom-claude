@@ -8,7 +8,8 @@ description: |
   "prove it runs", or before declaring work complete. Works with Python modules, LangGraph nodes,
   CLI commands, API endpoints, and service classes. Enforces Creation-Connection-Verification (CCV)
   principle.
----
+
+version: 1.0.0---
 
 # Verify Implementation Complete
 
@@ -45,7 +46,7 @@ If any check fails or you cannot answer all four questions, **the implementation
 10. Requirements
 11. Red Flags to Avoid
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 ### Explicit Triggers
 - "Verify this implementation is complete"
@@ -69,7 +70,7 @@ If any check fails or you cannot answer all four questions, **the implementation
 - "Code exists but nothing happens" (orphaned code)
 - "Feature used to work" (regression - connection removed)
 
-## 2. What This Skill Does
+## What This Skill Does
 
 This skill enforces the **Creation-Connection-Verification (CCV) Principle** by:
 
@@ -80,7 +81,7 @@ This skill enforces the **Creation-Connection-Verification (CCV) Principle** by:
 
 **This skill prevents the ADR-013 failure mode** where code was created and tested but never integrated into `builder.py`, causing the feature to never execute despite passing all quality gates.
 
-## 3. The CCV Principle
+## The CCV Principle
 
 ### The Formula
 
@@ -104,7 +105,7 @@ COMPLETE = CREATION + CONNECTION + VERIFICATION
 - **Connection without Verification** → Unknown if it actually works
 - **Creation + Connection without Verification** → Might work, might not, no proof
 
-## 4. The Four Questions Test
+## The Four Questions Test
 
 Before claiming "done", you MUST answer ALL FOUR questions:
 
@@ -148,7 +149,7 @@ Before claiming "done", you MUST answer ALL FOUR questions:
 
 **If you cannot answer:** No outcome proof → NOT COMPLETE
 
-## 5. Step-by-Step Verification Process
+## Step-by-Step Verification Process
 
 ### Phase 1: Verify Creation (Artifacts Exist)
 
@@ -297,7 +298,7 @@ ls -la expected_output_file.txt
 
 **If any fail:** Debug and fix before claiming "done"
 
-## 6. Verification by Artifact Type
+## Verification by Artifact Type
 
 ### LangGraph Nodes
 
@@ -417,7 +418,7 @@ curl -X POST http://localhost:8000/api/your-endpoint -d '{"test": "data"}'
 - [ ] Expected status code (200, 201, etc.)
 - [ ] Response body correct
 
-## 7. Common Failure Patterns
+## Common Failure Patterns
 
 ### Pattern 1: Created But Never Imported
 
@@ -467,7 +468,7 @@ grep -r "your_function_name" src/ --include="*.py" | grep -v test | grep -v "def
 
 **Fix:** Review conditional logic, adjust trigger conditions
 
-## 8. Supporting Files
+## Supporting Files
 
 ### References
 - `references/ccv-principle.md` - Deep dive into Creation-Connection-Verification
@@ -488,7 +489,7 @@ grep -r "your_function_name" src/ --include="*.py" | grep -v test | grep -v "def
 - `templates/verification-checklist.md` - Copy-paste checklist for feature verification
 - `templates/integration-test-template.py` - Template for integration tests
 
-## 9. Expected Outcomes
+## Expected Outcomes
 
 ### Successful Verification
 
@@ -561,7 +562,7 @@ Required Actions:
 DO NOT claim this feature is "done" until verification passes.
 ```
 
-## 10. Requirements
+## Requirements
 
 ### Tools Required
 - Read (to examine source files)
@@ -578,7 +579,7 @@ DO NOT claim this feature is "done" until verification passes.
 - Source code in `src/` directory
 - Tests in `tests/` directory
 
-## 11. Red Flags to Avoid
+## Red Flags to Avoid
 
 ### Do Not
 - ❌ Claim "feature complete" without running this verification

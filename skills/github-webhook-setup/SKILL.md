@@ -1,12 +1,13 @@
 ---
 name: github-webhook-setup
 description: |
-  Sets up GitHub webhooks for auto-deployment by verifying secrets, checking endpoint
+  Configures GitHub webhooks for auto-deployment by verifying secrets, checking endpoint
   accessibility, and guiding configuration. Use when you need to add a new repo for
   auto-deploy, configure GitHub webhooks, set up continuous deployment, or troubleshoot
   webhook issues. Triggers on "setup webhook", "add webhook for [repo]", "configure
   auto-deploy", "GitHub deployment", or "webhook not working". Works with config/hooks.json,
   .env (WEBHOOK_SECRET), and webhook.temet.ai endpoint.
+version: 1.0.0
 allowed-tools:
   - Read
   - Write
@@ -46,7 +47,7 @@ Example: "Set up webhook for my-project repo"
 6. [Requirements](#6-requirements)
 7. [Red Flags to Avoid](#7-red-flags-to-avoid)
 
-## 1. When to Use This Skill
+## When to Use This Skill
 
 **Explicit Triggers:**
 - "Set up webhook for [repo]"
@@ -65,7 +66,7 @@ Example: "Set up webhook for my-project repo"
 - "GitHub webhook returning 403/401"
 - "Deployment not working"
 
-## 2. What This Skill Does
+## What This Skill Does
 
 1. **Verifies Environment** - Checks WEBHOOK_SECRET exists (generates if needed)
 2. **Tests Accessibility** - Confirms webhook.temet.ai endpoint responds
@@ -74,7 +75,7 @@ Example: "Set up webhook for my-project repo"
 5. **Tests Integration** - Validates webhook receives events correctly
 6. **Verifies Deployment** - Confirms push triggers deployment script
 
-## 3. Instructions
+## Instructions
 
 ### 3.1 Verify WEBHOOK_SECRET
 
@@ -255,14 +256,14 @@ cat $(ls -t /tmp/deploy-*.log | head -1)
 cd /projects/<repo-name> && git log -1 --oneline
 ```
 
-## 4. Supporting Files
+## Supporting Files
 
 | File | Purpose |
 |------|---------|
 | `references/reference.md` | Complete hooks.json schema, troubleshooting guide |
 | `examples/examples.md` | Example configurations for different repo types |
 
-## 5. Expected Outcomes
+## Expected Outcomes
 
 **Success:**
 - WEBHOOK_SECRET configured in .env
@@ -282,7 +283,7 @@ cd /projects/<repo-name> && git log -1 --oneline
 - "signature does not match" in logs -> Secret mismatch
 - Deployment not running -> Check container logs
 
-## 6. Requirements
+## Requirements
 
 **Environment:**
 - Docker running with webhook container
@@ -299,7 +300,7 @@ cd /projects/<repo-name> && git log -1 --oneline
 - Repository admin access (to create webhooks)
 - Main branch exists
 
-## 7. Red Flags to Avoid
+## Red Flags to Avoid
 
 - [ ] Do not commit WEBHOOK_SECRET to git
 - [ ] Do not use different secrets for different repos (one secret for all)
