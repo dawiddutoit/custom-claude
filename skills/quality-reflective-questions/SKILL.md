@@ -8,7 +8,9 @@ description: |
   "verify completeness", or proactively before marking tasks complete. Works with any type of
   implementation work. Enforces critical thinking about integration, testing, and execution proof.
 
-version: 1.0.0---
+version: 1.0.0
+tags: [quality, verification, completeness, self-review, integration, testing]
+---
 
 # Reflective Questions for Work Completeness
 
@@ -208,105 +210,14 @@ These questions MUST be answered for EVERY piece of work before claiming "done".
 
 ## Category-Specific Questions
 
-### For New Modules/Files
+Apply the Four Questions framework to specific implementation types. For detailed questions by category, see [references/category-specific-questions.md](./references/category-specific-questions.md).
 
-**Questions to ask:**
-1. "Where is this module imported in production code?"
-   - ✅ Good: "builder.py line 45"
-   - ❌ Bad: "It's imported" (where?)
-
-2. "Are any functions from this module called?"
-   - ✅ Good: "create_review_node() called in builder.py line 146"
-   - ❌ Bad: "Yes, they're called" (where?)
-
-3. "If I grep for this module in src/, do I see imports outside of tests?"
-   - ✅ Good: "Yes, see: `grep -r 'architecture_nodes' src/ | grep -v test`"
-   - ❌ Bad: "I think so" (prove it)
-
-**Red Flags:**
-- Module only imported in test files
-- No call-sites found in production code
-- Functions defined but never invoked
-
-### For LangGraph Nodes
-
-**Questions to ask:**
-1. "Is this node in builder.py's node list?"
-   - ✅ Good: "Yes, line 146: graph.add_node('architecture_review', node)"
-   - ❌ Bad: "It should be" (check it)
-
-2. "What edges connect to this node?"
-   - ✅ Good: "Conditional edge from 'query_claude' when should_review_architecture() is True"
-   - ❌ Bad: "It's connected" (how?)
-
-3. "Is this node in test_graph_completeness.py EXPECTED_NODES?"
-   - ✅ Good: "Yes, added to list at line 270"
-   - ❌ Bad: "I don't think we have that test" (create it)
-
-**Red Flags:**
-- Node file exists but not in builder.py
-- Node added to graph but no edges connect to it
-- Node not in integration test expected list
-
-### For CLI Commands
-
-**Questions to ask:**
-1. "Does this command show in `--help` output?"
-   - ✅ Good: "Yes, verified with `uv run app --help` - shows 'my-command' description"
-   - ❌ Bad: "It should" (verify it)
-
-2. "Can you run this command right now?"
-   - ✅ Good: "Yes: `uv run app my-command arg` → Output: success"
-   - ❌ Bad: "Probably" (try it)
-
-3. "Where is this command registered?"
-   - ✅ Good: "main.py line 12: app.add_command(my_command)"
-   - ❌ Bad: "In the CLI file" (which file? which line?)
-
-**Red Flags:**
-- Command function exists but not registered
-- Command not in --help output
-- Command causes errors when invoked
-
-### For Service Classes (with DI)
-
-**Questions to ask:**
-1. "Where is this service registered in the container?"
-   - ✅ Good: "container.py line 67: container.register(MyService)"
-   - ❌ Bad: "It's registered" (where?)
-
-2. "Can you resolve this service from the container?"
-   - ✅ Good: "Yes: `container.resolve('MyService')` returns instance"
-   - ❌ Bad: "It should work" (try it)
-
-3. "Where is this service injected and used?"
-   - ✅ Good: "CoordinatorService line 34: def __init__(self, my_service: MyService)"
-   - ❌ Bad: "In a few places" (which places?)
-
-**Red Flags:**
-- Service class exists but not registered
-- Service registered but never injected
-- Service injected but methods never called
-
-### For API Endpoints
-
-**Questions to ask:**
-1. "Where is this route registered?"
-   - ✅ Good: "router.py line 23: router.add_route('/endpoint', handler)"
-   - ❌ Bad: "In the routes file" (which file? which line?)
-
-2. "Can you curl this endpoint right now?"
-   - ✅ Good: "Yes: `curl http://localhost:8000/api/endpoint` → HTTP 200"
-   - ❌ Bad: "If the server is running" (start it and try)
-
-3. "What does this endpoint return?"
-   - ✅ Good: "JSON: {'status': 'success', 'data': {...}}"
-   - ❌ Bad: "The expected response" (show me the actual response)
-
-**Red Flags:**
-- Endpoint function exists but not registered
-- Endpoint returns 404 when called
-- Endpoint returns errors or unexpected responses
+**Categories covered:**
+- **Modules/Files**: Import verification, call-site validation
+- **LangGraph Nodes**: Graph registration, edge connectivity
+- **CLI Commands**: Registration, --help visibility, execution
+- **Service Classes (DI)**: Container registration, injection points
+- **API Endpoints**: Route registration, response validation
 
 ## Red Flag Questions
 
@@ -431,92 +342,27 @@ Before marking ANYTHING complete, answer these honestly:
 
 ## Common Self-Deception Patterns
 
-### Pattern 1: "Tests Pass" Syndrome
+Be aware of these patterns that lead to premature completion claims. For detailed analysis and fixes, see [references/self-deception-patterns.md](./references/self-deception-patterns.md).
 
-**Symptom:** Claiming complete because unit tests pass
+**Common Patterns:**
+1. **"Tests Pass" Syndrome** - Unit tests pass but integration untested
+2. **"Should Work" Fallacy** - Using assumptions instead of evidence
+3. **"No Errors" Confusion** - Equating silence with correctness
+4. **"File Exists" Completion** - Code written but not integrated
+5. **"Looks Good" Approval** - Vague approval without specifics
+6. **"I Remember Doing It"** - Trusting memory over verification
+7. **"Later Will Be Fine"** - Deferring critical verification steps
 
-**Reality Check:**
-- "Do the tests import production code or mock it?"
-- "Do the tests verify integration or isolated behavior?"
-- "Could code exist, tests pass, feature not work?"
+## Usage
 
-**Fix:** Add integration tests, verify in real system
+1. **Before marking work complete**, run through the Four Questions
+2. **Check the Honesty Checklist** - all boxes must be checked
+3. **Verify no Red Flags** are present
+4. **If uncertain**, review [references/category-specific-questions.md](./references/category-specific-questions.md) for your implementation type
 
-### Pattern 2: "Should Work" Fallacy
-
-**Symptom:** Using words like "should", "probably", "I think"
-
-**Reality Check:**
-- "Replace 'should' with 'does' - can you still claim it?"
-- "What EVIDENCE do you have, not assumptions?"
-
-**Fix:** Verify explicitly, replace assumptions with proof
-
-### Pattern 3: "No Errors" Confusion
-
-**Symptom:** Equating "no errors" with "works correctly"
-
-**Reality Check:**
-- "Could this produce no errors but wrong output?"
-- "What positive proof do you have of correct behavior?"
-
-**Fix:** Show correct output, not just absence of errors
-
-### Pattern 4: "File Exists" Completion
-
-**Symptom:** Marking done when artifact created, not integrated
-
-**Reality Check:**
-- "Is this file imported anywhere?"
-- "Are these functions called anywhere?"
-- "Could I delete this and nothing breaks?"
-
-**Fix:** Verify imports, call-sites, integration points
-
-### Pattern 5: "Looks Good" Approval
-
-**Symptom:** Vague assessment instead of specific verification
-
-**Reality Check:**
-- "What SPECIFIC evidence supports 'looks good'?"
-- "Could you list 5 concrete verification points?"
-
-**Fix:** Replace vague approval with specific checklist
-
-### Pattern 6: "I Remember Doing It" Assumption
-
-**Symptom:** Trusting memory instead of current verification
-
-**Reality Check:**
-- "Can you show me RIGHT NOW where this is?"
-- "What if your memory is wrong?"
-
-**Fix:** Verify current state, don't trust memory
-
-### Pattern 7: "Later Will Be Fine" Deferral
-
-**Symptom:** Skipping verification steps to finish faster
-
-**Reality Check:**
-- "What makes you think later is better than now?"
-- "What's the cost if this is wrong and you mark it done?"
-
-**Fix:** Verify now, don't defer to "later"
-
-## Supporting Files
-
-### References
-- `references/four-questions-framework.md` - Deep dive into the Four Questions
-- `references/self-deception-patterns.md` - Psychology of incomplete work
-- `references/honesty-in-engineering.md` - Cultural aspects of honest self-assessment
-
-### Examples
-- `examples/good-vs-bad-answers.md` - Specific vs vague answers comparison
-- `examples/integration-verification-dialogue.md` - Sample self-questioning session
-
-### Templates
-- `templates/self-review-checklist.md` - Copy-paste checklist for self-review
-- `templates/four-questions-template.md` - Template for answering the Four Questions
+**Supporting Files:**
+- [references/category-specific-questions.md](./references/category-specific-questions.md) - Detailed questions by category
+- [references/self-deception-patterns.md](./references/self-deception-patterns.md) - Pattern recognition and fixes
 
 ## Expected Outcomes
 

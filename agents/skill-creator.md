@@ -1,7 +1,7 @@
 ---
 name: skill-creator
 description: Creates and manages reusable Agent Skills by analyzing workflows, designing progressive disclosure structure, and generating SKILL.md files with validation. Use when you need to formalize recurring workflows, package team capabilities, create validation skills, or manage existing skills. Triggers on "create skill", "skill for [workflow]", "formalize workflow", "package capability", or repeated pattern detection (3+ uses).
-model: sonnet
+model: opus
 color: cyan
 ---
 

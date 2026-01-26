@@ -9,7 +9,9 @@ description: |
   CLI commands, API endpoints, and service classes. Enforces Creation-Connection-Verification (CCV)
   principle.
 
-version: 1.0.0---
+version: 1.0.0
+tags: [quality, verification, integration, testing, ccv-principle]
+---
 
 # Verify Implementation Complete
 

@@ -10,7 +10,9 @@ description: |
   planeTop/planeBottom/planeFront/planeBack modules. Works with .scad files using
   woodworkers-lib library.
 
-version: 1.0.0---
+version: 1.0.0
+tags: [openscad, woodworking, cutlist, furniture, cnc]
+---
 
 # OpenSCAD Cut List Generation (woodworkers-lib)
 
@@ -47,6 +49,10 @@ ECHO: "plane (back):   800 × 4 × 1200"
 **Interpretation:**
 - `18 × 378 × 1164(4)` = 18mm thick panel, 378mm × 1164mm, with 4mm edge band on one edge
 - `782(4,4) × 378(4) × 18` = 18mm thick panel, 782mm × 378mm, with edge bands on 3 edges (4mm each)
+
+## Usage
+
+See [Core Workflow](#core-workflow) below for complete step-by-step process.
 
 ## Core Workflow
 
