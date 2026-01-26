@@ -3,7 +3,7 @@ name: terraform-troubleshooting
 description: |
   Debugs and fixes Terraform errors systematically. Use when encountering Terraform failures, state lock issues, provider errors, syntax problems, or unexpected infrastructure changes. Includes debugging workflows, error categorization, common GCP-specific issues, and recovery procedures.
 
-version: 1.0.0---
+---
 
 # Terraform Troubleshooting Skill
 

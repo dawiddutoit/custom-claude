@@ -5,7 +5,6 @@ description: |
   Use when understanding Lotus Notes architecture, analyzing NSF databases,
   identifying integration points, planning migration strategies, or translating
   Notes concepts to modern equivalents.
-version: 1.0.0
 allowed-tools:
   - Read
   - Glob

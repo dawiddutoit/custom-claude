@@ -2,7 +2,6 @@
 name: textual-app-lifecycle
 description: |
   Builds Textual applications with proper app lifecycle management, screen handling, and event loops. Use when creating Textual App subclasses, implementing on_mount/on_unmount handlers, managing application state, navigating between screens, and understanding app initialization flow. Includes patterns for graceful shutdown, configuration loading, and daemon/background task management.
-version: 1.0.0
 allowed-tools: Read, Write, Edit, Bash
 ---
 

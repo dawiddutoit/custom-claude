@@ -7,7 +7,7 @@ description: |
   Supports brand-accurate colors (Bosch, Festool, Makita, DeWalt, Milwaukee) and standardized
   code structure with customizer parameters.
 
-version: 1.0.0---
+---
 
 # OpenSCAD Workshop Tool Modeling
 

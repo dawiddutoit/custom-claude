@@ -6,7 +6,6 @@ description: |
   complex flows, investigating performance issues, or need distributed tracing across application layers.
   Triggers on "add tracing", "instrument this method", "add observability", "debug with traces", or
   "track execution flow".
-version: 1.0.0
 allowed-tools:
   - Read
   - Grep

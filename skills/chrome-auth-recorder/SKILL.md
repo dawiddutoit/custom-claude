@@ -8,7 +8,7 @@ description: |
   or "show me how to do this". Works with Chrome browser via MCP integration and authenticated
   sessions.
 
-version: 1.0.0---
+---
 
 # Chrome Auth Recorder
 

@@ -8,7 +8,7 @@ description: |
   for visual testing. Covers snap_compare fixture, run_before callbacks, snapshot
   management, flaky test handling (animations, cursors, timestamps), and CI integration.
 
-version: 1.0.0---
+---
 
 # Textual Snapshot Testing
 

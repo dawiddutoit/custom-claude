@@ -10,8 +10,6 @@ description: |
   Chrome extension (MCP tools: navigate, click, form_input, read_console_messages, read_network_requests,
   tabs_context_mcp, gif_creator).
 
-version: 1.0.0
-tags: [browser-automation, chrome, testing, debugging, mcp-tools]
 ---
 
 # Chrome Browser Automation

@@ -3,7 +3,7 @@ name: terraform-state-management
 description: |
   Manages Terraform state safely and efficiently. Use when setting up remote state, migrating between backends, handling state locks, preventing state drift, backing up state, or understanding state dependencies and locking mechanisms. Covers GCS backend configuration, state operations, and recovery procedures.
 
-version: 1.0.0---
+---
 
 # Terraform State Management Skill
 

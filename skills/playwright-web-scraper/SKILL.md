@@ -8,7 +8,7 @@ description: |
   Supports pagination, multi-page extraction, data aggregation, and export to CSV/JSON/Markdown.
   Works with browser_navigate, browser_evaluate, browser_wait_for, and browser_snapshot tools.
 
-version: 1.0.0---
+---
 
 # Playwright Web Scraper
 

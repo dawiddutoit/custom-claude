@@ -7,7 +7,6 @@ description: |
   pages", or "parse PDF tables". Provides Python-based workflows for programmatic PDF processing
   at scale including watermarking, encryption, and metadata manipulation. Works with .pdf files
   through pypdf for basic operations, pdfplumber for tables, and ReportLab for PDF generation.
-version: 1.0.0
 license: Proprietary. LICENSE.txt has complete terms
 ---
 

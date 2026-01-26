@@ -8,7 +8,7 @@ description: |
   "load openscad context", "show scad dependencies", or when investigating .scad files.
   Works with .scad files, BOSL2, woodworkers-lib, NopSCADlib, and project-specific libraries.
 
-version: 1.0.0---
+---
 
 # scad-load
 

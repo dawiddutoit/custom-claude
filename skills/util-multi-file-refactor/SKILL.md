@@ -1,7 +1,6 @@
 ---
 name: util-multi-file-refactor
 description: Optimizes multi-file refactoring workflows by enforcing token-efficient MultiEdit usage (30-50% savings), coordinating changes across files, validating imports/references, and running quality gates. Use when refactoring patterns across codebase, renaming functions/classes/variables, extracting common code, moving functionality, or updating patterns in multiple files. Prevents sequential Edit anti-patterns.
-version: 1.0.0
 allowed-tools:
   - Read
   - Edit

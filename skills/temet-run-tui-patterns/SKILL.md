@@ -2,7 +2,6 @@
 name: temet-run-tui-patterns
 description: |
   Builds temet-run TUI components following project patterns for daemon monitoring, agent management, and observability integration. Use when implementing agent dashboards, status displays, log viewers, multi-agent layouts, IPC integration, and OpenTelemetry instrumentation in Textual widgets. Specific to temet-run's architecture and requirements.
-version: 1.0.0
 allowed-tools: Read, Write, Edit, Bash
 ---
 

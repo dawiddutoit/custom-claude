@@ -8,7 +8,6 @@ description: |
   for Python (FastMCP) or TypeScript (MCP SDK) servers. Covers tool naming, schema design,
   error handling, testing, and workflow optimization. Works with MCP protocol, FastMCP framework,
   and MCP TypeScript SDK.
-version: 1.0.0
 license: Complete terms in LICENSE.txt
 ---
 

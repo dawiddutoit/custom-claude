@@ -6,7 +6,6 @@ description: |
   are stuck in Pending, CrashLoopBackOff, ImagePullBackOff, experiencing DNS failures,
   Cloud SQL connection timeouts, or Pub/Sub message processing problems. Provides
   systematic debugging workflows and solution patterns for Spring Boot applications.
-version: 1.0.0
 allowed-tools:
   - Bash
   - Read

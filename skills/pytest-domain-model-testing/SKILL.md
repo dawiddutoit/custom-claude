@@ -4,7 +4,6 @@ description: |
   How to test domain models effectively: value object testing (immutability, validation), entity testing (identity, business logic), domain exception testing, aggregate testing, high coverage patterns (95%+), and testing invariants and constraints.
 
   Use when: Testing domain layer code, validating value objects, testing entities with business logic, ensuring domain invariants, or achieving 95%+ coverage on domain models.
-version: 1.0.0
 allowed-tools: Read, Bash, Write
 ---
 

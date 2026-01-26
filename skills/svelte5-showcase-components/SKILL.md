@@ -9,8 +9,6 @@ description: |
   "Svelte 5 component examples", or "showcase component library". Works with shadcn-svelte,
   Bits UI, TailwindCSS v4, sveltekit-superforms, and Svelte 5 runes.
 
-version: 1.0.0
-tags: [svelte5, components, ui-library, shadcn-svelte, typescript]
 ---
 
 # Svelte 5 Showcase Components

@@ -4,7 +4,6 @@ description: |
   Provides Complete patterns for testing async Python code with pytest: pytest-asyncio configuration, AsyncMock usage, async fixtures, testing FastAPI with AsyncClient, testing Kafka async producers/consumers, event loop and cleanup patterns.
 
   Use when: Testing async functions, async use cases, FastAPI endpoints, async database operations, Kafka async clients, or any async/await code patterns.
-version: 1.0.0
 allowed-tools: Read, Bash, Write
 ---
 

@@ -10,8 +10,6 @@ description: |
 
   Works with Python files in layered architecture projects (domain/, application/, infrastructure/,
   interfaces/ directories).
-version: 1.0.0
-tags: [architecture, validation, clean-architecture, layer-boundaries, quality-gates]
 allowed-tools:
   - Read
   - Grep

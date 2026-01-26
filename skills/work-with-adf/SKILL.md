@@ -5,7 +5,6 @@ description: |
   Use when creating rich content for Jira issues, epics, and comments.
   Helps with understanding ADF node structure, building documents programmatically,
   validating ADF against the specification, and troubleshooting validation errors.
-version: 1.0.0
 allowed-tools: Read, Bash, Grep
 ---
 

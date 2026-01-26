@@ -7,7 +7,6 @@ description: |
   "configure Pi-hole DNS", "add DNS record", "DNS not resolving", "local DNS setup", or
   "why can't I access [service].temet.ai locally". Works with Pi-hole container, domains.toml,
   docker-compose.yml, and manage-domains.sh.
-version: 1.0.0
 allowed-tools:
   - Read
   - Bash

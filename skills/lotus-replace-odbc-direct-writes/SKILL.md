@@ -5,7 +5,6 @@ description: |
   Use when migrating code that directly modifies Lotus Notes databases via ODBC, converting backend
   connections to HTTP APIs, implementing proper request/response patterns, or establishing secure
   data synchronization.
-version: 1.0.0
 allowed-tools:
   - Read
   - Bash

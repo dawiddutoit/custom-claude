@@ -8,7 +8,6 @@ description: |
   "SSL certificate status", "backup certificates", or "force certificate renewal".
   Works with Let's Encrypt certificates, Caddy auto-renewal, and caddy_data Docker
   volume.
-version: 1.0.0
 allowed-tools:
   - Read
   - Bash

@@ -6,7 +6,6 @@ description: |
   investigating token patterns, tracking agent delegation, or analyzing context exhaustion. Triggers on
   "why did Claude do X", "analyze session", "check session logs", "context window exhaustion", or
   "track agent delegation".
-version: 1.0.0
 allowed-tools:
   - Bash
   - Read

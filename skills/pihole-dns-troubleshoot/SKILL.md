@@ -8,7 +8,6 @@ description: |
   "can't resolve domain", "domain not found", "Pi-hole DNS issue", "fix DNS", or
   "troubleshoot DNS resolution". Works with Pi-hole DNS, docker-compose.yml FTLCONF
   variables, and local network DNS resolution.
-version: 1.0.0
 allowed-tools:
   - Read
   - Bash

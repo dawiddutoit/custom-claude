@@ -6,7 +6,6 @@ description: |
   patterns. Use when asked to "add custom card", "install HACS card", "create gauge/graph",
   "ApexCharts dashboard", "mushroom cards", or "bubble separator".
 
-version: 1.0.0
 ---
 
 Works with HACS installation (UI and API), Lovelace YAML dashboards, and custom card configurations.

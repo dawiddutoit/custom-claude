@@ -8,7 +8,6 @@ description: |
   access with", "allow [email] to authenticate", or "update access users". Works with .env,
   update-access-emails.sh, and Cloudflare Access policies for pihole, jaeger, langfuse,
   sprinkler, ha, and temet.ai services.
-version: 1.0.0
 allowed-tools:
   - Read
   - Edit

@@ -7,7 +7,6 @@ description: |
   or onboarding to project workflow. Ensures Clean Architecture, fail-fast principles,
   ServiceResult pattern, and quality gates. Triggers on "implement feature X", "add functionality Y",
   "complete workflow for Z", "end-to-end implementation", or "production-ready feature".
-version: 1.0.0
 allowed-tools:
   - Read
   - Grep

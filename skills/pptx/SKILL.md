@@ -7,7 +7,6 @@ description: |
   or "analyze slide structure". Provides raw OOXML access for advanced formatting, python-pptx
   for programmatic slide generation, and markitdown for text extraction. Works with .pptx files
   through ZIP archive extraction and XML manipulation for professional presentation workflows.
-version: 1.0.0
 license: Proprietary. LICENSE.txt has complete terms
 ---
 

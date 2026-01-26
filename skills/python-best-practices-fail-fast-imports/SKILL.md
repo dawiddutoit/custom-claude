@@ -1,7 +1,6 @@
 ---
 name: python-best-practices-fail-fast-imports
 description: Validates that all imports follow fail-fast principle by detecting try/except ImportError patterns, conditional imports, and optional dependencies. Use before commits, when modifying imports, during code review, or as part of quality gates. Enforces project rule that all imports must be at module top level.
-version: 1.0.0
 allowed-tools:
   - Read
   - Grep

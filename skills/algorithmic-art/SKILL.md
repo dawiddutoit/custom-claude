@@ -8,7 +8,6 @@ description: |
   variation, and controlled chaos. Works with p5.js, JavaScript, HTML files for interactive
   viewers, and markdown manifesto files. Outputs original work using algorithmic philosophies
   rather than copying existing artists.
-version: 1.0.0
 license: Complete terms in LICENSE.txt
 ---
 

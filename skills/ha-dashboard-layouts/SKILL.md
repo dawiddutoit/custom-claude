@@ -6,7 +6,6 @@ description: |
   nested layouts for complex designs. Use when asked to "arrange cards side by side", "create
   3 column grid", "stack cards vertically", "full-screen panel view", or "responsive layout".
 
-version: 1.0.0
 ---
 
 Works with Lovelace YAML configurations, native layout cards, and mobile-first responsive patterns.

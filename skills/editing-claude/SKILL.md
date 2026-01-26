@@ -8,7 +8,6 @@ description: |
   past 200 lines, user says "optimize CLAUDE.md", "check contradictions", "validate documentation",
   or during quarterly reviews. Works with project and global CLAUDE.md files (.md extension).
   Based on Anthropic 2025 context engineering best practices.
-version: 1.0.0
 allowed-tools:
   - Read
   - Write

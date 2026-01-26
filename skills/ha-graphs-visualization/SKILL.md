@@ -5,7 +5,6 @@ description: |
   mini-graph-card, and apexcharts-card with time ranges, aggregations, and multi-sensor support.
   Use when displaying sensor data over time, creating trend charts, comparing historical data, or
   building energy/climate/air quality dashboards.
-version: 1.0.0
 ---
 
 Works with Home Assistant native cards, HACS custom cards, and YAML configurations.

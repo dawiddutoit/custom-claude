@@ -6,7 +6,6 @@ description: |
   Cloud SQL, Secret Manager, or other GCP services. Eliminates service account key
   management, reduces security blast radius, and implements least privilege access
   patterns. Works with Spring Boot applications and IAM bindings.
-version: 1.0.0
 allowed-tools:
   - Bash
   - Read

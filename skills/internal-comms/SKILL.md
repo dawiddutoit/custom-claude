@@ -8,7 +8,6 @@ description: |
   update". Provides templated guidelines for tone, structure, and content gathering specific to
   each communication type. Works with markdown documents following established company communication
   standards and formatting preferences.
-version: 1.0.0
 license: Complete terms in LICENSE.txt
 ---
 

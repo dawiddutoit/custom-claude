@@ -1,7 +1,6 @@
 ---
 name: quality-code-review
 description: Perform systematic self-review of code changes before commits using structured
-version: 1.0.0
   checklist. Validates architecture boundaries, code quality, test coverage, documentation,
   and project-specific anti-patterns. Use before committing, creating PRs, or when
   user says "review my changes", "self-review", "check my code". Adapts to Python,

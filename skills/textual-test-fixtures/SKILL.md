@@ -7,7 +7,7 @@ description: |
   fixtures, mocking external dependencies (APIs, databases, time), organizing conftest.py,
   or reducing test boilerplate. Covers async fixtures, factory patterns, and mock strategies.
 
-version: 1.0.0---
+---
 
 # Textual Test Fixtures
 

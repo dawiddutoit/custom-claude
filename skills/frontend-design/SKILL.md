@@ -8,7 +8,6 @@ description: |
   intentional aesthetic choices (brutalist, maximalist, retro-futuristic, editorial, art deco),
   distinctive fonts, cohesive color palettes, and production-ready code. Works with HTML/CSS/JS,
   React, Vue, Svelte, and modern frontend frameworks.
-version: 1.0.0
 license: Complete terms in LICENSE.txt
 ---
 

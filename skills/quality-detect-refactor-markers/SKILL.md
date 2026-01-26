@@ -7,7 +7,6 @@ description: |
   health", "what's the status", or PROACTIVELY before marking features complete. Works with
   Python (.py), TypeScript (.ts), and JavaScript (.js) files using grep patterns to locate markers
   and validate against ADR files in docs/adr/ directories.
-version: 1.0.0
 allowed-tools:
   - Bash
   - Grep

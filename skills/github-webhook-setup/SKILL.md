@@ -7,7 +7,6 @@ description: |
   webhook issues. Triggers on "setup webhook", "add webhook for [repo]", "configure
   auto-deploy", "GitHub deployment", or "webhook not working". Works with config/hooks.json,
   .env (WEBHOOK_SECRET), and webhook.temet.ai endpoint.
-version: 1.0.0
 allowed-tools:
   - Read
   - Write

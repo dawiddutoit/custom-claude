@@ -1,7 +1,6 @@
 ---
 name: svelte-components
 description: Svelte component patterns. Use for web components, component libraries (Bits UI, Ark UI, Melt UI), form patterns, or third-party integration.
-version: 1.0.0
 ---
 
 # IMPORTANT: Keep description on ONE line for Claude Code compatibility

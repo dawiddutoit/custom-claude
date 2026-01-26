@@ -8,7 +8,6 @@ description: |
   industry-standard color conventions (blue=inputs, black=formulas, green=internal links,
   red=external links, yellow=key assumptions) and zero formula error requirements. Works with
   .xlsx, .xlsm, .csv, .tsv files for professional spreadsheet workflows.
-version: 1.0.0
 license: Proprietary. LICENSE.txt has complete terms
 ---
 

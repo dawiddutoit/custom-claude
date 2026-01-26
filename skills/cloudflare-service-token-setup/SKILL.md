@@ -7,7 +7,6 @@ description: |
   service token", "setup automation access", "verify without OAuth", "automated monitoring",
   or "service token for testing". Works with Cloudflare Access Service Auth, .env credential
   storage, and cf-service-token.sh script for testing and management.
-version: 1.0.0
 allowed-tools:
   - Read
   - Bash

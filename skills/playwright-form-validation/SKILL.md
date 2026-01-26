@@ -6,7 +6,6 @@ description: |
   validation errors", "test invalid inputs", "verify error messages", or perform comprehensive
   form testing. Triggers on validation testing requests, QA workflows, or form compliance checks.
   Works with web forms, input fields, and validation frameworks across any web application.
-version: 1.0.0
 allowed-tools:
   - mcp__playwright__browser_navigate
   - mcp__playwright__browser_snapshot

@@ -2,7 +2,6 @@
 name: python-micrometer-gcp-cloud-monitoring
 description: |
   Exports Micrometer metrics to GCP Cloud Monitoring (Stackdriver) for GKE deployments. Use when setting up metrics export in Kubernetes environments, configuring Workload Identity, managing metric prefixes and resource labels, or correlating metrics with GCP services. Critical for GKE-based microservices with centralized observability in Google Cloud.
-version: 1.0.0
 allowed-tools:
   - Read
   - Edit

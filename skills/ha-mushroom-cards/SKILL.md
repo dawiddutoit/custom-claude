@@ -5,7 +5,6 @@ description: |
   including entity, light, climate, chips, and template cards with card-mod styling support.
   Use when building modern HA dashboards, creating compact mobile interfaces, styling entity
   cards, using chips for status indicators, or combining Mushroom with card-mod for custom CSS.
-version: 1.0.0
 ---
 
 Works with HACS Mushroom cards, card-mod, and Home Assistant YAML configurations.

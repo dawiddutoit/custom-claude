@@ -4,7 +4,6 @@ description: |
   Testing use cases and application services: use case testing with mocked gateways, DTO testing, application exception testing, orchestration testing, mocking at adapter boundaries. Coverage target: 85-90%.
 
   Use when: Testing use cases, testing application services, testing DTOs and data transformation, testing error handling in use cases, mocking external dependencies at layer boundaries.
-version: 1.0.0
 allowed-tools: Read, Bash, Write
 ---
 

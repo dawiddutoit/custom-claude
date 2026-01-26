@@ -2,7 +2,6 @@
 name: uv-tool-management
 description: |
   Manages Python CLI tools with uv. Learn when to use uvx for temporary execution, uv tool install for persistent tools, and how to differentiate between tool dependencies and project dependencies. Includes version management, listing, cleanup, and scenarios for running tools with specific Python versions.
-version: 1.0.0
 allowed-tools: Read, Bash, Grep
 ---
 

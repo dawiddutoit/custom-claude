@@ -10,8 +10,6 @@ description: |
   "fits in cabinet". Works with .scad files, woodworkers-lib patterns, BOSL2
   attachments, and OpenSCAD 2025 Manifold engine.
 
-version: 1.0.0
-tags: [openscad, woodworking, collision-detection, 3d-modeling, bosl2]
 ---
 
 # OpenSCAD Collision Detection

@@ -8,7 +8,6 @@ description: |
   upgrade", or "migrate infrastructure". Works with Docker volumes (caddy_data, pihole_data),
   configuration files (docker-compose.yml, domains.toml), and .env secrets using tar archives
   and docker compose commands.
-version: 1.0.0
 allowed-tools:
   - Read
   - Bash

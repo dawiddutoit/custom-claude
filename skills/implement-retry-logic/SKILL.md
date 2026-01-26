@@ -6,7 +6,6 @@ description: |
   may fail transiently. Follows project patterns for ServiceResult wrapping, configuration
   injection, and resilience patterns. Triggers on "add retry logic for X", "implement exponential
   backoff", "make Z resilient", or "handle transient errors".
-version: 1.0.0
 allowed-tools:
   - Read
   - Grep

@@ -6,7 +6,6 @@ description: |
   "create HA dashboard", "automate dashboard creation", "WebSocket dashboard API", "programmatic
   Lovelace", or "validate dashboard entities".
 
-version: 1.0.0
 ---
 
 Works with Python websocket-client, WebSocket API authentication, and Lovelace configuration.

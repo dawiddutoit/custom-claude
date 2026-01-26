@@ -1,7 +1,5 @@
 ---
 name: architecture-single-responsibility-principle
-version: 1.0.0
-tags: [architecture, srp, solid, validation, code-quality, clean-architecture]
 description: |
   Automated SRP validation using multi-dimensional detection. Use when reviewing code for SRP compliance, checking "is this doing too much", validating architectural boundaries, before commits, or during refactoring. Detects God classes, method naming violations, complexity issues.
 allowed-tools:

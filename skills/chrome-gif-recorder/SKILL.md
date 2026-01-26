@@ -1,7 +1,6 @@
 ---
 name: chrome-gif-recorder
 description: "Records browser workflows as annotated GIFs for documentation and tutorials. Use when creating visual documentation of browser interactions, recording step-by-step tutorials, or capturing workflows for support tickets. Triggers on phrases like 'record this workflow', 'create a GIF tutorial', 'document this process as GIF', 'show me how to do X as a GIF', or when user needs visual step-by-step documentation. Works with Chrome browser automation via MCP tools (tabs_context_mcp, gif_creator, computer)."
-version: 1.0.0
 ---
 
 # Chrome GIF Recorder

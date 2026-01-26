@@ -4,7 +4,6 @@ description: |
   Provides Complete pytest configuration: pyproject.toml setup, custom markers registration, test discovery patterns, plugin configuration, environment-specific settings. Includes conftest.py hierarchy, fixture scoping, and coverage configuration.
 
   Use when: Setting up pytest in a project, configuring test discovery, creating shared fixtures, setting up coverage reporting, managing test environments, organizing conftest.py files.
-version: 1.0.0
 allowed-tools: Read, Bash, Write
 ---
 

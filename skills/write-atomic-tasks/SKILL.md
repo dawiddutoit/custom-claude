@@ -10,7 +10,7 @@ description: |
   verification steps, or clear success criteria. Works with todo.md, task lists, project
   planning documents, and agent instructions.
 
-version: 1.0.0---
+---
 
 # Write Atomic Tasks
 

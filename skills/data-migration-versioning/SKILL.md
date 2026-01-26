@@ -8,7 +8,6 @@ description: |
   patterns (auto-convert, explicit migration, dual-format), auto-upgrade timing, field deprecation,
   testing checklists, and common pitfalls like partial data preservation. Works with JSON, YAML,
   database schemas, and configuration files in Python, JavaScript, Go, Rust.
-version: 1.0.0
 allowed-tools:
   - Read
   - Write

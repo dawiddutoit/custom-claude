@@ -7,7 +7,6 @@ description: |
   handling, hooks, or agent delegation. Works with .py files and agent architectures.
   Trigger terms: "Agent SDK", "query()", "ClaudeSDKClient", "@tool decorator",
   "setting_sources", "agent permissions", "SDK hooks".
-version: 1.0.0
 allowed-tools:
   - Read
   - Write

@@ -2,7 +2,6 @@
 name: java-best-practices-security-audit
 description: |
   Performs comprehensive security audits of Java code against OWASP Top 10 and best practices. Use when auditing security, checking for vulnerabilities, analyzing SQL injection risks, preventing XSS attacks, reviewing authentication/authorization, detecting sensitive data exposure, checking dependency vulnerabilities, ensuring OWASP compliance, or hardening Java applications. Works with Java web applications, REST APIs, Spring applications, and any Java codebase.
-version: 1.0.0
 allowed-tools:
   - Read
   - Grep

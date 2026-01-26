@@ -6,7 +6,6 @@ description: |
   up remote access for a fresh installation. Triggers on "setup cloudflare tunnel", "create
   tunnel", "new tunnel token", "configure remote access", "cloudflare tunnel from scratch",
   or "tunnel not configured". Works with .env, docker-compose.yml, and Cloudflare Zero Trust.
-version: 1.0.0
 allowed-tools:
   - Read
   - Write

@@ -4,7 +4,6 @@ description: |
   Testing adapters and gateways: when to use unit test mocks vs testcontainers, mocking HTTP responses (aioresponses, responses), mocking Kafka messages, mocking ClickHouse responses, testing error paths and edge cases.
 
   Use when: Testing gateways and adapters, testing external service integrations, deciding between mocks and real containers, testing error handling in adapters, integration testing with real services.
-version: 1.0.0
 allowed-tools: Read, Bash, Write
 ---
 

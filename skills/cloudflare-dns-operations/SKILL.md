@@ -8,7 +8,6 @@ description: |
   "delete DNS record", "dynamic DNS", "Cloudflare API", or "manual DNS management". Works
   with Cloudflare API v4, cf-dns.sh and cf-settings.sh helper scripts, and direct curl
   API calls.
-version: 1.0.0
 allowed-tools:
   - Read
   - Bash

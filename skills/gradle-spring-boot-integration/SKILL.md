@@ -5,7 +5,6 @@ description: |
   layered JARs for Docker optimization, and multi-module Spring Boot configurations.
   Use when asked to "set up Spring Boot with Gradle", "create executable JARs",
   "configure Docker layering", or "set up Spring Boot microservices".
-version: 1.0.0
 ---
 
 Works with build.gradle.kts, application.yml, and Dockerfile configurations.

@@ -3,7 +3,7 @@ name: playwright-console-monitor
 description: |
   Executes browser workflows while monitoring JavaScript console for errors, warnings, and messages. Use when you need error-free validation, debugging context during automation, or proactive error detection in web applications. Triggers on "check for console errors", "monitor JavaScript errors", "validate error-free execution", or "debug browser workflow". Works with Playwright MCP browser automation tools.
 
-version: 1.0.0---
+---
 
 # Playwright Console Monitor
 

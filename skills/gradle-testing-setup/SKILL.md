@@ -6,7 +6,6 @@ description: |
   Use when asked to "set up JUnit 5", "configure TestContainers", "separate integration tests",
   or "add code coverage".
   Works with build.gradle.kts, test source sets, and CI/CD configurations.
-version: 1.0.0
 ---
 
 # Gradle Testing Setup

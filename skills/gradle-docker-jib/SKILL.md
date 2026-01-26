@@ -7,7 +7,7 @@ description: |
   with Jib", or "multi-arch image". Works with build.gradle.kts and includes Jib plugin
   setup, multi-module configuration, and CI/CD integration.
 
-version: 1.0.0---
+---
 
 # Gradle Docker Jib Integration
 

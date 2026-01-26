@@ -5,7 +5,6 @@ description: |
   Use when testing producer/consumer workflows, verifying message ordering, testing
   error scenarios, and validating exactly-once semantics. Creates test Kafka brokers
   and validates end-to-end streaming behavior without mocking.
-version: 1.0.0
 allowed-tools: Read, Write, Edit, Bash, Grep
 ---
 

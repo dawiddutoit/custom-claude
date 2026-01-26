@@ -6,7 +6,6 @@ description: |
   type safety. Analyzes Python type errors, categorizes them (missing annotations, incorrect
   types, generic issues, Optional/None handling), and applies fix patterns. Works with .py
   files and pyright output.
-version: 1.0.0
 allowed-tools:
   - Read
   - Grep

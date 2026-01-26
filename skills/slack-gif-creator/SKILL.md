@@ -7,7 +7,6 @@ description: |
   GIFBuilder utilities, frame management, color palette reduction, and validation tools ensuring
   GIFs meet Slack requirements. Works with Python Pillow (PIL) for frame generation, color
   quantization, and GIF export with FPS 10-30 and duration under 3 seconds for emoji.
-version: 1.0.0
 license: Complete terms in LICENSE.txt
 ---
 

@@ -6,7 +6,6 @@ description: |
   Use when asked to "debug Gradle build", "fix build failure", "troubleshoot Gradle",
   or "resolve dependency conflicts".
   Works with build.gradle.kts, gradle.properties, and build logs.
-version: 1.0.0
 ---
 
 # Gradle Troubleshooting

@@ -7,7 +7,6 @@ description: |
   title changing", "add color gradient to graph", "create dashboard section", "static title
   card_mod", or "organize dashboard with separators".
 
-version: 1.0.0
 ---
 
 Works with Python dashboard builders, ha_card_utils.py module, and Lovelace YAML dashboards.

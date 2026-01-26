@@ -8,7 +8,6 @@ description: |
   raw OOXML access for advanced formatting, and python-docx utilities for programmatic document
   generation. Works with .docx files through ZIP archive extraction and XML manipulation for
   professional document workflows.
-version: 1.0.0
 license: Proprietary. LICENSE.txt has complete terms
 ---
 

@@ -8,7 +8,6 @@ description: |
   oauth", "protect services", "fix access denied", "add users to access", or "why can't I
   login remotely". Works with cf-access-setup.sh, .env OAuth credentials, and Cloudflare
   Zero Trust dashboard.
-version: 1.0.0
 allowed-tools:
   - Read
   - Bash

@@ -4,7 +4,6 @@ description: |
   Analyzes Lotus Notes NSF database file structure, data models, views, forms, and relationships.
   Use when understanding NSF database composition, mapping field structures, identifying data dependencies,
   extracting schema information, or assessing data migration scope.
-version: 1.0.0
 allowed-tools:
   - Read
   - Bash

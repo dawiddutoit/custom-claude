@@ -8,7 +8,6 @@ description: |
   "API authentication", "API request", "webhook payload", "Jira REST API", "custom fields",
   "API rate limit", "API error", "expand fields", "pagination".
   Works with Jira Cloud REST API v3, Python JiraClient, and ADF formatted content.
-version: 1.0.0
 allowed-tools: WebFetch, Read, Bash
 ---
 

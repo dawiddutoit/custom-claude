@@ -8,7 +8,7 @@ description: |
   desktop views", "responsive design testing", or "multi-device screenshots". Works with
   Playwright MCP tools (browser_navigate, browser_resize, browser_take_screenshot).
 
-version: 1.0.0---
+---
 
 # Playwright Responsive Screenshots
 

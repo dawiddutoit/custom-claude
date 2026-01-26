@@ -5,7 +5,7 @@ description: |
   Cloud SQL, IAM roles, Cloud Storage, VPCs, service accounts, or any GCP service. Covers provider configuration,
   resource patterns, authentication, and GCP-specific best practices.
 
-version: 1.0.0---
+---
 
 # Terraform GCP Integration Skill
 

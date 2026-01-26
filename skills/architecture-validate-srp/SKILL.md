@@ -6,8 +6,6 @@ description: |
   "too many dependencies", before commits, during refactoring, or as quality gate.
   Analyzes Python, JavaScript, TypeScript files with AST-based detection, metrics (TCC, ATFD, WMC),
   and project-specific patterns. Provides actionable fix guidance with refactoring estimates.
-version: 1.0.0
-tags: [architecture, srp, quality-gates, code-review, refactoring, python, javascript, typescript]
 allowed-tools:
   - Read
   - Grep

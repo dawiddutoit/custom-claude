@@ -8,7 +8,6 @@ description: |
   "enable auto-recovery", "monitoring not working", or "not getting alerts". Works with
   ntfy.sh push notifications, Docker container health checks, Bash monitoring scripts,
   and optional Home Assistant automation integration.
-version: 1.0.0
 allowed-tools:
   - Read
   - Bash

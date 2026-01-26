@@ -2,7 +2,6 @@
 name: otel-logging-patterns
 description: |
   Implements OpenTelemetry (OTEL) logging with trace context correlation and structured logging. Use when setting up production logging with OTEL exporters, structlog/loguru integration, trace context propagation, and comprehensive test patterns. Covers Python implementations for FastAPI, Kafka consumers, and background jobs. Includes OTLP, Jaeger, and console exporters.
-version: 1.0.0
 allowed-tools: Read, Write, Edit, Bash, Grep
 ---
 

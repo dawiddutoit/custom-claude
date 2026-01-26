@@ -6,7 +6,6 @@ description: |
   setting up Mockito mocks, writing parameterized tests, or achieving test coverage.
   Works with .java files, generates test classes following naming conventions,
   includes edge cases, boundary conditions, and uses Arrange-Act-Assert pattern.
-version: 1.0.0
 allowed-tools:
   - Read
   - Write

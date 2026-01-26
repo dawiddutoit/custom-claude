@@ -8,7 +8,6 @@ description: |
   "tunnel down", "Error 1033", "remote access broken", "fix tunnel", or "cloudflared
   not working". Works with Cloudflare Tunnel (cloudflared), QUIC connection health,
   and tunnel registration verification.
-version: 1.0.0
 allowed-tools:
   - Read
   - Bash

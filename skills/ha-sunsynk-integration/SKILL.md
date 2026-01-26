@@ -6,7 +6,6 @@ description: |
   naming patterns, troubleshooting, and dashboard setup. Use when setting up sunsynk
   integration, configuring deye inverter, troubleshooting "no permissions" errors,
   accessing solar system data, or monitoring battery/PV/grid/load sensors.
-version: 1.0.0
 ---
 
 Works with Sunsynk/Deye hybrid inverters, api.sunsynk.net cloud API, and HA add-ons.

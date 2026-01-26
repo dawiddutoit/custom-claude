@@ -2,7 +2,6 @@
 name: validating-clickhouse-kafka-pipelines
 description: |
   Implements defense-in-depth validation patterns for ClickHouse + Kafka data pipelines. Covers producer validation (msgspec schemas), consumer validation (anti-corruption layers), ClickHouse error streaming (kafka_handle_error_mode='stream'), idempotency with ReplacingMergeTree, schema evolution, and monitoring. Use when implementing data pipelines, handling Kafka errors, setting up validation layers, managing duplicates/idempotency, or monitoring Kafka consumption. Triggers on "validate kafka pipeline", "clickhouse error handling", "kafka deduplication", or "implement anti-corruption layer".
-version: 1.0.0
 allowed-tools: Read, Bash, Grep
 ---
 

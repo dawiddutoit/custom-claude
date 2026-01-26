@@ -1,7 +1,6 @@
 ---
 name: sveltekit-data-flow
 description: SvelteKit data flow guidance. Use for load functions, form actions, and server/client data. Covers +page.server.ts vs +page.ts, serialization, fail(), redirect(), error().
-version: 1.0.0
 ---
 
 # IMPORTANT: Keep description on ONE line for Claude Code compatibility

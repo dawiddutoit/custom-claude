@@ -6,7 +6,6 @@ description: |
   detecting over-engineering, or simplifying existing code. Triggers on "is this abstraction necessary",
   "too many layers", "simplify architecture", "reduce complexity", "over-engineered", "do we need
   this interface", or when reviewing design patterns.
-version: 1.0.0
 allowed-tools:
   - Read
   - Grep

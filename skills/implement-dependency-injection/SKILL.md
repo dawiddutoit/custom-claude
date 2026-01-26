@@ -6,7 +6,6 @@ description: |
   providers, override patterns for testing, and circular dependency detection. Use when
   creating new service, adding dependency to Container, debugging circular dependency
   errors, or wiring components for injection.
-version: 1.0.0
 allowed-tools:
   - Read
   - Grep

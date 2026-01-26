@@ -8,7 +8,6 @@ description: |
   Use when diagnosing ClickHouse problems, optimizing performance, planning capacity, setting up
   monitoring, implementing backups, or managing production clusters. Includes resource management
   strategies for disk space, connections, and background operations plus production checklists.
-version: 1.0.0
 allowed-tools: Read, Bash, Grep
 ---
 

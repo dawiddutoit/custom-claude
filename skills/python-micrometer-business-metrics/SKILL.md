@@ -2,7 +2,6 @@
 name: python-micrometer-business-metrics
 description: |
   Implements domain-specific KPI metrics for business operations like charges, invoices, payments. Use when instrumenting service layer operations, measuring business process outcomes, implementing SLI/SLO monitoring for KPIs, or tracking supplier/invoice/charge lifecycle events. Targets Java/Spring Boot services with structured business metrics for observability.
-version: 1.0.0
 allowed-tools:
   - Read
   - Edit

@@ -5,7 +5,6 @@ description: |
   Use when implementing responsive layouts, CSS styling, color schemes, spacing, sizing,
   alignment, grid layouts, flexbox-like containers, and theme customization.
   Covers Textual's CSS pseudo-language and theming system.
-version: 1.0.0
 allowed-tools: Read, Write, Edit, Bash
 ---
 

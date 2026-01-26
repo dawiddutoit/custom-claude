@@ -8,7 +8,6 @@ description: |
   "access denied", "OAuth not working", "login loop", "CookieMismatch", "can only be used
   within organization", or "fix Cloudflare Access authentication". Works with Cloudflare
   Access, Google OAuth, Pi-hole whitelist, and ACCESS_ALLOWED_EMAIL configuration.
-version: 1.0.0
 allowed-tools:
   - Read
   - Bash

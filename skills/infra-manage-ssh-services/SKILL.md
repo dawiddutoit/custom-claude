@@ -8,7 +8,6 @@ description: |
   OTLP, Neo4j). Triggers on "check infrastructure", "connect to infra/deus/ha",
   "test MongoDB on infra", "view Docker services", "verify connectivity", "troubleshoot
   remote service", "what services are running", or when remote connections fail.
-version: 1.0.0
 allowed-tools:
   - Read
   - Bash

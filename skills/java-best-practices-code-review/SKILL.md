@@ -6,7 +6,6 @@ description: |
   naming conventions, Stream API usage, Optional patterns, and general code quality.
   Use when reviewing Java files, checking code quality, evaluating exception handling,
   or auditing resource management.
-version: 1.0.0
 allowed-tools:
   - Read
   - Glob

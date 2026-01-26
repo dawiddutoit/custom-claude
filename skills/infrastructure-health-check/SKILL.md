@@ -7,7 +7,6 @@ description: |
   infrastructure status, diagnosing connectivity issues, checking service health, or
   troubleshooting network problems. Triggers on "check health", "infrastructure status",
   "is everything running", "diagnose network", "service health", or "verify SSL".
-version: 1.0.0
 allowed-tools:
   - Bash
   - Read

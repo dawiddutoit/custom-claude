@@ -2,8 +2,6 @@
 name: architecture-validate-architecture
 description: |
   Automates architecture validation for Clean Architecture, Hexagonal, Layered, and MVC patterns. Detects layer boundary violations, dependency rule breaches, and architectural anti-patterns. Use when asked to "validate architecture", "check layer boundaries", "architectural review", before major refactoring, or as pre-commit quality gate. Adapts to project's architectural style by reading ARCHITECTURE.md.
-version: 1.0.0
-tags: [architecture, validation, clean-architecture, hexagonal, layered, mvc, quality-gate]
 allowed-tools:
   - Read
   - Grep

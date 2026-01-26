@@ -8,7 +8,6 @@ description: |
   WiFi", "IPv6 DNS issue", "clients prefer IPv6", "disable IPv6 DNS", or "fix local access".
   Works with Pi-hole FTLCONF_misc_dnsmasq_lines filter-AAAA configuration and client DNS
   cache management.
-version: 1.0.0
 allowed-tools:
   - Read
   - Bash

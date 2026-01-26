@@ -6,7 +6,6 @@ description: |
   mock assertions failing, or type errors with ServiceResult. Analyzes .py test files
   and service implementations. Covers async/await patterns, monad operations (map, bind, flatmap),
   and proper mock configuration.
-version: 1.0.0
 allowed-tools:
   - Read
   - Grep

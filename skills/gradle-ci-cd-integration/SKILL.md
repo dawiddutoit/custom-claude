@@ -8,7 +8,7 @@ description: |
   "optimize build cache", or "CI pipeline for Gradle". Works with .github/workflows,
   .gitlab-ci.yml, Jenkinsfile, and includes performance optimization and artifact handling.
 
-version: 1.0.0---
+---
 
 # Gradle CI/CD Integration
 

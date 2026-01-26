@@ -7,7 +7,6 @@ description: |
   Triggers on "speed up Gradle", "slow builds", "optimize CI/CD", "reduce build time", or
   "configure Gradle performance". Works with gradle.properties, build.gradle.kts, GitHub Actions,
   and GitLab CI configurations using build cache, configuration cache, and parallel execution.
-version: 1.0.0
 ---
 # Gradle Performance Optimization
 

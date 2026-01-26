@@ -1,7 +1,6 @@
 ---
 name: svelte-create-spa
 description: "TODO: Complete and informative explanation of what the skill does and when to use it. Include WHEN to use this skill - specific scenarios, file types, or tasks that trigger it."
-version: 1.0.0
 ---
 
 # Svelte Create Spa

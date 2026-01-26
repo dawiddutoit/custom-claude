@@ -6,7 +6,6 @@ description: |
   before refactor work, or after major changes to establish baseline. Triggers on "capture baseline",
   "establish baseline", or PROACTIVELY at start of any feature/refactor work. Works with pytest
   output, pyright errors, ruff warnings, vulture results, and memory MCP server for baseline storage.
-version: 1.0.0
 allowed-tools:
   - Bash
   - Read

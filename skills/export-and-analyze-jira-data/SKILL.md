@@ -6,7 +6,6 @@ description: |
   "get all issues from project", "export with filters", "analyze issue trends", or "prepare Jira data for reporting".
   Covers export patterns, format selection, pagination, filtering strategies, and analysis workflows for large datasets.
   Works with jira-tool CLI, JQL queries, and Python analysis scripts.
-version: 1.0.0
 ---
 
 # Export and Analyze Jira Data

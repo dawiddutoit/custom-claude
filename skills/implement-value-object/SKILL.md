@@ -7,7 +7,6 @@ description: |
   pattern in __post_init__, factory methods (from_string, from_dict, from_content),
   and validation in frozen context. Triggers on "create value object for X", "implement
   immutable Y value", "add validation to Z value", or "build value object".
-version: 1.0.0
 allowed-tools:
   - Read
   - Grep

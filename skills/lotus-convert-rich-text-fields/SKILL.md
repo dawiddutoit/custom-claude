@@ -5,7 +5,6 @@ description: |
   Use when migrating formatted content, extracting text styling and formatting,
   handling embedded objects (images, attachments, tables), or preparing rich text data
   for new systems.
-version: 1.0.0
 allowed-tools:
   - Read
   - Bash

@@ -8,7 +8,6 @@ description: |
   as visual accents. Works with PDF and PNG output files plus markdown design manifestos.
   Produces original visual designs using design philosophy methodology rather than copying
   existing artists.
-version: 1.0.0
 license: Complete terms in LICENSE.txt
 ---
 

@@ -1,7 +1,6 @@
 ---
 name: sveltekit-structure
 description: SvelteKit structure guidance. Use for routing, layouts, error handling, SSR, or svelte:boundary. Covers file naming, nested layouts, error boundaries, pending UI, and hydration.
-version: 1.0.0
 ---
 
 # IMPORTANT: Keep description on ONE line for Claude Code compatibility

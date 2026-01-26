@@ -8,7 +8,6 @@ description: |
   deploying dashboard changes. Triggers on "validate dashboard", "check HA config", "dashboard
   errors", "entity not found", or "test dashboard". Works with Home Assistant WebSocket/REST APIs,
   Chrome extension MCP tools, Python dashboard builders, and YAML dashboard configurations.
-version: 1.0.0
 ---
 # Home Assistant Dashboard Validation
 

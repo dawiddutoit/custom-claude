@@ -8,7 +8,7 @@ description: |
   Works with gradle/libs.versions.toml and includes Bill of Materials, dependency constraints,
   and Spring Boot/GCP BOM integration.
 
-version: 1.0.0---
+---
 
 # Gradle Dependency Management
 

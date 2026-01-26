@@ -6,7 +6,6 @@ description: |
   property. Use when asked to "hide card when", "show only if", "user-specific dashboard",
   "mobile vs desktop cards", "conditional visibility", or "show card based on state/time/user".
 
-version: 1.0.0
 ---
 
 Works with Lovelace YAML dashboards and conditional/visibility card configurations.

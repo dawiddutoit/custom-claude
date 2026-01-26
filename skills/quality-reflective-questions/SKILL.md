@@ -8,8 +8,6 @@ description: |
   "verify completeness", or proactively before marking tasks complete. Works with any type of
   implementation work. Enforces critical thinking about integration, testing, and execution proof.
 
-version: 1.0.0
-tags: [quality, verification, completeness, self-review, integration, testing]
 ---
 
 # Reflective Questions for Work Completeness

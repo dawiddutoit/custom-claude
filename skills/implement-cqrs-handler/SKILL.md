@@ -5,7 +5,6 @@ description: |
   following project patterns with ServiceResult, dependency injection, and handler
   registration. Use when implementing new use cases, adding features, creating API
   endpoints, or building application layer logic.
-version: 1.0.0
 allowed-tools:
   - Read
   - Write

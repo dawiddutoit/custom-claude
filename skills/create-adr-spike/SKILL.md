@@ -14,7 +14,6 @@ description: |
 
   Works with docs/adr/ directories, ADR templates, memory MCP tools, and external research tools
   (WebSearch, WebFetch, context7 library docs).
-version: 1.0.0
 allowed-tools:
   - Read
   - Grep

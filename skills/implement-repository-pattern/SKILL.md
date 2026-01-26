@@ -7,7 +7,6 @@ description: |
   with ServiceResult, ManagedResource lifecycle, and proper layer separation. Triggers on "create
   repository for X", "implement data access for Y", "add persistence layer", or "store/retrieve
   domain model".
-version: 1.0.0
 allowed-tools:
   - Read
   - Write

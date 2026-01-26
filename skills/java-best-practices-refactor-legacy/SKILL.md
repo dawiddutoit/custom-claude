@@ -2,7 +2,6 @@
 name: java-best-practices-refactor-legacy
 description: |
   Refactors legacy Java code to modern patterns and best practices. Use when modernizing old Java code, converting to Java 8+ features, refactoring legacy applications, applying design patterns, improving error handling, extracting methods/classes, converting to streams/Optional/records, or migrating from old Java versions. Works with pre-Java 8 code, procedural Java, legacy frameworks, and outdated patterns.
-version: 1.0.0
 allowed-tools:
   - Read
   - Write

@@ -5,7 +5,6 @@ description: |
   Use when building async/await producers that publish domain events (orders, transactions, etc.)
   with schema validation, error handling, retry logic, and distributed tracing.
   Handles producer configuration, idempotent writes, and graceful shutdown.
-version: 1.0.0
 allowed-tools: Read, Write, Edit, Bash, Grep
 ---
 

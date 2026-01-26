@@ -7,7 +7,6 @@ description: |
   fixes by enforcing proper diagnostic sequence. Works with Python (.py),
   JavaScript/TypeScript (.js/.ts), Go, Rust test files. Supports pytest,
   jest, vitest, mocha, go test, cargo test, and other frameworks.
-version: 1.0.0
 allowed-tools:
   - Bash
   - Read

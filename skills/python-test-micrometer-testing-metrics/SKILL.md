@@ -2,7 +2,6 @@
 name: python-test-micrometer-testing-metrics
 description: |
   Tests custom Micrometer metrics in unit and integration tests using SimpleMeterRegistry. Use when writing tests for services that record metrics, validating metric values after operations, testing percentiles and histograms, or asserting metric behavior without full Spring context. Essential for ensuring metrics are accurately recorded in business logic.
-version: 1.0.0
 allowed-tools:
   - Read
   - Edit

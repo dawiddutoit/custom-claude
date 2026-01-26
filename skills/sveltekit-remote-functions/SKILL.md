@@ -1,7 +1,6 @@
 ---
 name: sveltekit-remote-functions
 description: SvelteKit remote functions guidance. Use for command(), query(), form() patterns in .remote.ts files.
-version: 1.0.0
 ---
 
 # IMPORTANT: Keep description on ONE line for Claude Code compatibility

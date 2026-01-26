@@ -10,8 +10,6 @@ description: |
   planeTop/planeBottom/planeFront/planeBack modules. Works with .scad files using
   woodworkers-lib library.
 
-version: 1.0.0
-tags: [openscad, woodworking, cutlist, furniture, cnc]
 ---
 
 # OpenSCAD Cut List Generation (woodworkers-lib)

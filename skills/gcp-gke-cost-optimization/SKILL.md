@@ -7,7 +7,6 @@ description: |
   for batch workloads, right-sizing pod resources, setting up budget alerts, or
   tracking cost per service. Includes per-pod billing analysis and resource utilization
   optimization patterns.
-version: 1.0.0
 allowed-tools:
   - Bash
   - Read

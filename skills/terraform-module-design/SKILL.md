@@ -3,7 +3,7 @@ name: terraform-module-design
 description: |
   Designs and builds reusable Terraform modules. Use when creating reusable infrastructure patterns, encapsulating complex resource groups, standardizing configurations across projects, or organizing code for maintainability. Covers module structure, versioning, composition, and best practices for production modules.
 
-version: 1.0.0---
+---
 
 # Terraform Module Design Skill
 

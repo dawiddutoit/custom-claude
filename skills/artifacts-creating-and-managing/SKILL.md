@@ -5,8 +5,6 @@ description: |
   Use when asked to "create an ADR", "research topic", "spike investigation", "implementation plan", or "create analysis".
   Provides standardized structure, naming conventions, and helper scripts for artifact organization.
   Works with .claude/artifacts/ directory, Python scripts, and markdown templates.
-version: 1.0.0
-tags: [artifacts, documentation, adr, research, planning, templates]
 allowed-tools: Read, Write, Bash, Glob, Edit
 ---
 

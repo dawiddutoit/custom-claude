@@ -8,7 +8,6 @@ description: |
   Provides official color palettes, font specifications, logo usage, and visual formatting rules.
   Works with HTML artifacts, presentations, PDFs, documents, and any visual deliverables requiring
   consistent brand identity.
-version: 1.0.0
 license: Complete terms in LICENSE.txt
 ---
 

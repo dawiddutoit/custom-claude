@@ -7,7 +7,6 @@ description: |
   Use when troubleshooting dashboard errors, validating entity IDs, checking HACS card installations,
   investigating lovelace/frontend issues, or debugging "ApexCharts span error", "entity not found",
   "custom card not loading", or "dashboard not appearing in sidebar".
-version: 1.0.0
 ---
 
 Works with Home Assistant WebSocket API, Python websocket library, and YAML configurations.

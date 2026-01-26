@@ -6,7 +6,6 @@ description: |
   and device grouping for multi-sensor devices. Use when integrating custom IoT devices, creating
   MQTT sensors, building ESP32/ESP8266/Pi-based devices that auto-register with HA, or implementing
   resilient MQTT patterns with offline queuing and auto-reconnect.
-version: 1.0.0
 ---
 
 Works with MQTT brokers (Mosquitto), paho-mqtt Python library, and Home Assistant MQTT integration.

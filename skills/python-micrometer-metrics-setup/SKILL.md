@@ -2,7 +2,6 @@
 name: python-micrometer-metrics-setup
 description: |
   Sets up Micrometer metrics in a Spring Boot service from scratch, including dependencies, Actuator configuration, and registry customization. Use when starting a new microservice, configuring metrics export backends, enabling Prometheus scraping, or auto-configured JVM metrics. Foundational skill for metrics instrumentation in Java/Spring Boot applications.
-version: 1.0.0
 allowed-tools:
   - Read
   - Edit

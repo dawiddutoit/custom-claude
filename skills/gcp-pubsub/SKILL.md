@@ -8,7 +8,7 @@ description: |
   or "test with emulator". Works with google-cloud-pubsub library and includes reliability,
   idempotency, and testing patterns.
 
-version: 1.0.0---
+---
 
 # Google Cloud Pub/Sub
 

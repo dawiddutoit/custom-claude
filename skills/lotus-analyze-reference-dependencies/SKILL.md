@@ -4,7 +4,6 @@ description: |
   Identifies and maps Lotus Notes reference database dependencies, lookups, and cross-database relationships.
   Use when analyzing how applications depend on shared reference databases (suppliers, catalogs, employees),
   tracking bidirectional relationships, handling orphaned references, or planning database synchronization.
-version: 1.0.0
 allowed-tools:
   - Read
   - Bash

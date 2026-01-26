@@ -7,7 +7,6 @@ description: |
   "find dead code", "check for unused modules", "verify integration", or proactively before completion.
   Works with Python modules, functions, classes, and LangGraph nodes. Catches the ADR-013 failure pattern
   where code exists and tests pass but is never integrated.
-version: 1.0.0
 allowed-tools:
   - Read
   - Grep

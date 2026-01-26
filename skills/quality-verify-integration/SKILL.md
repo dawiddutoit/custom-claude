@@ -1,7 +1,6 @@
 ---
 name: quality-verify-integration
 description: Verifies components are integrated into the system, not just created. Detects orphaned code (exists but never imported). Use BEFORE marking features complete, moving ADRs to completed/, or claiming integration work done. Enforces Creation-Connection-Verification (CCV) principle.
-version: 1.0.0
 allowed-tools:
   - Read
   - Grep

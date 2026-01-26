@@ -7,7 +7,6 @@ description: |
   or Caddy restart loops. Triggers on "HTTPS not working", "SSL certificate issue", "certificate
   error", "Caddy not starting", "fix HTTPS", "troubleshoot certificates", or "Invalid format
   for Authorization header". Works with Caddy, Cloudflare DNS-01 challenge, and Let's Encrypt.
-version: 1.0.0
 allowed-tools:
   - Read
   - Bash

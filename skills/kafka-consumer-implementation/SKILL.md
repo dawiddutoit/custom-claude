@@ -5,7 +5,6 @@ description: |
   Use when building async consumers that process domain events (order messages, transactions)
   with offset management, error recovery, graceful shutdown, and distributed tracing.
   Handles consumer configuration, manual commits, and rebalancing strategies.
-version: 1.0.0
 allowed-tools: Read, Write, Edit, Bash, Grep
 ---
 

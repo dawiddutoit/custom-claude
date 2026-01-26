@@ -2,7 +2,6 @@
 name: textual-event-messages
 description: |
   Handles keyboard, mouse, and custom events in Textual applications using messages and handlers. Use when implementing keyboard bindings, custom message passing, event bubbling, action dispatch, and inter-widget communication. Covers event handling patterns, message definitions, and routing.
-version: 1.0.0
 allowed-tools: Read, Write, Edit, Bash
 ---
 

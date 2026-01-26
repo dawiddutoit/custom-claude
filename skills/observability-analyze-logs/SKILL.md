@@ -5,7 +5,6 @@ description: |
   and provide AI-powered root cause analysis. Use when investigating errors, checking logs, debugging issues,
   viewing traces, or analyzing execution flow. Triggers on "check the logs", "analyze errors", "what's failing",
   "debug this issue", "show me the traces", or "investigate the error".
-version: 1.0.0
 allowed-tools:
   - Bash
   - Read

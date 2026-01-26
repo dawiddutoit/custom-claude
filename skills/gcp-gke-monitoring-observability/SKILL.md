@@ -7,7 +7,6 @@ description: |
   rates or resource usage, or implementing distributed tracing with Cloud Trace.
   Includes Prometheus integration, structured logging patterns, and observability
   best practices for microservices.
-version: 1.0.0
 allowed-tools:
   - Bash
   - Read

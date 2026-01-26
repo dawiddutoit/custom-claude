@@ -6,7 +6,6 @@ description: |
   deployments, configuring Spring Boot health probes (liveness/readiness), managing
   rollout status, or implementing progressive rollout patterns. Includes automated
   health verification and rollback procedures.
-version: 1.0.0
 allowed-tools:
   - Bash
   - Read

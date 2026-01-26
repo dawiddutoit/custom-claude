@@ -8,7 +8,6 @@ description: |
   scripts, development workflow, and Parcel bundling to create sophisticated single-HTML artifacts
   with state management and modern components. Works with React/TypeScript stack for claude.ai
   artifacts requiring complexity beyond simple HTML/JSX.
-version: 1.0.0
 license: Complete terms in LICENSE.txt
 ---
 

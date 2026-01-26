@@ -8,7 +8,6 @@ description: |
   or generates custom themes on-demand. Works with PowerPoint slides, PDFs, HTML pages, Word
   documents, and any visual artifacts requiring consistent styling through theme showcase
   and interactive selection.
-version: 1.0.0
 license: Complete terms in LICENSE.txt
 ---
 

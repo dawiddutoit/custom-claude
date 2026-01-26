@@ -5,7 +5,6 @@ description: |
   Use when managing async resources, database sessions, file handles, connections, or any
   resource requiring automatic cleanup. Works with Python async/await patterns. Analyzes
   .py files with async with statements, AsyncIterator type hints, and try/finally patterns.
-version: 1.0.0
 allowed-tools:
   - Read
   - Grep

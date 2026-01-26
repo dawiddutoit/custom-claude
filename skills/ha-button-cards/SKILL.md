@@ -5,7 +5,6 @@ description: |
   navigation, and custom button-card (HACS) with templating and state-based styling.
   Use when asked to "create button card", "add service call button", "configure tap actions",
   or "customize button appearance".
-version: 1.0.0
 ---
 
 Works with Lovelace YAML dashboards and custom button-card integration.

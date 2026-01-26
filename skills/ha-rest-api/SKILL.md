@@ -5,7 +5,6 @@ description: |
   retrieval, and service calls including authentication, entity patterns, service calls,
   and state queries. Use when working with Home Assistant integrations, controlling devices,
   querying sensor data, or automating Home Assistant operations.
-version: 1.0.0
 ---
 
 Works with Home Assistant REST API, Python requests library, and bash/curl commands.

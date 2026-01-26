@@ -7,7 +7,6 @@ description: |
   for a service. Triggers on "add subdomain", "new subdomain", "add service to network",
   "expose service", "create domain for", "set up reverse proxy", or "add [name] to
   infrastructure". Works with domains.toml, manage-domains.sh, and Cloudflare Tunnel.
-version: 1.0.0
 allowed-tools:
   - Read
   - Write

@@ -6,7 +6,6 @@ description: |
   "set up a specialist", "I need an agent for [task]", "agent to handle [domain]", or "configure
   agent tools". Covers agent file format, YAML frontmatter, system prompts, tool restrictions,
   MCP integration, model selection, and testing.
-version: 1.0.0
 allowed-tools:
   - Read
   - Write

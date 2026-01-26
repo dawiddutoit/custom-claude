@@ -2,7 +2,6 @@
 name: textual-widget-development
 description: |
   Designs and implements custom Textual widgets with composition, styling, and lifecycle management. Use when creating reusable widget components, composing widgets from built-in components, implementing widget lifecycle (on_mount, on_unmount), handling widget state, and testing widgets. Covers custom widgets extending Static, Container, and building complex widget hierarchies.
-version: 1.0.0
 allowed-tools: Read, Write, Edit, Bash
 ---
 

@@ -2,7 +2,6 @@
 name: uv-python-version-management
 description: |
   Manages Python versions with uv. Learn how to discover available Python versions, install specific versions, pin project-specific versions using .python-version files, and runs tools with different Python versions. Use when setting up new projects, ensuring team uses same Python version, testing across multiple versions, or managing legacy projects with older Python requirements.
-version: 1.0.0
 allowed-tools: Bash, Read, Write, Edit
 ---
 

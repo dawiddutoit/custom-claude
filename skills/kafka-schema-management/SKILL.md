@@ -5,7 +5,6 @@ description: |
   Use when defining event schemas, creating schema validators, managing versions,
   and generating type-safe Pydantic/msgspec models from schema definitions.
   Supports schema registry patterns and backward/forward compatibility.
-version: 1.0.0
 allowed-tools: Read, Write, Edit, Bash, Grep
 ---
 

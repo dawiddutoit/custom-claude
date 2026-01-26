@@ -5,7 +5,6 @@ description: |
   Use when implementing availability and latency SLOs, creating SLO-aligned histogram buckets,
   monitoring error budgets, or validating compliance with defined service levels.
   Essential for reliability engineering and production SLO monitoring in microservices.
-version: 1.0.0
 allowed-tools:
   - Read
   - Edit

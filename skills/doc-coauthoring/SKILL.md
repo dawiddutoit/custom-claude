@@ -8,7 +8,6 @@ description: |
   specs, and proposals through clarifying questions, section-by-section iteration, and fresh-eye
   validation. Works with markdown documentation, technical specifications, and structured
   writing projects.
-version: 1.0.0
 ---
 
 # Doc Co-Authoring Workflow

@@ -6,7 +6,6 @@ description: |
   analyzes thread dumps, detects memory leaks, and resolves ClassNotFoundException.
   Use when debugging Java errors, analyzing stack traces, investigating exceptions,
   or troubleshooting performance issues.
-version: 1.0.0
 allowed-tools:
   - Read
   - Grep

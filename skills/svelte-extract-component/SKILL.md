@@ -6,7 +6,6 @@ description: |
   Triggers on "extract component", "refactor Svelte file", "create reusable component", "too much code
   in one file", or "split up component". Works with .svelte files using Svelte 5 runes ($state, $props,
   $derived), proper prop interfaces, and component file organization patterns.
-version: 1.0.0
 ---
 
 # Svelte Extract Component
